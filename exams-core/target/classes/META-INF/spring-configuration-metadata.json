@@ -1,0 +1,12 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "cn.unicom.exams.service.configuration.DruidDataSourceConfig",
+      "name": "spring.datasource",
+      "sourceMethod": "createDruidDataSource()",
+      "type": "javax.sql.DataSource"
+    }
+  ],
+  "properties": []
+}

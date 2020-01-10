@@ -1,0 +1,12 @@
+cn\unicom\exams\model\entity\SysMenu.class
+cn\unicom\exams\model\entity\SysUser.class
+cn\unicom\exams\model\entity\SysDept.class
+cn\unicom\exams\model\vo\NavsMenuInfo.class
+cn\unicom\exams\model\vo\UserInfo.class
+cn\unicom\exams\model\entity\SysRoleMenu.class
+cn\unicom\exams\model\entity\SysUserRole.class
+cn\unicom\exams\model\web\Response.class
+cn\unicom\exams\model\vo\NavsInfo.class
+cn\unicom\exams\model\vo\UserVo.class
+cn\unicom\exams\model\web\WebResponse.class
+cn\unicom\exams\model\entity\SysRole.class

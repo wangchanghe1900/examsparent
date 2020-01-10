@@ -1,0 +1,12 @@
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\config\MyShiroRealm.java
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\config\FreemarkerConfig.java
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\utils\ShiroUtils.java
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\controller\UserController.java
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\controller\LoginController.java
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\config\WebMvcConfig.java
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\config\RestTemplateConfiguration.java
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\main\ExamsWebApp.java
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\config\KaptchaConfig.java
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\config\JacksonConfig.java
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\config\ShiroConfig.java
+D:\workspace\examsparent\exams-web\src\main\java\cn\unicom\exams\web\exception\MyExceptionHandler.java

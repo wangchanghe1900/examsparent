@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unicom.exams.service.mapper.SysMenuMapper">
+
+    <select id="getTopSysmenuByName" resultType="cn.unicom.exams.model.entity.SysMenu">
+        select  distinct f.id ,f.parent_id, f.name ,f.url ,f.perms,f.type,f.icon,f.order_num,f.open_mode
+		from sys_user a inner join sys_dept b on a.dept_id=b.id
+        inner join sys_user_role c on a.id=c.user_id
+        inner join sys_role d on c.role_id=d.id
+        inner join sys_role_menu e on d.id=e.role_id
+        inner join sys_menu f on e.menu_id=f.id
+        ${ew.customSqlSegment}
+    </select>
+
+</mapper>

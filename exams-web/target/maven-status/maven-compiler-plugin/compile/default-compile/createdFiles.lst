@@ -1,0 +1,12 @@
+cn\unicom\exams\web\config\KaptchaConfig.class
+cn\unicom\exams\web\config\ShiroConfig.class
+cn\unicom\exams\web\utils\ShiroUtils.class
+cn\unicom\exams\web\controller\UserController.class
+cn\unicom\exams\web\exception\MyExceptionHandler.class
+cn\unicom\exams\web\config\RestTemplateConfiguration.class
+cn\unicom\exams\web\config\FreemarkerConfig.class
+cn\unicom\exams\web\config\MyShiroRealm.class
+cn\unicom\exams\web\config\WebMvcConfig.class
+cn\unicom\exams\web\main\ExamsWebApp.class
+cn\unicom\exams\web\controller\LoginController.class
+cn\unicom\exams\web\config\JacksonConfig.class
