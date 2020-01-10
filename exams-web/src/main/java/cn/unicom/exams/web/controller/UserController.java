@@ -40,7 +40,7 @@ public class UserController {
     @ResponseBody
     @RequiresPermissions("userlist:list")
     public WebResponse getUserList(int page, int limit, UserVo userVo){
-        IPage<UserInfo> sysUserByPage = userService.getSysUserByPage(page, limit, userVo);
+        IPage<UserInfo> sysUserByPage = userService.getUserInfoByPage(page, limit, userVo);
         WebResponse userResponse=new WebResponse();
         if(sysUserByPage != null){
             userResponse.setCode(0);
@@ -72,6 +72,11 @@ public class UserController {
             throw new Exception("获取导航菜单错误："+e.getMessage());
         }
 
+    }
+
+    @GetMapping("/addUserList")
+    public String addUserList(){
+        return "/user/userAdd";
     }
 
 }

@@ -41,7 +41,7 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 				//console.log(menus[i].parentName);
 				if(json == menus[i].parentName){
 					if(menus[i].navsList!=null){
-						console.log(menus[i].navsList);
+						//console.log(menus[i].navsList);
 						dataStr = menus[i].navsList;
 						//重新渲染左侧菜单
 						tab.render();

@@ -5,6 +5,7 @@ import cn.unicom.exams.model.entity.SysRole;
 import cn.unicom.exams.model.entity.SysUser;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * @create 2019-12-31 8:51
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class UserVo extends SysUser implements Serializable {
     private static final long serialVersionUID = -5102427442733321505L;
     /**
@@ -21,6 +23,7 @@ public class UserVo extends SysUser implements Serializable {
      */
     @TableField(exist = false)
     private String deptname;
+
 
 
 

@@ -28,19 +28,20 @@ layui.use(['form','layer','table','laytpl'],function(){
                 return d.status == "1" ? "正常使用" : "禁止使用";
             }},
             {field: 'lastlogintime', title: '最后登录时间', align:'center',minWidth:150},
-            {title: '操作', minWidth:175, templet:'#userListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
+        //console.log($(".searchVal").val());
         if($(".searchVal").val() != ''){
-            table.reload("newsListTable",{
+            table.reload("userListTable",{
                 page: {
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    key: $(".searchVal").val()  //搜索的关键字
+                    realname: $(".searchVal").val()  //搜索的关键字
                 }
             })
         }else{
@@ -53,16 +54,17 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加用户",
             type : 2,
-            content : "page/user/userAdd.html",
+            content : "addUserList",
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
-                    body.find(".userName").val(edit.userName);  //登录名
-                    body.find(".userEmail").val(edit.userEmail);  //邮箱
-                    body.find(".userSex input[value="+edit.userSex+"]").prop("checked","checked");  //性别
-                    body.find(".userGrade").val(edit.userGrade);  //会员等级
-                    body.find(".userStatus").val(edit.userStatus);    //用户状态
-                    body.find(".userDesc").text(edit.userDesc);    //用户简介
+                    body.find(".username").val(edit.username);  //登录名
+                    body.find(".realname").val(edit.realname);  //真实姓名
+                    body.find(".email").val(edit.email);  //邮箱
+                    //body.find(".userSex input[value="+edit.userSex+"]").prop("checked","checked");  //性别
+                    body.find(".mobile").val(edit.mobile);  //电话号码
+                    body.find(".status").val(edit.status);    //用户状态
+                    body.find(".deptname").val(edit.deptname);    //所属部门
                     form.render();
                 }
                 setTimeout(function(){
