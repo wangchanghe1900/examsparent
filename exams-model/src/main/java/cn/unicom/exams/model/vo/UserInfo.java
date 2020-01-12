@@ -5,6 +5,7 @@ import cn.unicom.exams.model.entity.SysRole;
 import cn.unicom.exams.model.entity.SysUser;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @create 2019-12-31 16:58
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class UserInfo extends SysUser {
     @TableField(exist = false)
     private String deptname;

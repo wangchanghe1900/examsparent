@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/exams-core" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/exams-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/exams-model" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/exams-model/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/exams-web" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/exams-web/src/main/java" charset="UTF-8" />
   </component>
 </project>

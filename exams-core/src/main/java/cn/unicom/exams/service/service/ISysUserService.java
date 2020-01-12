@@ -40,5 +40,12 @@ public interface ISysUserService extends IService<SysUser> {
      */
     public UserInfo getUserVoByCondition(UserVo userVo);
 
+    /**
+     * 增加用户
+     * @param userVo
+     * @return
+     */
+    public Boolean addUser(UserVo userVo);
+
 
 }

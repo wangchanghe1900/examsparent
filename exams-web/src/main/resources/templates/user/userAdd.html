@@ -17,13 +17,13 @@
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">登录名:</label>
 		<div class="layui-input-block">
-			<input type="text" class="layui-input username" lay-verify="required" placeholder="请输入登录名">
+			<input type="text" name="username" class="layui-input username" lay-verify="required" placeholder="请输入登录名">
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">真实姓名:</label>
 		<div class="layui-input-block">
-			<input type="text" class="layui-input realname" lay-verify="required" placeholder="请输入真实姓名">
+			<input type="text"  name="realname" class="layui-input realname" lay-verify="required" placeholder="请输入真实姓名">
 		</div>
 	</div>
 	<div class="layui-row">
@@ -38,13 +38,13 @@
 		<div class="layui-form-item layui-row layui-col-xs12">
 			<label class="layui-form-label">电话号码:</label>
 			<div class="layui-input-block">
-				<input type="text" class="layui-input mobile" lay-verify="required" placeholder="请输入电话号码">
+				<input type="text" name="mobile" class="layui-input mobile" lay-verify="required" placeholder="请输入电话号码">
 			</div>
 		</div>
 		<div class="layui-form-item layui-row layui-col-xs12">
 			<label class="layui-form-label">邮箱:</label>
 			<div class="layui-input-block">
-				<input type="text" class="layui-input email" lay-verify="email" placeholder="请输入邮箱">
+				<input type="text" name="email" class="layui-input email" lay-verify="email" placeholder="请输入邮箱">
 			</div>
 		</div>
 	</div>
@@ -52,9 +52,8 @@
 		<div class="magb15 layui-col-md4 layui-col-xs12">
 			<label class="layui-form-label">所属部门:</label>
 			<div class="layui-input-block">
-				<select name="userGrade" class="userGrade" lay-filter="userGrade">
-					<option value="0">注册会员</option>
-					<option value="1">中级会员</option>
+				<select id="deptname" name="deptname" class="deptname" lay-verify="required">
+					<option value="">请选择部门</option>
 				</select>
 			</div>
 		</div>
@@ -78,4 +77,5 @@
 <script type="text/javascript" src="layui/layui.js"></script>
 <script type="text/javascript" src="js/userAdd.js"></script>
 </body>
+
 </html>

@@ -10,7 +10,7 @@ layui.use(['form','jquery',"layer"],function() {
         layer.alert("请先将项目部署到 localhost 下再进行访问【建议通过tomcat、webstorm、hb等方式运行，不建议通过iis方式运行】，否则部分数据将无法显示");
     }else{    //判断是否处于锁屏状态【如果关闭以后则未关闭浏览器之前不再显示】
         if(window.sessionStorage.getItem("lockcms") != "true" && window.sessionStorage.getItem("showNotice") != "true"){
-            showNotice();
+            //showNotice();
         }
     }
 
@@ -61,7 +61,7 @@ layui.use(['form','jquery',"layer"],function() {
     })
 
     //锁屏
-    function lockPage(){
+/*    function lockPage(){
         layer.open({
             title : false,
             type : 1,
@@ -88,13 +88,13 @@ layui.use(['form','jquery',"layer"],function() {
     $(".lockcms").on("click",function(){
         window.sessionStorage.setItem("lockcms",true);
         lockPage();
-    })
+    })*/
     // 判断是否显示锁屏
-    if(window.sessionStorage.getItem("lockcms") == "true"){
+/*    if(window.sessionStorage.getItem("lockcms") == "true"){
         lockPage();
-    }
+    }*/
     // 解锁
-    $("body").on("click","#unlock",function(){
+/*    $("body").on("click","#unlock",function(){
         if($(this).siblings(".admin-header-lock-input").val() == ''){
             layer.msg("请输入解锁密码！");
             $(this).siblings(".admin-header-lock-input").focus();
@@ -108,7 +108,7 @@ layui.use(['form','jquery',"layer"],function() {
                 $(this).siblings(".admin-header-lock-input").val('').focus();
             }
         }
-    });
+    });*/
     $(document).on('keydown', function(event) {
         var event = event || window.event;
         if(event.keyCode == 13) {
@@ -187,10 +187,10 @@ layui.use(['form','jquery',"layer"],function() {
     })
 
     //判断是否修改过系统基本设置，去显示底部版权信息
-    if(window.sessionStorage.getItem("systemParameter")){
+/*    if(window.sessionStorage.getItem("systemParameter")){
         systemParameter = JSON.parse(window.sessionStorage.getItem("systemParameter"));
         $(".footer p span").text(systemParameter.powerby);
-    }
+    }*/
 
     //更换皮肤
     function skins(){

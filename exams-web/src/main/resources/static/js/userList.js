@@ -65,6 +65,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     body.find(".mobile").val(edit.mobile);  //电话号码
                     body.find(".status").val(edit.status);    //用户状态
                     body.find(".deptname").val(edit.deptname);    //所属部门
+                    window.sessionStorage.setItem("deptname",edit.deptname);
                     form.render();
                 }
                 setTimeout(function(){
@@ -82,30 +83,33 @@ layui.use(['form','layer','table','laytpl'],function(){
         })
     }
     $(".addNews_btn").click(function(){
+        window.sessionStorage.setItem("deptname","");
         addUser();
-    })
+    });
 
     //批量删除
     $(".delAll_btn").click(function(){
         var checkStatus = table.checkStatus('userListTable'),
             data = checkStatus.data,
-            newsId = [];
+            userId ="" ;//[];
         if(data.length > 0) {
             for (var i in data) {
-                newsId.push(data[i].newsId);
+                //userId.push(data[i].id);
+                userId +=data[i].id+",";
             }
-            layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
-                // $.get("删除文章接口",{
-                //     newsId : newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
-            })
+            userId=userId.substring(0,userId.length-1);
+            layer.confirm('确定删除选中用户？',{icon:3, title:'提示信息'},function(index){
+                $.post("delUserByIds",{
+                    userids : userId  //将需要删除的newsId作为参数传入
+                },function(data){
+                    tableIns.reload();
+                    layer.close(index);
+                })
+            });
         }else{
             layer.msg("请选择需要删除的用户");
         }
-    })
+    });
 
     //列表操作
     table.on('tool(userList)', function(obj){
@@ -136,12 +140,12 @@ layui.use(['form','layer','table','laytpl'],function(){
             });
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
+                 $.get("delUserById",{
+                     id : data.id  //将需要删除的newsId作为参数传入
+                 },function(data){
                     tableIns.reload();
                     layer.close(index);
-                // })
+                })
             });
         }
     });

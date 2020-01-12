@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -60,5 +61,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .likeRight(StringUtils.isNotEmpty(userVo.getRealname()),"realname",userVo.getRealname())
                  .eq(StringUtils.isNotEmpty(userVo.getMobile()),"mobile",userVo.getMobile());
         return sysUserMapper.getUserInfoByCondition(queryWrapper);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean addUser(UserVo userVo) {
+        SysUser user=new SysUser();
+        user.setUsername(userVo.getUsername());
+        user.setEmail(userVo.getEmail());
+        user.setMobile(userVo.getMobile());
+        user.setRealname(userVo.getRealname());
+        user.setStatus(userVo.getStatus());
+        return null;
     }
 }

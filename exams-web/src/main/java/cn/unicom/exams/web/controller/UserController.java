@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -77,6 +79,33 @@ public class UserController {
     @GetMapping("/addUserList")
     public String addUserList(){
         return "/user/userAdd";
+    }
+
+    @GetMapping("delUserById")
+    @ResponseBody
+    public Boolean delUserById(Integer id){
+        boolean b = userService.removeById(id);
+        return b;
+    }
+
+    @PostMapping("delUserByIds")
+    @ResponseBody
+    public Boolean delUserByIds(String userids){
+        System.out.println("userids = " + userids);
+        String[] arr=userids.split(",");
+        List<Integer> ids=new ArrayList<>();
+        for(String s: arr){
+            ids.add(Integer.valueOf(s));
+        }
+        boolean b = userService.removeByIds(ids);
+        return b;
+
+    }
+    @PostMapping("/addUser")
+    @ResponseBody
+    public Boolean addUser(UserVo userVo){
+
+        return false;
     }
 
 }

@@ -3,6 +3,7 @@ package cn.unicom.exams.web.main;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author 王长何
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication(scanBasePackages = "cn.unicom.exams")
 @MapperScan("cn.unicom.exams.service.mapper")
+@EnableTransactionManagement
 public class ExamsWebApp {
     public static void main(String[] args) {
         SpringApplication.run(ExamsWebApp.class,args);

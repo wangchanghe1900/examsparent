@@ -9,12 +9,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="exams-web" />
         <module name="exams-model" />
+        <module name="axams-web" />
         <module name="exams-core" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="axams-web" options="-parameters" />
       <module name="exams-core" options="-parameters" />
       <module name="exams-model" options="-parameters" />
       <module name="exams-web" options="-parameters" />
