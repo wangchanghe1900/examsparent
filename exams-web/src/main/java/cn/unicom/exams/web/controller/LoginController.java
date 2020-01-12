@@ -1,7 +1,10 @@
 package cn.unicom.exams.web.controller;
 
+import cn.unicom.exams.model.entity.SysUser;
 import cn.unicom.exams.model.web.Response;
+import cn.unicom.exams.service.service.ISysUserService;
 import cn.unicom.exams.web.utils.ShiroUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import org.apache.shiro.authc.*;
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 /**
  * @author 王长河
@@ -26,6 +30,9 @@ import java.io.IOException;
 public class LoginController {
     @Autowired
     private Producer producer;
+
+    @Autowired
+    private ISysUserService sysUserService;
 
 
     @GetMapping("/")
@@ -87,7 +94,11 @@ public class LoginController {
                 Subject subject = ShiroUtils.getSubject();
                 UsernamePasswordToken token = new UsernamePasswordToken(username, password);
                 subject.login(token);
-                //subject.login(null);
+                SysUser user=new SysUser();
+                user.setLastlogintime(LocalDateTime.now());
+                QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+                queryWrapper.eq("username",username);
+                sysUserService.update(user,queryWrapper);
             }catch (UnknownAccountException e) {
                 return new Response(500,e.getMessage());
             }catch (IncorrectCredentialsException e) {

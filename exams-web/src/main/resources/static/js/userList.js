@@ -58,6 +58,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
+                    body.find(".id").val(edit.id);
                     body.find(".username").val(edit.username);  //登录名
                     body.find(".realname").val(edit.realname);  //真实姓名
                     body.find(".email").val(edit.email);  //邮箱
@@ -65,7 +66,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     body.find(".mobile").val(edit.mobile);  //电话号码
                     body.find(".status").val(edit.status);    //用户状态
                     body.find(".deptname").val(edit.deptname);    //所属部门
-                    window.sessionStorage.setItem("deptname",edit.deptname);
+                    window.sessionStorage.setItem("deptId",edit.deptId);
                     form.render();
                 }
                 setTimeout(function(){
@@ -83,7 +84,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         })
     }
     $(".addNews_btn").click(function(){
-        window.sessionStorage.setItem("deptname","");
+        window.sessionStorage.setItem("deptId","");
         addUser();
     });
 

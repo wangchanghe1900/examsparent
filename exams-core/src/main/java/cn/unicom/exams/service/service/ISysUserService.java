@@ -3,6 +3,7 @@ package cn.unicom.exams.service.service;
 import cn.unicom.exams.model.entity.SysUser;
 import cn.unicom.exams.model.vo.UserInfo;
 import cn.unicom.exams.model.vo.UserVo;
+import cn.unicom.exams.model.web.Response;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -45,7 +46,14 @@ public interface ISysUserService extends IService<SysUser> {
      * @param userVo
      * @return
      */
-    public Boolean addUser(UserVo userVo);
+    public Response addUser(UserVo userVo);
+
+    /**
+     * 更新用户信息
+     * @param userVo
+     * @return
+     */
+    public Response updateUser(UserVo userVo);
 
 
 }

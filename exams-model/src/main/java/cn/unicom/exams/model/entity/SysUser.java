@@ -1,6 +1,8 @@
 package cn.unicom.exams.model.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -71,11 +73,13 @@ public class SysUser implements Serializable {
     /**
      * 最后登录时间
      */
+    //@TableField(fill=FieldFill.UPDATE)
     private LocalDateTime lastlogintime;
 
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createtime;
 
 

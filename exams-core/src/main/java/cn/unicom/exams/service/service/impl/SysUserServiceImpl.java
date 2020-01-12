@@ -3,8 +3,10 @@ package cn.unicom.exams.service.service.impl;
 import cn.unicom.exams.model.entity.SysUser;
 import cn.unicom.exams.model.vo.UserInfo;
 import cn.unicom.exams.model.vo.UserVo;
+import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.service.mapper.SysUserMapper;
 import cn.unicom.exams.service.service.ISysUserService;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.util.EnumSet;
+import java.util.List;
 
 /**
  * <p>
@@ -65,13 +70,64 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean addUser(UserVo userVo) {
+    public Response addUser(UserVo userVo) {
         SysUser user=new SysUser();
-        user.setUsername(userVo.getUsername());
-        user.setEmail(userVo.getEmail());
-        user.setMobile(userVo.getMobile());
-        user.setRealname(userVo.getRealname());
-        user.setStatus(userVo.getStatus());
-        return null;
+        try{
+            if(userVo!=null && userVo.getUsername()!=null){
+                QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+                queryWrapper.eq("username",userVo.getUsername());
+                List<SysUser> sysUsers = sysUserMapper.selectList(queryWrapper);
+                if(sysUsers.size()>=1){
+                   return new Response(500,"用户名已存在！");
+                }else{
+                    user.setUsername(userVo.getUsername());
+                    user.setEmail(userVo.getEmail());
+                    user.setMobile(userVo.getMobile());
+                    user.setRealname(userVo.getRealname());
+                    user.setStatus(userVo.getStatus());
+                    user.setDeptId(userVo.getDeptId());
+                    user.setLastmdpasstime(LocalDateTime.now());
+                    int result = sysUserMapper.insert(user);
+                    if(result==1){
+                        return new Response(200,"添加成功！");
+                    }else {
+                        return new Response(500,"添加失败！");
+                    }
+                }
+            }else{
+                return new Response(500,"用户名为空！！");
+            }
+
+        }catch (Exception e){
+            return new Response(500,"系统错误，请于系统管理员联系！");
+        }
+
+    }
+
+    @Override
+    public Response updateUser(UserVo userVo) {
+        try {
+            if(userVo!=null && userVo.getId()==null){
+                return new Response(500,"用户ID为空！");
+            }else {
+                SysUser user=new SysUser();
+                user.setId(userVo.getId());
+                user.setDeptId(userVo.getDeptId());
+                user.setStatus(userVo.getStatus());
+                user.setMobile(userVo.getMobile());
+                user.setUsername(userVo.getUsername());
+                user.setRealname(userVo.getRealname());
+                user.setEmail(userVo.getEmail());
+                int result = sysUserMapper.updateById(user);
+                if(result==1){
+                    return new Response(200,"用户更新成功！");
+                }else {
+                    return new Response(500,"用户更新失败！");
+                }
+            }
+
+        }catch (Exception e){
+            return new Response(500,"系统错误，请于系统管理员联系！");
+        }
     }
 }

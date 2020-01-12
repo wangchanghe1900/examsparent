@@ -2,7 +2,7 @@ layui.use(['form','layer'],function(){
     var form = layui.form
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery;
-    var deptname=window.sessionStorage.getItem("deptname");
+    var deptId=window.sessionStorage.getItem("deptId");
     //console.log(deptname);
     $.ajax({
         url: 'dept/deptnamelist',
@@ -11,8 +11,8 @@ layui.use(['form','layer'],function(){
         type: 'post',
         success: function (data) {
             $.each(data, function (index, item) {
-                $('#deptname').append(new Option(item.deptname, item.deptname));// 下拉菜单里添加元素
-                $('#deptname').val(deptname);
+                $('#deptname').append(new Option(item.deptname, item.id));// 下拉菜单里添加元素
+                $('#deptname').val(deptId);
             });
             layui.form.render("select");
         }
@@ -22,28 +22,31 @@ layui.use(['form','layer'],function(){
         var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
         // 实际使用时的提交信息
         $.post("addUser",{
+            id :  $(".id").val(),
             username : $(".username").val(),  //登录名
             realname : $(".realname").val(),  //登录名
             email : $(".email").val(),  //邮箱
             mobile : $(".mobile").val(),  //电话
             //userGrade : data.field.userGrade,  //会员等级
-            deptnae : data.field.deptname,
+            deptId : data.field.deptname,
             status : data.field.status   //用户状态
             //newsTime : submitTime,    //添加时间
             //userDesc : $(".userDesc").text(),    //用户简介
         },function(res){
-            if(res!="success"){
-                layer.msg("用户添加失败！");
+            if(res.code!=200){
+                layer.msg(res.msg);
 
+            }else{
+                setTimeout(function(){
+                    top.layer.close(index);
+                    top.layer.msg("用户添加(更新)成功！");
+                    layer.closeAll("iframe");
+                    //刷新父页面
+                    parent.location.reload();
+                },1000);
             }
         });
-        setTimeout(function(){
-            top.layer.close(index);
-            top.layer.msg("用户添加成功！");
-            layer.closeAll("iframe");
-            //刷新父页面
-            parent.location.reload();
-        },2000);
+
         return false;
     });
 

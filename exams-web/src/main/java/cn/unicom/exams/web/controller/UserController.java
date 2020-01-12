@@ -1,9 +1,11 @@
 package cn.unicom.exams.web.controller;
 
 import cn.unicom.exams.model.entity.SysMenu;
+import cn.unicom.exams.model.entity.SysUser;
 import cn.unicom.exams.model.vo.NavsMenuInfo;
 import cn.unicom.exams.model.vo.UserInfo;
 import cn.unicom.exams.model.vo.UserVo;
+import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysMenuService;
 import cn.unicom.exams.service.service.ISysUserService;
@@ -91,7 +93,7 @@ public class UserController {
     @PostMapping("delUserByIds")
     @ResponseBody
     public Boolean delUserByIds(String userids){
-        System.out.println("userids = " + userids);
+        //System.out.println("userids = " + userids);
         String[] arr=userids.split(",");
         List<Integer> ids=new ArrayList<>();
         for(String s: arr){
@@ -103,9 +105,15 @@ public class UserController {
     }
     @PostMapping("/addUser")
     @ResponseBody
-    public Boolean addUser(UserVo userVo){
+    public Response addUser(UserVo userVo){
+        if(userVo.getId()!=null){
+            Response response = userService.updateUser(userVo);
+            return response;
+        }else{
+            Response response = userService.addUser(userVo);
+            return response;
+        }
 
-        return false;
     }
 
 }
