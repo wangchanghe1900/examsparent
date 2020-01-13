@@ -87,6 +87,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     user.setStatus(userVo.getStatus());
                     user.setDeptId(userVo.getDeptId());
                     user.setLastmdpasstime(LocalDateTime.now());
+                    user.setPassword(userVo.getPassword());
+                    user.setSalt(userVo.getSalt());
                     int result = sysUserMapper.insert(user);
                     if(result==1){
                         return new Response(200,"添加成功！");
@@ -108,7 +110,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = Exception.class)
     public Response updateUser(UserVo userVo) {
         try {
-            if(userVo!=null && userVo.getId()==null){
+            if(userVo==null){
+                return new Response(500,"更新信息为空！");
+            }
+            if( userVo.getId()==null){
                 return new Response(500,"用户ID为空！");
             }else {
                 SysUser user=new SysUser();
@@ -125,6 +130,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 }else {
                     return new Response(500,"用户更新失败！");
                 }
+
             }
 
         }catch (Exception e){
