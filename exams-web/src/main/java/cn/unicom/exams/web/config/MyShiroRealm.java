@@ -93,7 +93,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         final UserInfo userInfo = userService.getUserVoByCondition(userVo);
         //System.out.println("----->>userInfo="+userInfo);
         if(userInfo == null){
-            throw new UnknownAccountException("账号或密码不正确");
+            throw new UnknownAccountException("账号不存在！");
         }
         if(userInfo.getStatus() == 0){
             throw new LockedAccountException("账号已被锁定,请联系管理员");
