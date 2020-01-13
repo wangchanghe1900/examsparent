@@ -105,6 +105,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response updateUser(UserVo userVo) {
         try {
             if(userVo!=null && userVo.getId()==null){

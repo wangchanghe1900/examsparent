@@ -10,7 +10,10 @@ import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysMenuService;
 import cn.unicom.exams.service.service.ISysUserService;
 
+import cn.unicom.exams.web.utils.MD5Utils;
+import cn.unicom.exams.web.utils.SecurityCode;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +37,7 @@ public class UserController {
 
     @Autowired
     private ISysMenuService sysMenuService;
+
 
     @GetMapping("/userList")
     public String userList()throws Exception{
@@ -106,10 +110,15 @@ public class UserController {
     @PostMapping("/addUser")
     @ResponseBody
     public Response addUser(UserVo userVo){
+
         if(userVo.getId()!=null){
             Response response = userService.updateUser(userVo);
             return response;
         }else{
+            String salt=SecurityCode.getSecurityCode();
+            String pwd= MD5Utils.getAuthenticationInfo("Abcd#123!",salt);//初始密码：Abcd#123!
+            userVo.setPassword(pwd);
+            userVo.setSalt(salt);
             Response response = userService.addUser(userVo);
             return response;
         }

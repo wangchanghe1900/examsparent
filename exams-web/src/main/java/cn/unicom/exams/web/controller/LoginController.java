@@ -94,6 +94,7 @@ public class LoginController {
                 Subject subject = ShiroUtils.getSubject();
                 UsernamePasswordToken token = new UsernamePasswordToken(username, password);
                 subject.login(token);
+
                 SysUser user=new SysUser();
                 user.setLastlogintime(LocalDateTime.now());
                 QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
