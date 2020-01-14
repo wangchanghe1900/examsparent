@@ -33,6 +33,6 @@ public interface ISysMenuService extends IService<SysMenu> {
      * 提取导航菜单
      * @return
      */
-    public List<NavsMenuInfo> getAllNavsMenu() throws Exception;
+    public List<NavsMenuInfo> getAllNavsMenu(String username) throws Exception;
 
 }

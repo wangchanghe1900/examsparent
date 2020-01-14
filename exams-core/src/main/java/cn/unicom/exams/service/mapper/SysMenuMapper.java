@@ -24,4 +24,11 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
      * @return
      */
     public List<SysMenu> getTopSysmenuByName(@Param(Constants.WRAPPER) Wrapper<UserVo> wrapper);
+
+    /**
+     * 根据用户名查询导航菜单信息
+     * @param wrapper
+     * @return
+     */
+    public List<SysMenu> getNavsByName(@Param(Constants.WRAPPER) Wrapper<UserVo> wrapper);
 }

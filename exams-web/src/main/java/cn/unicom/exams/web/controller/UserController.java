@@ -48,7 +48,7 @@ public class UserController {
     @ResponseBody
     @RequiresPermissions("userlist:list")
     public WebResponse getUserList(int page, int limit, UserVo userVo){
-        IPage<UserInfo> sysUserByPage = userService.getUserInfoByPage(page, limit, userVo);
+        IPage<UserInfo> sysUserByPage = userService.getSysUserByPage(page, limit, userVo);
         WebResponse userResponse=new WebResponse();
         if(sysUserByPage != null){
             userResponse.setCode(0);
@@ -72,9 +72,9 @@ public class UserController {
 
     @GetMapping("getAllNavsMenu")
     @ResponseBody
-    public List<NavsMenuInfo> getAllNavsMenu() throws Exception{
+    public List<NavsMenuInfo> getAllNavsMenu(String username) throws Exception{
         try{
-            List<NavsMenuInfo> allNavsMenu = sysMenuService.getAllNavsMenu();
+            List<NavsMenuInfo> allNavsMenu = sysMenuService.getAllNavsMenu(username);
             return allNavsMenu;
         }catch (Exception e){
             throw new Exception("获取导航菜单错误："+e.getMessage());
@@ -110,17 +110,20 @@ public class UserController {
     @PostMapping("/addUser")
     @ResponseBody
     public Response addUser(UserVo userVo){
-
-        if(userVo.getId()!=null){
-            Response response = userService.updateUser(userVo);
-            return response;
-        }else{
-            String salt=SecurityCode.getSecurityCode();
-            String pwd= MD5Utils.getAuthenticationInfo("Abcd#123!",salt);//初始密码：Abcd#123!
-            userVo.setPassword(pwd);
-            userVo.setSalt(salt);
-            Response response = userService.addUser(userVo);
-            return response;
+        try {
+            if (userVo.getId() != null) {
+                Response response = userService.updateUser(userVo);
+                return response;
+            } else {
+                String salt = SecurityCode.getSecurityCode();
+                String pwd = MD5Utils.getAuthenticationInfo("Abcd#123!", salt);//初始密码：Abcd#123!
+                userVo.setPassword(pwd);
+                userVo.setSalt(salt);
+                Response response = userService.addUser(userVo);
+                return response;
+            }
+        }catch (Exception e){
+            return new Response(500,e.getMessage());
         }
 
     }

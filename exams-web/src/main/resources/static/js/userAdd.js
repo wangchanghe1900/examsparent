@@ -2,21 +2,36 @@ layui.use(['form','layer'],function(){
     var form = layui.form
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery;
-    var deptId=window.sessionStorage.getItem("deptId");
-    //console.log(deptname);
+    var formSelects = layui.formSelects;
+
+
     $.ajax({
         url: 'dept/deptnamelist',
         dataType: 'json',
         data:{'delFlag': 0},	//查询状态为正常的所有机构类型
         type: 'post',
         success: function (data) {
+            var deptId=window.sessionStorage.getItem("deptId");
             $.each(data, function (index, item) {
                 $('#deptname').append(new Option(item.deptname, item.id));// 下拉菜单里添加元素
-                $('#deptname').val(deptId);
+                if(item.id==deptId){
+                    $('#deptname').val(deptId);
+                }
+
             });
             layui.form.render("select");
         }
     });
+
+    layui.formSelects.config('role', {
+        searchUrl: 'role/getRoleInfo',
+        success: function(id, url, searchVal, result){
+            var roles=window.sessionStorage.getItem("roles");
+            var s=JSON.parse(roles);
+            formSelects.value('role', s);
+        }
+    });
+
     form.on("submit(addUser)",function(data){
         //弹出loading
         var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
@@ -29,8 +44,8 @@ layui.use(['form','layer'],function(){
             mobile : $(".mobile").val(),  //电话
             //userGrade : data.field.userGrade,  //会员等级
             deptId : data.field.deptname,
-            status : data.field.status   //用户状态
-            //newsTime : submitTime,    //添加时间
+            status : data.field.status,    //用户状态
+            roles : layui.formSelects.value('role', 'valStr')
             //userDesc : $(".userDesc").text(),    //用户简介
         },function(res){
             if(res.code!=200){

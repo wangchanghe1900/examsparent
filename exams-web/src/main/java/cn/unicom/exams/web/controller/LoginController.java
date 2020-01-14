@@ -1,6 +1,7 @@
 package cn.unicom.exams.web.controller;
 
 import cn.unicom.exams.model.entity.SysUser;
+import cn.unicom.exams.model.vo.UserInfo;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.service.service.ISysUserService;
 import cn.unicom.exams.web.utils.ShiroUtils;
@@ -43,11 +44,19 @@ public class LoginController {
     @GetMapping("/index")
     public String main(String userName,String nowTime){
         //System.out.println("userName = " + userName + ", nowTime = " + nowTime);
-        if(userName==null || nowTime==null){
+        if(userName==null || "".equals(userName)){
             return "redirect:/";
+        }else{
+            Subject subject = ShiroUtils.getSubject();
+            UserInfo user = (UserInfo) subject.getPrincipal();
+            if(!userName.equals(user.getUsername())){
+                return "redirect:/";
+            }else{
+                return "index";
+            }
         }
 
-        return "index";
+
     }
 
     @RequestMapping("captcha.jpg")
@@ -94,7 +103,6 @@ public class LoginController {
                 Subject subject = ShiroUtils.getSubject();
                 UsernamePasswordToken token = new UsernamePasswordToken(username, password);
                 subject.login(token);
-
                 SysUser user=new SysUser();
                 user.setLastlogintime(LocalDateTime.now());
                 QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();

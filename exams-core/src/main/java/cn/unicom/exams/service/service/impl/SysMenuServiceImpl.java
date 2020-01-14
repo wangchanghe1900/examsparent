@@ -90,9 +90,18 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public List<NavsMenuInfo> getAllNavsMenu() throws Exception{
-        QueryWrapper<SysMenu> queryWrapper=new QueryWrapper<>();
-        List<SysMenu> sysMenulist = sysMenuMapper.selectList(queryWrapper);
+    public List<NavsMenuInfo> getAllNavsMenu(String username) throws Exception{
+        QueryWrapper<UserVo> queryWrapper=new QueryWrapper<>();
+        if("admin".equalsIgnoreCase(username)){
+            queryWrapper
+                    .ne("f.parent_id", 0)
+                    .orderByAsc("f.order_num");
+        }else {
+            queryWrapper.eq("a.username", username)
+                    .ne("f.parent_id", 0)
+                    .orderByAsc("f.order_num");
+        }
+        List<SysMenu> sysMenulist = sysMenuMapper.getNavsByName(queryWrapper);
         return sysMenu2NavsInfo(0L,sysMenulist);
     }
 }

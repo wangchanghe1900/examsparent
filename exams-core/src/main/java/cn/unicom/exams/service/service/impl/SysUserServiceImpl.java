@@ -1,13 +1,16 @@
 package cn.unicom.exams.service.service.impl;
 
 import cn.unicom.exams.model.entity.SysUser;
+import cn.unicom.exams.model.entity.SysUserRole;
 import cn.unicom.exams.model.vo.UserInfo;
 import cn.unicom.exams.model.vo.UserVo;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.service.mapper.SysUserMapper;
+import cn.unicom.exams.service.mapper.SysUserRoleMapper;
 import cn.unicom.exams.service.service.ISysUserService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -33,30 +36,25 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Resource
     private SysUserMapper sysUserMapper;
+
+    @Resource
+    private SysUserRoleMapper sysUserRoleMapper;
     @Override
     public IPage<UserInfo> getSysUserByPage(int page, int limit, UserVo userVo) {
-        Page<UserVo> ipage=new Page<>(page,limit);
-        QueryWrapper<UserVo> queryWrapper=new QueryWrapper<>();
-        if(userVo!= null) {
-            queryWrapper.eq(StringUtils.isNotEmpty(userVo.getUsername()),"username", userVo.getUsername())
-                    .likeRight(StringUtils.isNotEmpty(userVo.getRealname()),"realname",userVo.getRealname())
-                    .eq(StringUtils.isNotEmpty(userVo.getMobile()),"mobile", userVo.getMobile());
+        try{
+            return getUserInfo(page, limit, userVo);
+        }catch (Exception e){
+            return null;
         }
-        queryWrapper.orderByDesc("a.id");
-        return sysUserMapper.getSysUserByPage(ipage,queryWrapper);
     }
 
     @Override
     public IPage<UserInfo> getUserInfoByPage(int page, int limit, UserVo userVo) {
-        Page<UserVo> ipage=new Page<>(page,limit);
-        QueryWrapper<UserVo> queryWrapper=new QueryWrapper<>();
-        if(userVo!= null) {
-            queryWrapper.eq(StringUtils.isNotEmpty(userVo.getUsername()),"username", userVo.getUsername())
-                    .likeRight(StringUtils.isNotEmpty(userVo.getRealname()),"realname",userVo.getRealname())
-                    .eq(StringUtils.isNotEmpty(userVo.getMobile()),"mobile", userVo.getMobile());
-        }
-        queryWrapper.orderByDesc("a.id");
-        return sysUserMapper.getUserInfoByPage(ipage,queryWrapper);
+            try{
+                return getUserInfo(page, limit, userVo);
+            }catch (Exception e){
+                return null;
+            }
     }
 
     @Override
@@ -90,11 +88,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     user.setPassword(userVo.getPassword());
                     user.setSalt(userVo.getSalt());
                     int result = sysUserMapper.insert(user);
-                    if(result==1){
-                        return new Response(200,"添加成功！");
-                    }else {
-                        return new Response(500,"添加失败！");
+                    String roles = userVo.getRoles();
+                    String[] rolearray = roles.split(",");
+                    for(String s:rolearray ){
+                        SysUserRole sysUserRole=new SysUserRole();
+                        sysUserRole.setUserId(user.getId());
+                        sysUserRole.setRoleId(Long.valueOf(s));
+                        sysUserRoleMapper.insert(sysUserRole);
+
                     }
+                    return new Response(200,"添加成功！");
                 }
             }else{
                 return new Response(500,"用户名为空！！");
@@ -125,16 +128,36 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 user.setRealname(userVo.getRealname());
                 user.setEmail(userVo.getEmail());
                 int result = sysUserMapper.updateById(user);
-                if(result==1){
-                    return new Response(200,"用户更新成功！");
-                }else {
-                    return new Response(500,"用户更新失败！");
+                UpdateWrapper<SysUserRole> updataWrapper=new UpdateWrapper<>();
+                updataWrapper.eq("user_id",userVo.getId());
+                sysUserRoleMapper.delete(updataWrapper);
+                String roles = userVo.getRoles();
+                String[] rolearray = roles.split(",");
+                for(String s:rolearray ){
+                    SysUserRole sysUserRole=new SysUserRole();
+                    sysUserRole.setUserId(userVo.getId());
+                    sysUserRole.setRoleId(Long.valueOf(s));
+                    sysUserRoleMapper.insert(sysUserRole);
+
                 }
+                return new Response(200,"用户更新成功！");
 
             }
 
         }catch (Exception e){
-            return new Response(500,"系统错误，请于系统管理员联系！");
+            return new Response(500,"更新失败，请于系统管理员联系！");
         }
+    }
+
+    private IPage<UserInfo> getUserInfo(int page, int limit, UserVo userVo) throws Exception{
+        Page<UserVo> ipage=new Page<>(page,limit);
+        QueryWrapper<UserVo> queryWrapper=new QueryWrapper<>();
+        if(userVo!= null) {
+            queryWrapper.eq(StringUtils.isNotEmpty(userVo.getUsername()),"username", userVo.getUsername())
+                    .likeRight(StringUtils.isNotEmpty(userVo.getRealname()),"realname",userVo.getRealname())
+                    .eq(StringUtils.isNotEmpty(userVo.getMobile()),"mobile", userVo.getMobile());
+        }
+        queryWrapper.orderByDesc("a.id");
+        return sysUserMapper.getSysUserByPage(ipage,queryWrapper);
     }
 }

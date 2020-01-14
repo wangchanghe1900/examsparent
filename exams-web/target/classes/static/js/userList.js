@@ -23,7 +23,17 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'email', title: '用户邮箱', minWidth:200, align:'center',templet:function(d){
                 return '<a class="layui-blue" href="mailto:'+d.email+'">'+d.email+'</a>';
             }},
-            {field: 'deptname', title: '所属部门', align:'center'},
+            {field: 'deptname', title: '所属部门', align:'center',templet:function(d){
+                return d.sysDept.deptname;
+            }},
+            {field: 'rolesname', title: '权限名称',  minWidth:150 ,align:'center',templet:function(d){
+                var rolename="";
+                for(var i=0;i<d.roles.length;i++){
+                    rolename+=d.roles[i].name+",";
+                }
+                rolename=rolename.substring(0,rolename.length-1);
+                return rolename;
+            }},
             {field: 'status', title: '用户状态',  align:'center',templet:function(d){
                 return d.status == "1" ? "正常使用" : "禁止使用";
             }},
@@ -58,6 +68,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
+                    //console.log(edit);
                     body.find(".id").val(edit.id);
                     body.find(".username").val(edit.username);  //登录名
                     body.find(".realname").val(edit.realname);  //真实姓名
@@ -65,8 +76,8 @@ layui.use(['form','layer','table','laytpl'],function(){
                     //body.find(".userSex input[value="+edit.userSex+"]").prop("checked","checked");  //性别
                     body.find(".mobile").val(edit.mobile);  //电话号码
                     body.find(".status").val(edit.status);    //用户状态
-                    body.find(".deptname").val(edit.deptname);    //所属部门
-                    window.sessionStorage.setItem("deptId",edit.deptId);
+                    body.find(".deptname").val(edit.sysDept.id);    //所属部门
+                    //body.find(".roles").val(edit.roles);
                     form.render();
                 }
                 setTimeout(function(){
@@ -84,6 +95,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         })
     }
     $(".addNews_btn").click(function(){
+        window.sessionStorage.setItem("roles","");
         window.sessionStorage.setItem("deptId","");
         addUser();
     });
@@ -118,6 +130,12 @@ layui.use(['form','layer','table','laytpl'],function(){
             data = obj.data;
 
         if(layEvent === 'edit'){ //编辑
+            window.sessionStorage.setItem("deptId",data.sysDept.id);
+            ids=[];
+            for(var i=0;i<data.roles.length;i++){
+                ids.push(data.roles[i].id);
+            };
+            window.sessionStorage.setItem("roles",JSON.stringify(ids));
             addUser(data);
         }else if(layEvent === 'usable'){ //启用禁用
             var _this = $(this),

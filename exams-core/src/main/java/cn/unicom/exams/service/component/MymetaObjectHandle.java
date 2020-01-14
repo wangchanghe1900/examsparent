@@ -26,11 +26,11 @@ public class MymetaObjectHandle implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         boolean b = metaObject.hasSetter("lastlogintime");
-        if(b){
+/*        if(b){
             Object lastlogintime = getFieldValByName("lastlogintime", metaObject);
             if(lastlogintime ==null){
                 setUpdateFieldValByName("lastlogintime", LocalDateTime.now(),metaObject);
             }
-        }
+        }*/
     }
 }

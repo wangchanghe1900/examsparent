@@ -11,6 +11,7 @@
 	<meta name="format-detection" content="telephone=no">
 	<link rel="stylesheet" href="layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="css/public.css" media="all" />
+	<link rel="stylesheet"  href="css/formSelects-v4.css"/>
 </head>
 <body class="childrenBody">
 <form class="layui-form" style="width:80%;">
@@ -69,6 +70,16 @@
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="magb15 layui-col-md4 layui-col-xs12">
+			<label class="layui-form-label">用户权限:</label>
+			<div class="layui-input-block">
+				<select name="roles" class="roles" lay-verify="role" xm-select="role" xm-select-skin="primary">
+					<option value="">请选择权限</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
 		<div class="layui-input-block">
 			<button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addUser">保存</button>
 			<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
@@ -77,6 +88,7 @@
 </form>
 <script type="text/javascript" src="layui/layui.js"></script>
 <script type="text/javascript" src="js/userAdd.js"></script>
+<script type="text/javascript" src="js/formSelects-v4.js"  charset="utf-8"></script>
 </body>
 
 </html>
