@@ -3,6 +3,7 @@ package cn.unicom.exams.service.mapper;
 import cn.unicom.exams.model.entity.SysMenu;
 import cn.unicom.exams.model.vo.UserVo;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.apache.ibatis.annotations.Param;
@@ -31,4 +32,5 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
      * @return
      */
     public List<SysMenu> getNavsByName(@Param(Constants.WRAPPER) Wrapper<UserVo> wrapper);
+
 }

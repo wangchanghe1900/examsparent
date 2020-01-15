@@ -12,9 +12,13 @@ import cn.unicom.exams.service.service.ISysUserService;
 
 import cn.unicom.exams.web.utils.MD5Utils;
 import cn.unicom.exams.web.utils.SecurityCode;
+import cn.unicom.exams.web.utils.ShiroUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +67,11 @@ public class UserController {
     @ResponseBody
     public List<SysMenu> getURLByName(@PathVariable("username") String username) throws Exception{
         try{
+            Subject subject = ShiroUtils.getSubject();
+            UserInfo user = (UserInfo) subject.getPrincipal();
+            if(!username.equals(user.getUsername())){
+                throw new Exception("用户名错误");
+            }
             List<SysMenu> sysMenuList = sysMenuService.getTopSysMenuByName(username);
             return sysMenuList;
         }catch(Exception e){
@@ -124,6 +133,80 @@ public class UserController {
             }
         }catch (Exception e){
             return new Response(500,e.getMessage());
+        }
+
+    }
+
+    @PostMapping("/getUserInfo/{username}")
+    @ResponseBody
+    public SysUser getUserInfo(@PathVariable("username") String username){
+        QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("username",username);
+        SysUser user = userService.getOne(queryWrapper);
+        return user;
+    }
+
+    @PostMapping("/resetpwd/{id}")
+    @ResponseBody
+    public String resetpwd(@PathVariable("id") Long id){
+        QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("id",id);
+        SysUser user = userService.getOne(queryWrapper);
+        String salt = user.getSalt();
+        String pwd = MD5Utils.getAuthenticationInfo("Abcd#123!", salt);
+        SysUser sysUser=new SysUser();
+        sysUser.setId(id);
+        sysUser.setPassword(pwd);
+        userService.updateById(sysUser);
+        return "success";
+    }
+
+    @GetMapping("/changePwd")
+    public String changePwd(){
+        return "user/changePwd";
+    }
+
+    @PostMapping("/verifyPwd")
+    @ResponseBody
+    public String verifyPwd(String username,String password){
+        QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("username",username);
+        SysUser sysUser = userService.getOne(queryWrapper);
+        if(sysUser==null){
+            return "false";
+        }
+        String salt = sysUser.getSalt();
+        String pwd = MD5Utils.getAuthenticationInfo(password, salt);
+        if(pwd.equals(sysUser.getPassword())){
+            return "success";
+        }
+        return "false";
+    }
+
+    @PostMapping("/updatePwd")
+    @ResponseBody
+    public Response updatePwd(String username,String oldPwd,String newPass){
+        QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("username",username);
+        SysUser sysUser = userService.getOne(queryWrapper);
+        if(sysUser==null){
+            return new Response(500,"用户不存在！");
+        }
+        String salt = sysUser.getSalt();
+        String pwd = MD5Utils.getAuthenticationInfo(oldPwd, salt);
+        if(!pwd.equals(sysUser.getPassword())){
+            return  new Response(500,"旧密码不正确！");
+        }
+        UpdateWrapper<SysUser> updateWrapper=new UpdateWrapper<>();
+        updateWrapper.eq("username",username);
+        String newpass = MD5Utils.getAuthenticationInfo(newPass, salt);
+        SysUser user=new SysUser();
+        user.setPassword(newpass);
+        try {
+            boolean update = userService.update(user, updateWrapper);
+            return  new Response(200,"密码更新成功！");
+        }catch (Exception e){
+            return  new Response(500,"密码更新失败！");
         }
 
     }

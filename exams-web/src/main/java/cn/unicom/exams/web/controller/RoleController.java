@@ -2,8 +2,11 @@ package cn.unicom.exams.web.controller;
 
 import cn.unicom.exams.model.entity.SysRole;
 import cn.unicom.exams.model.vo.RoleInfo;
+import cn.unicom.exams.model.vo.UserVo;
 import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysRoleService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +29,9 @@ public class RoleController {
     @GetMapping("/getRoleInfo")
     @ResponseBody
     public WebResponse getRoleInfo(){
-        List<SysRole> sysRoles = sysRoleService.list();
+        QueryWrapper<SysRole> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("isenable",1);
+        List<SysRole> sysRoles = sysRoleService.list(queryWrapper);
 
         if(sysRoles!=null){
             List<RoleInfo> roleList=new ArrayList<>();
@@ -42,6 +47,18 @@ public class RoleController {
         }else {
             return new WebResponse(500,"false",0);
         }
+    }
+
+    @GetMapping("/rolelist")
+    public String rolelist(){
+        return "role/rolelist";
+    }
+
+    @GetMapping("/getRoleList")
+    @ResponseBody
+    public WebResponse getUserList(int page, int limit, SysRole role){
+
+        return null;
     }
 
 }

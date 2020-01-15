@@ -38,7 +38,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 return d.status == "1" ? "正常使用" : "禁止使用";
             }},
             {field: 'lastlogintime', title: '最后登录时间', align:'center',minWidth:150},
-            {title: '操作', minWidth:150, templet:'#userListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:220, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });
 
@@ -137,24 +137,20 @@ layui.use(['form','layer','table','laytpl'],function(){
             };
             window.sessionStorage.setItem("roles",JSON.stringify(ids));
             addUser(data);
-        }else if(layEvent === 'usable'){ //启用禁用
-            var _this = $(this),
-                usableText = "是否确定禁用此用户？",
-                btnText = "已禁用";
-            if(_this.text()=="已禁用"){
-                usableText = "是否确定启用此用户？",
-                btnText = "已启用";
-            }
-            layer.confirm(usableText,{
+        }else if(layEvent === 'usable'){ //重置密码
+
+            layer.confirm("确定重置密码？",{
                 icon: 3,
                 title:'系统提示',
                 cancel : function(index){
                     layer.close(index);
                 }
             },function(index){
-                _this.text(btnText);
-                layer.close(index);
-            },function(index){
+                $.post("resetpwd/"+data.id,function(data,status){
+                    if(status=='success'){
+                        layer.msg("密码重置成功，初始密码为：Abcd#123!");
+                    }
+                });
                 layer.close(index);
             });
         }else if(layEvent === 'del'){ //删除

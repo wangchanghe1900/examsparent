@@ -9,12 +9,12 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 		element = layui.element;
 		$ = layui.$;
     	layer = parent.layer === undefined ? layui.layer : top.layer;
-/*	     let url=window.document.location.href;
-	     let username=window.sessionStorage.getItem("username");
+	    let username=window.sessionStorage.getItem("username");
+	     let url=window.document.location.href;
 	     if(username==undefined){
 	     	window.location.href=url.substring(0,url.lastIndexOf("/"));
-		 }*/
-	    let username=window.sessionStorage.getItem("username");
+		 }
+
 	    $.ajaxSettings.async = false;
 	    $.post("getURLByName/"+username,function(data,status){
 	    	if(status=='success'){
@@ -28,9 +28,20 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 
 		});
 	    $.ajaxSettings.async = true;
+	$.post("getUserInfo/"+username,function(data,status){
+		if(status=='success'){
+			 var info="<a href='javascript:;'><img src='images/xm.jpg' class='layui-nav-img userAvatar' width='35' height='35'><cite class='adminName'>"+data.realname+"</cite></a>";
+			 $("#userInfo").append(info);
+			 var p="<a class='img' title='我的头像' ><img src='images/xm.jpg' class='userAvatar'></a>";
+			$(".user-photo").append(p);
+			 var u="<p>你好！<span class='userName'>"+data.realname+"</span>, 欢迎登录</p>"
+             $(".user-photo").append(u)
+		}
+
+	});
 		tab = layui.bodyTab({
 			openTabNum : "50",  //最大可打开窗口数量
-			url : "getAllNavsMenu"//"json/navs.json" //获取菜单json地址
+			url : "getAllNavsMenu" //获取菜单json地址
 		});
 
 	//通过顶部菜单获取左侧二三级菜单   注：此处只做演示之用，实际开发中通过接口传参的方式获取导航数据
@@ -48,24 +59,6 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 					}
 				}
 			}
-/*			if(json == "contentManagement"){
-				//console.log(data.contentManagement);
-				dataStr = data.contentManagement;
-				//重新渲染左侧菜单
-				tab.render();
-			}else if(json == "memberCenter"){
-				dataStr = data.memberCenter;
-				//重新渲染左侧菜单
-				tab.render();
-			}else if(json == "systemeSttings"){
-				dataStr = data.systemeSttings;
-				//重新渲染左侧菜单
-				tab.render();
-			}else if(json == "seraphApi"){
-                dataStr = data.seraphApi;
-                //重新渲染左侧菜单
-                tab.render();
-            }*/
 		})
 	}
 	//页面加载时判断左侧菜单是否显示
@@ -172,11 +165,11 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 //打开新窗口
 function addTab(_this){
 	tab.tabAdd(_this);
-}
+};
 
 //图片管理弹窗
 function showImg(){
-    $.getJSON('json/images.json', function(json){
+    $.getJSON('', function(json){
         var res = json;
         layer.photos({
             photos: res,

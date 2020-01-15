@@ -42,20 +42,17 @@ public class LoginController {
     }
 
     @GetMapping("/index")
-    public String main(String userName,String nowTime){
-        //System.out.println("userName = " + userName + ", nowTime = " + nowTime);
-        if(userName==null || "".equals(userName)){
-            return "redirect:/";
-        }else{
+    public String main(){
             Subject subject = ShiroUtils.getSubject();
             UserInfo user = (UserInfo) subject.getPrincipal();
-            if(!userName.equals(user.getUsername())){
+            if(user==null){
                 return "redirect:/";
             }else{
+                if(user.getUsername()==null){
+                    return "redirect:/";
+                }
                 return "index";
             }
-        }
-
 
     }
 
@@ -79,22 +76,6 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseBody
     public Response login(HttpServletRequest request, String username, String password, String code){
-/*        HttpSession session = request.getSession();
-        String sessioncode = (String) session.getAttribute(Constants.KAPTCHA_SESSION_KEY);*/
-
- /*      if(!sessioncode.equals(code)){
-            return new Response(500,"验证码错误！");
-        }else{
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("X-Auth-Token", "e348bc22-5efa-4299-9142-529f07a18ac9");
-            MultiValueMap<String, String> postParameters = new LinkedMultiValueMap<String, String>();
-            postParameters.add("userName","admin");
-            postParameters.add("password",password);
-            HttpEntity<MultiValueMap<String, String>> requestEntity  = new HttpEntity<MultiValueMap<String, String>>(postParameters, headers);
-            Response response = restTemplate.postForObject("http://127.0.0.1:9001/v1/getUserByName",requestEntity,Response.class);
-            if(response!=null){
-                return response;
-            }*/
             try{
                 String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
                 if(!code.equalsIgnoreCase(kaptcha)){

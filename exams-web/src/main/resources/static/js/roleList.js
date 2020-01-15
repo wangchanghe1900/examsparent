@@ -7,8 +7,8 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //用户列表
     var tableIns = table.render({
-        elem: '#userList',
-        url :'getUserList',
+        elem: '#roleList',
+        url :'getRoleList',
         cellMinWidth : 95,
         page : true,
         height : "full-100",
@@ -17,28 +17,11 @@ layui.use(['form','layer','table','laytpl'],function(){
         id : "userListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
-            {field: 'username', title: '用户名', minWidth:100, align:"center"},
-            {field: 'realname', title: '真实姓名', minWidth:100, align:"center"},
-            {field: 'mobile', title: '移动电话', minWidth:100, align:"center"},
-            {field: 'email', title: '用户邮箱', minWidth:200, align:'center',templet:function(d){
-                return '<a class="layui-blue" href="mailto:'+d.email+'">'+d.email+'</a>';
-            }},
-            {field: 'deptname', title: '所属部门', align:'center',templet:function(d){
-                return d.sysDept.deptname;
-            }},
-            {field: 'rolesname', title: '权限名称',  minWidth:150 ,align:'center',templet:function(d){
-                var rolename="";
-                for(var i=0;i<d.roles.length;i++){
-                    rolename+=d.roles[i].name+",";
-                }
-                rolename=rolename.substring(0,rolename.length-1);
-                return rolename;
-            }},
-            {field: 'status', title: '用户状态',  align:'center',templet:function(d){
-                return d.status == "1" ? "正常使用" : "禁止使用";
-            }},
-            {field: 'lastlogintime', title: '最后登录时间', align:'center',minWidth:150},
-            {title: '操作', minWidth:220, templet:'#userListBar',fixed:"right",align:"center"}
+            {field: 'name', title: '角色名称', minWidth:100, align:"center"},
+            {field: 'remark', title: '角色描述', minWidth:200, align:"center"},
+            {field: 'isenable', title: '是否启用', minWidth:100, align:"center"},
+            {field: 'createtime', title: '创建日期', minWidth:100, align:"center"},
+            {title: '操作', minWidth:220, templet:'#roleListBar',fixed:"right",align:"center"}
         ]]
     });
 
@@ -51,7 +34,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    realname: $(".searchVal").val()  //搜索的关键字
+                    name: $(".searchVal").val()  //搜索的关键字
                 }
             })
         }else{

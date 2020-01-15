@@ -38,6 +38,10 @@ public class SysRole implements Serializable {
      * 备注
      */
     private String remark;
+    /**
+     * 是否启用
+     */
+    private Integer isenable;
 
     /**
      * 创建时间
