@@ -103,5 +103,9 @@ public class ShiroConfig {
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
+/*    @Bean
+    public ShiroDialect shiroDialect() {
+        return new ShiroDialect();
+    }*/
 
 }

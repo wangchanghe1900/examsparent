@@ -32,5 +32,4 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
      * @return
      */
     public List<SysMenu> getNavsByName(@Param(Constants.WRAPPER) Wrapper<UserVo> wrapper);
-
 }

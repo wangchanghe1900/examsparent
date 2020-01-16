@@ -94,16 +94,37 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         QueryWrapper<UserVo> queryWrapper=new QueryWrapper<>();
         if("admin".equalsIgnoreCase(username)){
             QueryWrapper<SysMenu> queryWrapper1=new QueryWrapper<>();
+            queryWrapper1.ne("type",2);
             queryWrapper1.orderByAsc("parent_id").orderByAsc("order_num");
             List<SysMenu> sysMenus = sysMenuMapper.selectList(queryWrapper1);
             return sysMenu2NavsInfo(0L,sysMenus);
         }else {
             queryWrapper.eq("a.username", username)
+                    .ne("f.type",2)
                     .orderByAsc("f.parent_id")
                     .orderByAsc("f.order_num");
             List<SysMenu> sysMenulist = sysMenuMapper.getNavsByName(queryWrapper);
             return sysMenu2NavsInfo(0L,sysMenulist);
         }
 
+    }
+
+    @Override
+    public List<SysMenu> getButtonMenu(String username, String buttonstr) throws Exception {
+        QueryWrapper<UserVo> queryWrapper=new QueryWrapper<>();
+        if("admin".equalsIgnoreCase(username)){
+            QueryWrapper<SysMenu> queryWrapper1=new QueryWrapper<>();
+            queryWrapper1.eq("type",2);
+            queryWrapper1.orderByAsc("parent_id").orderByAsc("order_num");
+            List<SysMenu> sysMenus = sysMenuMapper.selectList(queryWrapper1);
+           return sysMenus.stream().filter(s -> s.getPerms().contains(buttonstr)).collect(Collectors.toList());
+        }else {
+            queryWrapper.eq("a.username", username)
+                    .eq("f.type",2)
+                    .orderByAsc("f.parent_id")
+                    .orderByAsc("f.order_num");
+            List<SysMenu> sysMenulist = sysMenuMapper.getNavsByName(queryWrapper);
+            return sysMenulist.stream().filter(s -> s.getPerms().contains(buttonstr)).collect(Collectors.toList());
+        }
     }
 }

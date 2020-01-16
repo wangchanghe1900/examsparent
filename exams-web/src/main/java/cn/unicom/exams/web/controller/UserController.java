@@ -2,6 +2,7 @@ package cn.unicom.exams.web.controller;
 
 import cn.unicom.exams.model.entity.SysMenu;
 import cn.unicom.exams.model.entity.SysUser;
+import cn.unicom.exams.model.vo.ButtonInfo;
 import cn.unicom.exams.model.vo.NavsMenuInfo;
 import cn.unicom.exams.model.vo.UserInfo;
 import cn.unicom.exams.model.vo.UserVo;
@@ -9,14 +10,14 @@ import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysMenuService;
 import cn.unicom.exams.service.service.ISysUserService;
-
+import cn.unicom.exams.web.utils.ButtonAuthorUtils;
 import cn.unicom.exams.web.utils.MD5Utils;
 import cn.unicom.exams.web.utils.SecurityCode;
 import cn.unicom.exams.web.utils.ShiroUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,6 +42,9 @@ public class UserController {
     @Autowired
     private ISysMenuService sysMenuService;
 
+    @Autowired
+    private ButtonAuthorUtils buttonAuthorUtils;
+
 
     @GetMapping("/userList")
     public String userList()throws Exception{
@@ -50,15 +53,30 @@ public class UserController {
 
     @GetMapping("/getUserList")
     @ResponseBody
-    @RequiresPermissions("userlist:list")
+    @RequiresPermissions("user:list")
     public WebResponse getUserList(int page, int limit, UserVo userVo){
-        IPage<UserInfo> sysUserByPage = userService.getSysUserByPage(page, limit, userVo);
         WebResponse userResponse=new WebResponse();
-        if(sysUserByPage != null){
-            userResponse.setCode(0);
-            Long total=sysUserByPage.getTotal();
-            userResponse.setCount(total.intValue());
-            userResponse.setData(sysUserByPage.getRecords());
+        try{
+            IPage<UserInfo> sysUserByPage = userService.getSysUserByPage(page, limit, userVo);
+            ButtonInfo userbutton = buttonAuthorUtils.getButtonAuthority("user");
+            if(sysUserByPage != null){
+                userResponse.setCode(0);
+                Long total=sysUserByPage.getTotal();
+                userResponse.setCount(total.intValue());
+                List<UserInfo> records = sysUserByPage.getRecords();
+                List<UserInfo> userList=new ArrayList<>();
+                for(UserInfo info:records){
+                    info.setIsAdd(userbutton.getIsAdd());
+                    info.setIsDel(userbutton.getIsDel());
+                    info.setIsUpdate(userbutton.getIsUpdate());
+                    info.setIsEdit(userbutton.getIsEdit());
+                    info.setIsResetPwd(userbutton.getIsResetPwd());
+                    userList.add(info);
+                }
+                userResponse.setData(userList);
+            }
+        }catch(Exception e){
+            return new WebResponse(500,"系统错误",0);
         }
         return userResponse;
     }
@@ -92,7 +110,14 @@ public class UserController {
     }
 
     @GetMapping("/addUserList")
+    @RequiresPermissions("user:add")
     public String addUserList(){
+        return "/user/userAdd";
+    }
+
+    @GetMapping("/editUserList")
+    @RequiresPermissions("user:edit")
+    public String editUserList(){
         return "/user/userAdd";
     }
 
@@ -210,5 +235,7 @@ public class UserController {
         }
 
     }
+
+
 
 }

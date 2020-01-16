@@ -30,4 +30,33 @@ public class UserInfo extends SysUser {
      */
     @TableField(exist = false)
     private List<SysRole> roles;
+
+    /**
+     * 编辑按钮权限
+     */
+    @TableField(exist = false)
+    private Boolean isEdit;
+    /**
+     * 删除按钮权限
+     */
+    @TableField(exist = false)
+    private Boolean isDel;
+
+    /**
+     * 重置密码按钮权限
+     */
+    @TableField(exist = false)
+    private Boolean isResetPwd;
+
+    /**
+     * 新增按钮权限
+     */
+    @TableField(exist = false)
+    private Boolean isAdd;
+
+    /**
+     * 更新按钮权限
+     */
+    @TableField(exist = false)
+    private Boolean isUpdate;
 }

@@ -153,7 +153,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Page<UserVo> ipage=new Page<>(page,limit);
         QueryWrapper<UserVo> queryWrapper=new QueryWrapper<>();
         if(userVo!= null) {
-            queryWrapper.eq(StringUtils.isNotEmpty(userVo.getUsername()),"username", userVo.getUsername())
+            queryWrapper.ne("username","admin").eq(StringUtils.isNotEmpty(userVo.getUsername()),"username", userVo.getUsername())
                     .likeRight(StringUtils.isNotEmpty(userVo.getRealname()),"realname",userVo.getRealname())
                     .eq(StringUtils.isNotEmpty(userVo.getMobile()),"mobile", userVo.getMobile());
         }

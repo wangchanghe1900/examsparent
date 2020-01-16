@@ -35,4 +35,13 @@ public interface ISysMenuService extends IService<SysMenu> {
      */
     public List<NavsMenuInfo> getAllNavsMenu(String username) throws Exception;
 
+    /**
+     * 根据用户名、按钮名提取权限
+     * @param username
+     * @param buttonstr
+     * @return
+     * @throws Exception
+     */
+    public List<SysMenu> getButtonMenu(String username,String buttonstr) throws Exception;
+
 }

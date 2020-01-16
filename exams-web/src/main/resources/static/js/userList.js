@@ -4,7 +4,21 @@ layui.use(['form','layer','table','laytpl'],function(){
         $ = layui.jquery,
         laytpl = layui.laytpl,
         table = layui.table;
-
+    //显示页面按钮
+    $.get("sysmenu/btnAuthroInfo",{"btn":"user"},
+        function (data) {
+            if(data){
+                if(data.isFind){
+                    $('div:first').removeClass("disp");
+                }
+                if(data.isAdd){
+                    $('div:nth-child(2)').removeClass("disp");
+                }
+                if(data.isBatchDel){
+                    $('div:nth-child(3)').removeClass("disp");
+                }
+            }
+    });
     //用户列表
     var tableIns = table.render({
         elem: '#userList',
@@ -59,12 +73,12 @@ layui.use(['form','layer','table','laytpl'],function(){
         }
     });
 
-    //添加用户
-    function addUser(edit){
+    //编辑用户
+    function editUser(edit){
         var index = layui.layer.open({
-            title : "添加用户",
+            title : "编辑用户",
             type : 2,
-            content : "addUserList",
+            content : "editUserList",
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
@@ -93,7 +107,30 @@ layui.use(['form','layer','table','laytpl'],function(){
         $(window).on("resize",function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
         })
-    }
+    };
+
+    //添加用户
+    function addUser(){
+        var index = layui.layer.open({
+            title : "新增用户",
+            type : 2,
+            content : "addUserList",
+            success : function(layero, index){
+                var body = layui.layer.getChildFrame('body', index);
+                setTimeout(function(){
+                    layui.layer.tips('点击此处返回用户列表', '.layui-layer-setwin .layui-layer-close', {
+                        tips: 3
+                    });
+                },500)
+            }
+        })
+        layui.layer.full(index);
+        window.sessionStorage.setItem("index",index);
+        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+        $(window).on("resize",function(){
+            layui.layer.full(window.sessionStorage.getItem("index"));
+        })
+    };
     $(".addNews_btn").click(function(){
         window.sessionStorage.setItem("roles","");
         window.sessionStorage.setItem("deptId","");
@@ -136,7 +173,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 ids.push(data.roles[i].id);
             };
             window.sessionStorage.setItem("roles",JSON.stringify(ids));
-            addUser(data);
+            editUser(data);
         }else if(layEvent === 'usable'){ //重置密码
 
             layer.confirm("确定重置密码？",{
