@@ -1,11 +1,15 @@
 package cn.unicom.exams.web.controller;
 
 import cn.unicom.exams.model.entity.SysRole;
+import cn.unicom.exams.model.vo.ButtonInfo;
 import cn.unicom.exams.model.vo.RoleInfo;
 import cn.unicom.exams.model.vo.UserVo;
 import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysRoleService;
+import cn.unicom.exams.web.utils.ButtonAuthorUtils;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +29,9 @@ import java.util.List;
 public class RoleController {
     @Autowired
     private ISysRoleService sysRoleService;
+
+    @Autowired
+    private ButtonAuthorUtils  buttonAuthorUtils;
 
     @GetMapping("/getRoleInfo")
     @ResponseBody
@@ -49,16 +56,53 @@ public class RoleController {
         }
     }
 
-    @GetMapping("/rolelist")
-    public String rolelist(){
+    @GetMapping("/roleList")
+    public String roleList(){
         return "role/rolelist";
     }
 
     @GetMapping("/getRoleList")
     @ResponseBody
-    public WebResponse getUserList(int page, int limit, SysRole role){
+    public WebResponse getRoleList(int page, int limit, SysRole role){
+        try {
+            QueryWrapper<SysRole> queryWrapper=new QueryWrapper<>();
+            queryWrapper.likeRight(StringUtils.isNotEmpty(role.getName()),"name",role.getName());
+            List<SysRole> sysRoles = sysRoleService.list(queryWrapper);
+            WebResponse webResponse=new WebResponse();
+            webResponse.setCode(0);
+            webResponse.setMsg("");
+            webResponse.setCount(sysRoles.size());
+            ButtonInfo rolepower = buttonAuthorUtils.getButtonAuthority("role");
+            List<RoleInfo> roleInfoList = new ArrayList<>();
+            for (SysRole r : sysRoles) {
+                RoleInfo info=new RoleInfo();
+                info.setId(r.getId());
+                info.setName(r.getName());
+                info.setRemark(r.getRemark());
+                info.setIsenable(r.getIsenable());
+                info.setCreatetime(r.getCreatetime());
+                info.setIsSetPower(rolepower.getIsSetPower());
+                info.setIsDel(rolepower.getIsDel());
+                info.setIsEdit(rolepower.getIsEdit());
+                roleInfoList.add(info);
+            }
+            webResponse.setData(roleInfoList);
+            return webResponse;
+        }catch (Exception e){
+            return new WebResponse(500,"系统错误",0);
+        }
 
-        return null;
+
+    }
+
+    @GetMapping("/editRoleList")
+    public String editRoleList(){
+        return "role/roleAdd";
+    }
+
+    @GetMapping("/addRoleList")
+    public String addRoleList(){
+        return "role/roleAdd";
     }
 
 }

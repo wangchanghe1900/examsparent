@@ -47,6 +47,10 @@ public class ButtonAuthorUtils {
                 if(s.getPerms().contains("batchdel")){
                     bi.setIsBatchDel(true);
                 }
+
+                if(s.getPerms().contains("setpower")){
+                    bi.setIsSetPower(true);
+                }
             }
             return bi;
         }catch(Exception e){

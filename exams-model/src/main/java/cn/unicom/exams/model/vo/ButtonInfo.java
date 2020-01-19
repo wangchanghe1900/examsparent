@@ -41,4 +41,9 @@ public class ButtonInfo {
      * 批量删除按钮权限
      */
     private Boolean isBatchDel;
+
+    /**
+     * 设置权限按钮权限
+     */
+    private Boolean isSetPower;
 }
