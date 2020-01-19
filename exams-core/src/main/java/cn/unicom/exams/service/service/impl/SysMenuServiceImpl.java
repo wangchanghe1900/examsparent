@@ -1,10 +1,7 @@
 package cn.unicom.exams.service.service.impl;
 
 import cn.unicom.exams.model.entity.SysMenu;
-import cn.unicom.exams.model.vo.NavsInfo;
-import cn.unicom.exams.model.vo.NavsMenuInfo;
-import cn.unicom.exams.model.vo.UserInfo;
-import cn.unicom.exams.model.vo.UserVo;
+import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.service.mapper.SysMenuMapper;
 import cn.unicom.exams.service.service.ISysMenuService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -126,5 +123,25 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             List<SysMenu> sysMenulist = sysMenuMapper.getNavsByName(queryWrapper);
             return sysMenulist.stream().filter(s -> s.getPerms().contains(buttonstr)).collect(Collectors.toList());
         }
+    }
+
+    @Override
+    public List<MenuInfo> getAllMenuInfo() throws Exception {
+        List<SysMenu> sysMenus = sysMenuMapper.selectList(null);
+        return getsubMenuinfos(0,sysMenus);
+    }
+
+    private List<MenuInfo> getsubMenuinfos(int pId,List<SysMenu> menus){
+        List<SysMenu> submenus = menus.stream().filter(menu -> menu.getParentId() == pId).collect(Collectors.toList());
+        List<MenuInfo> menuList=new ArrayList<>();
+        for (SysMenu s:submenus) {
+            MenuInfo menuInfo=new MenuInfo();
+            menuInfo.setId(s.getId());
+            menuInfo.setTitle(s.getName());
+            menuInfo.setChildren(getsubMenuinfos(s.getId().intValue(),menus));
+            menuList.add(menuInfo);
+        }
+
+        return menuList;
     }
 }

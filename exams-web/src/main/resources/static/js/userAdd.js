@@ -54,7 +54,7 @@ layui.use(['form','layer'],function(){
             }else{
                 setTimeout(function(){
                     top.layer.close(index);
-                    top.layer.msg("用户添加(更新)成功！");
+                    top.layer.msg(res.msg);
                     layer.closeAll("iframe");
                     //刷新父页面
                     parent.location.reload();

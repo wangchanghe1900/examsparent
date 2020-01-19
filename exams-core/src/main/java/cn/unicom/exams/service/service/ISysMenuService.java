@@ -1,5 +1,6 @@
 package cn.unicom.exams.service.service;
 
+import cn.unicom.exams.model.vo.MenuInfo;
 import cn.unicom.exams.model.vo.NavsMenuInfo;
 import cn.unicom.exams.model.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -43,5 +44,12 @@ public interface ISysMenuService extends IService<SysMenu> {
      * @throws Exception
      */
     public List<SysMenu> getButtonMenu(String username,String buttonstr) throws Exception;
+
+    /**
+     * 提取所以菜单及子菜单
+     * @return
+     * @throws Exception
+     */
+    public List<MenuInfo> getAllMenuInfo() throws Exception;
 
 }

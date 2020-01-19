@@ -4,9 +4,12 @@ import cn.unicom.exams.model.entity.SysRole;
 import cn.unicom.exams.model.vo.ButtonInfo;
 import cn.unicom.exams.model.vo.RoleInfo;
 import cn.unicom.exams.model.vo.UserVo;
+import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysRoleService;
 import cn.unicom.exams.web.utils.ButtonAuthorUtils;
+import cn.unicom.exams.web.utils.MD5Utils;
+import cn.unicom.exams.web.utils.SecurityCode;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -14,6 +17,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -103,6 +107,59 @@ public class RoleController {
     @GetMapping("/addRoleList")
     public String addRoleList(){
         return "role/roleAdd";
+    }
+
+    @PostMapping("/addRole")
+    @ResponseBody
+    public Response addRole(SysRole sysRole){
+        try {
+            if (sysRole.getId() != null) {
+                boolean b = sysRoleService.updateById(sysRole);
+                if(b){
+                    return new Response(200,"角色更新成功");
+                }else{
+                    return new Response(500,"角色更新失败");
+                }
+
+            } else {
+                boolean b = sysRoleService.save(sysRole);
+                if(b){
+                    return new Response(200,"角色新增成功");
+                }else{
+                    return new Response(500,"角色新增失败");
+                }
+            }
+        }catch (Exception e){
+            return new Response(500,e.getMessage());
+        }
+
+    }
+
+    @PostMapping("/delRoleByIds")
+    @ResponseBody
+    public Boolean delRoleByIds(String roleIds){
+        String[] arr=roleIds.split(",");
+        List<Integer> ids=new ArrayList<>();
+        for(String s: arr){
+            ids.add(Integer.valueOf(s));
+        }
+        boolean b = sysRoleService.removeByIds(ids);
+        return b;
+    }
+
+    @GetMapping("/delRoleById")
+    @ResponseBody
+    public Boolean delRoleById(Long id){
+        if(id!=null){
+            boolean b = sysRoleService.removeById(id);
+            return b;
+        }
+        return false;
+    }
+
+    @GetMapping("/setPermissList")
+    public String setPermissList(){
+        return "role/permissSet";
     }
 
 }

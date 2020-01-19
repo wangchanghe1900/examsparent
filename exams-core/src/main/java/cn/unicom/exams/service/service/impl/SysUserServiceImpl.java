@@ -97,7 +97,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                         sysUserRoleMapper.insert(sysUserRole);
 
                     }
-                    return new Response(200,"添加成功！");
+                    return new Response(200,"用户添加成功！");
                 }
             }else{
                 return new Response(500,"用户名为空！！");

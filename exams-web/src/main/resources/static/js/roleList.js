@@ -110,9 +110,9 @@ layui.use(['form','layer','table','laytpl'],function(){
                     //console.log(edit);
                     body.find(".id").val(edit.id);
                     body.find(".rolename").val(edit.name);  //角色名称
-                    body.find(".roleremark").val(edit.remark);  //角色描述
-                    //body.find(".roleStatus input[value="+edit.isenable+"]").prop("checked","checked");  //角色状态
-                    body.find(".status").val(edit.isenable);
+                    body.find(".remark").val(edit.remark);  //角色描述
+                    body.find(".roleStatus input[value='"+edit.isenable+"']").prop("checked",true);  //角色状态
+                    /*body.find(".status").val(edit.isenable);*/
                     form.render();
                 }
                 setTimeout(function(){
@@ -133,19 +133,22 @@ layui.use(['form','layer','table','laytpl'],function(){
     $(".delAll_btn").click(function(){
         var checkStatus = table.checkStatus('roleListTable'),
             data = checkStatus.data,
-            userId ="" ;//[];
+            roleId ="" ;//[];
         if(data.length > 0) {
             for (var i in data) {
-                //userId.push(data[i].id);
-               // userId +=data[i].id+",";
+               roleId +=data[i].id+",";
             }
-            //userId=userId.substring(0,userId.length-1);
+            roleId=roleId.substring(0,roleId.length-1);
             layer.confirm('确定删除选中角色？',{icon:3, title:'提示信息'},function(index){
-                $.post("delUserByIds",{
-                    //userids : userId  //将需要删除的newsId作为参数传入
+                $.post("delRoleByIds",{
+                    roleIds : roleId  //将需要删除的roleId作为参数传入
                 },function(data){
-                    tableIns.reload();
-                    layer.close(index);
+                    if(data==true){
+                        tableIns.reload();
+                        layer.msg("删除成功！");
+                        layer.close(index);
+                    }
+
                 })
             });
         }else{
@@ -159,28 +162,21 @@ layui.use(['form','layer','table','laytpl'],function(){
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
             editRole(data);
-        }else if(layEvent === 'usable'){ //重置密码
-
-            layer.confirm("确定重置密码？",{
-                icon: 3,
-                title:'系统提示',
-                cancel : function(index){
-                    layer.close(index);
-                }
-            },function(index){
-                $.post("resetpwd/"+data.id,function(data,status){
-                    if(status=='success'){
-                        layer.msg("密码重置成功，初始密码为：Abcd#123!");
-                    }
-                });
-                layer.close(index);
+        }else if(layEvent === 'setPower'){ //重置密码
+            layer.open({
+                type: 2,
+                area: ['700px', '450px'],
+                fixed: false, //不固定
+                maxmin: true,
+                content: 'role/setPermissList'
             });
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此角色？',{icon:3, title:'提示信息'},function(index){
-                 $.get("delUserById",{
+                 $.get("delRoleById",{
                      id : data.id  //将需要删除的newsId作为参数传入
                  },function(data){
                     tableIns.reload();
+                     layer.msg("删除成功！");
                     layer.close(index);
                 })
             });
