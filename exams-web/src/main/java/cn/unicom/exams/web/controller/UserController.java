@@ -53,7 +53,7 @@ public class UserController {
 
     @GetMapping("/getUserList")
     @ResponseBody
-    @RequiresPermissions("user:list")
+    @RequiresPermissions("user:select")
     public WebResponse getUserList(int page, int limit, UserVo userVo){
         WebResponse userResponse=new WebResponse();
         try{

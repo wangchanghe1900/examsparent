@@ -12,5 +12,7 @@ import java.util.List;
 public class MenuInfo {
     private String title;
     private Long id;
+    private Boolean spread;
+    private Boolean checked;
     private List<MenuInfo> children;
 }

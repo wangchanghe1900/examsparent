@@ -52,4 +52,12 @@ public interface ISysMenuService extends IService<SysMenu> {
      */
     public List<MenuInfo> getAllMenuInfo() throws Exception;
 
+    /**
+     * 根据角色ID查询角色所以权限信息
+     * @param roleId
+     * @return
+     * @throws Exception
+     */
+    public List<SysMenu> getSysMenuByRoleId(Long roleId) throws Exception;
+
 }

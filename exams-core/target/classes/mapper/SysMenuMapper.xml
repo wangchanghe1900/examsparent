@@ -21,5 +21,11 @@
         inner join sys_menu f on e.menu_id=f.id
         ${ew.customSqlSegment}
     </select>
-
+    <select id="getSysMenuByRoleId" resultType="cn.unicom.exams.model.entity.SysMenu">
+        select f.id ,f.parent_id, f.name ,f.url ,f.perms,f.type,f.icon,f.order_num,f.open_mode
+		from sys_role d
+        inner join sys_role_menu e on d.id=e.role_id
+        inner join sys_menu f on e.menu_id=f.id
+        ${ew.customSqlSegment}
+    </select>
 </mapper>

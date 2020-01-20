@@ -15,29 +15,31 @@
 <body class="childrenBody">
 <form class="layui-form" style="width:80%;">
 	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
-		<legend>权限设置</legend>
+		<legend>角色信息</legend>
 	</fieldset>
 	<input type="hidden" name="id" class="id" />
-	<div id="permiss"></div>
 	<div class="layui-form-item layui-row layui-col-xs12">
-		<label class="layui-form-label">启用状态:</label>
-		<div class="layui-input-block roleStatus">
-			<input type="radio" name="isenable" value="1" title="启用" checked/>
-			<input type="radio" name="isenable" value="0" title="未启用" />
+		<label class="layui-form-label">*角色名称:</label>
+		<div class="layui-input-block">
+			<input type="text" class="layui-input rolename"  name="rolename" disabled/>
 		</div>
 	</div>
-<!--	<div class="layui-form-item layui-row layui-col-xs12">
-		<label class="layui-form-label">选择权限:</label>
-
-	</div>-->
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+		<legend>权限设置</legend>
+	</fieldset>
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<div class="layui-input-block">
-			<button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="savePermiss">保存权限</button>
+			<div id="permiss"></div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="layui-input-block">
 			<button  class="layui-btn layui-btn-sm layui-btn-primary" lay-submit="" lay-filter="cancel">取消</button>
+			<button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="savePermiss">保存权限</button>
 		</div>
 	</div>
 </form>
-<script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/layui/layui.all.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/setPermiss.js"></script>
 </body>
 </html>

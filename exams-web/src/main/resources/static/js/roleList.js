@@ -155,7 +155,25 @@ layui.use(['form','layer','table','laytpl'],function(){
             layer.msg("请选择需要删除的角色");
         }
     });
-
+    //设置权限
+    function setPermiss(data){
+        var index = layui.layer.open({
+            title : "设置权限",
+            type: 2,
+            area: ['700px', '450px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content : "setPermissList",
+            success : function(layero, index){
+                var body = layui.layer.getChildFrame('body', index);
+                if(data){
+                    body.find(".id").val(data.id);
+                    body.find(".rolename").val(data.name);  //角色名称
+                    form.render();
+                }
+            }
+        });
+    };
     //列表操作
     table.on('tool(roleList)', function(obj){
         var layEvent = obj.event,
@@ -163,13 +181,8 @@ layui.use(['form','layer','table','laytpl'],function(){
         if(layEvent === 'edit'){ //编辑
             editRole(data);
         }else if(layEvent === 'setPower'){ //重置密码
-            layer.open({
-                type: 2,
-                area: ['700px', '450px'],
-                fixed: false, //不固定
-                maxmin: true,
-                content: 'role/setPermissList'
-            });
+            sessionStorage.setItem("roleId",data.id);
+            setPermiss(data);
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此角色？',{icon:3, title:'提示信息'},function(index){
                  $.get("delRoleById",{

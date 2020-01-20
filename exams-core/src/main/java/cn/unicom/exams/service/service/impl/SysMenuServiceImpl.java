@@ -1,6 +1,7 @@
 package cn.unicom.exams.service.service.impl;
 
 import cn.unicom.exams.model.entity.SysMenu;
+import cn.unicom.exams.model.entity.SysRole;
 import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.service.mapper.SysMenuMapper;
 import cn.unicom.exams.service.service.ISysMenuService;
@@ -127,8 +128,22 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public List<MenuInfo> getAllMenuInfo() throws Exception {
-        List<SysMenu> sysMenus = sysMenuMapper.selectList(null);
+        QueryWrapper<SysMenu> queryWrapper=new QueryWrapper<>();
+        queryWrapper.orderByAsc("order_num");
+        List<SysMenu> sysMenus = sysMenuMapper.selectList(queryWrapper);
         return getsubMenuinfos(0,sysMenus);
+    }
+
+    @Override
+    public List<SysMenu> getSysMenuByRoleId(Long roleId) throws Exception {
+        QueryWrapper<SysRole> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("d.id",roleId)
+                .ne("f.type", 0)
+                .ne("f.type", 1)
+                .orderByAsc("f.parent_id")
+                .orderByAsc("f.order_num");
+        List<SysMenu> sysMenus = sysMenuMapper.getSysMenuByRoleId(queryWrapper);
+        return sysMenus;
     }
 
     private List<MenuInfo> getsubMenuinfos(int pId,List<SysMenu> menus){
@@ -137,6 +152,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         for (SysMenu s:submenus) {
             MenuInfo menuInfo=new MenuInfo();
             menuInfo.setId(s.getId());
+            menuInfo.setSpread(true);
             menuInfo.setTitle(s.getName());
             menuInfo.setChildren(getsubMenuinfos(s.getId().intValue(),menus));
             menuList.add(menuInfo);
