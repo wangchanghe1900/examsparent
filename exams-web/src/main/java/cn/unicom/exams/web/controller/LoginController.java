@@ -128,4 +128,9 @@ public class LoginController {
         return "error";
     }
 
+    @GetMapping("/list404")
+    public String list404(){
+        return "404";
+    }
+
 }

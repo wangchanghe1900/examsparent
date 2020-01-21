@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>部门管理</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="${request.contextPath}/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="${request.contextPath}/css/public.css" media="all" />
+</head>
+<style type="text/css">
+	.disp{
+		display: none;
+	}
+	#dept_main, #dept_particulars{
+		width: 48.5%;
+		display: inline-block;
+		vertical-align: top;
+		padding: 20px;
+		background: white;
+		box-sizing: border-box;
+	}
+	#dept_tree{
+		margin-top: 20px;
+	}
+
+</style>
+<body class="childrenBody">
+<form class="layui-form">
+	<blockquote class="layui-elem-quote quoteBox">
+		<form class="layui-form">
+			<div  class="layui-inline disp">
+				<button type="button" class="layui-btn layui-btn-radius layui-btn-normal">
+					<i class="layui-icon">&#xe608;</i> 添加
+				</button>
+			</div>
+			<div class="layui-inline disp">
+				<button type="button" class="layui-btn  layui-btn-radius  layui-btn-danger">
+					<i class="layui-icon">&#xe640;</i>删除
+				</button>
+			</div>
+		</form>
+	</blockquote>
+	<div id="dept_main" style="margin-right: 2%;">
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend>所有部门</legend>
+		</fieldset>
+		<div id="dept_tree"></div>
+	</div>
+	<div id="dept_particulars">
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend>部门详情</legend>
+		</fieldset>
+		<div id="dept_home">
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<label class="layui-form-label">上级部门:</label>
+				<div class="layui-input-block">
+					<input type="text" name="parentName" class="layui-input parentName" lay-verify="required" disabled >
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<label class="layui-form-label">部门名称:</label>
+				<div class="layui-input-block">
+					<input type="text" name="name" class="layui-input name" lay-verify="required" placeholder="请输入部门名称">
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<label class="layui-form-label">部门描述:</label>
+				<div class="layui-input-block">
+					<textarea placeholder="请输入部门描述" name="content" class="layui-textarea content" lay-verify="required"></textarea>
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<label class="layui-form-label">排序:</label>
+				<div class="layui-input-block">
+					<select name="ordernum" class="layui-select ordernum" lay-verify="required">
+						<option value="">请选择排序编号</option>
+						<option value="1">排序1</option>
+						<option value="2">排序2</option>
+						<option value="3">排序3</option>
+						<option value="4">排序4</option>
+						<option value="5">排序5</option>
+						<option value="6">排序6</option>
+						<option value="7">排序7</option>
+						<option value="8">排序8</option>
+						<option value="9">排序9</option>
+						<option value="10">排序10</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item layui-row layui-col-xs12">
+				<div class="layui-input-block">
+					<button type="button" class="layui-btn layui-btn-radius layui-btn-normal">
+						<i class="layui-icon">&#xe642;</i> 保存
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/deptList.js"></script>
+</body>
+</html>

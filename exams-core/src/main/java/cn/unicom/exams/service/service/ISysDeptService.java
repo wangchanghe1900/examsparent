@@ -1,7 +1,10 @@
 package cn.unicom.exams.service.service;
 
 import cn.unicom.exams.model.entity.SysDept;
+import cn.unicom.exams.model.vo.DeptInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2019-12-31
  */
 public interface ISysDeptService extends IService<SysDept> {
+    /**
+     * 查询所有部门信息
+     * @return
+     */
+    public List<DeptInfo> getAllDeptInfo();
 
 }

@@ -1,6 +1,7 @@
 package cn.unicom.exams.web.controller;
 
 import cn.unicom.exams.model.entity.SysDept;
+import cn.unicom.exams.model.vo.DeptInfo;
 import cn.unicom.exams.service.service.ISysDeptService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.Query;
@@ -33,5 +34,21 @@ public class DepatmentController {
         queryWrapper.eq("del_flag",delFlag);
         queryWrapper.orderByAsc("order_num");
         return deptService.list(queryWrapper);
+    }
+
+    @GetMapping("/deptList")
+    public String deptList(){
+        return "dept/deptList";
+    }
+
+    @GetMapping("/getAllDeptInfo")
+    @ResponseBody
+    public List<DeptInfo> getAllDeptInfo(){
+        return deptService.getAllDeptInfo();
+    }
+
+    @GetMapping("/show")
+    public String show(Long id){
+        return "dept/detail";
     }
 }

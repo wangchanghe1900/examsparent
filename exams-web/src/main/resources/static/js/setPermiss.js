@@ -24,32 +24,16 @@ layui.use(['form','layer','tree', 'util'],function(){
         return data;
        };
 
-/*    function getRolePremiss(){
-        var data = [];
-        var roleId= sessionStorage.getItem("roleId");
-        $.ajax({
-            url: webpath+"/role/getRolePermiss/"+roleId,    //后台数据请求地址
-            type: "post",
-            async:false,
-            success: function(resut){
-                if(resut!=null){
-                    data = resut;
-                }
-            }
-        });
-        return data;
-    };*/
-
     tree.render({
         elem: '#permiss'
         ,data: getData()
         ,showCheckbox: true  //是否显示复选框
         ,id: 'treeId1'
         ,isJump: false //是否允许点击节点时弹出新窗口跳转
-        ,click: function(obj){
+        /*,click: function(obj){
             var data = obj.data;  //获取当前点击的节点数据
             layer.msg('状态：'+ obj.state + '<br>节点数据：' + JSON.stringify(data));
-        }
+        }*/
     });
     //tree.setChecked('treeId1', getRolePremiss());
 
@@ -58,11 +42,11 @@ layui.use(['form','layer','tree', 'util'],function(){
         //弹出loading
         var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
         // 实际使用时的提交信息
-        $.post("addRole",{
-            id :  $(".id").val(),
-            name : $(".rolename").val(),  //角色名称
-            remark : $(".remark").val(),    //角色描述
-            isenable : $(".roleStatus input[name='isenable']:checked").val()  //$(".roleStatus input[checked]").val()
+        var checkData = tree.getChecked('treeId1');
+        var checkStr=JSON.stringify(checkData);
+        $.post(webpath+"/role/savePermiss",{
+            roleId: $(".id").val(),
+            infos : checkStr
         },function(res){
             if(res.code!=200){
                 layer.msg(res.msg);

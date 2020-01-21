@@ -8,7 +8,6 @@ import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.service.mapper.SysUserMapper;
 import cn.unicom.exams.service.mapper.SysUserRoleMapper;
 import cn.unicom.exams.service.service.ISysUserService;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.EnumSet;
 import java.util.List;
 
 /**

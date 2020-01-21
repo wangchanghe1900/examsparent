@@ -3,15 +3,18 @@ package cn.unicom.exams.web.controller;
 import cn.unicom.exams.model.entity.SysMenu;
 import cn.unicom.exams.model.entity.SysRole;
 import cn.unicom.exams.model.vo.ButtonInfo;
+import cn.unicom.exams.model.vo.MenuInfo;
 import cn.unicom.exams.model.vo.RoleInfo;
 import cn.unicom.exams.model.vo.UserVo;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysMenuService;
+import cn.unicom.exams.service.service.ISysRoleMenuService;
 import cn.unicom.exams.service.service.ISysRoleService;
 import cn.unicom.exams.web.utils.ButtonAuthorUtils;
 import cn.unicom.exams.web.utils.MD5Utils;
 import cn.unicom.exams.web.utils.SecurityCode;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -40,6 +43,9 @@ public class RoleController {
 
     @Autowired
     private ISysMenuService sysMenuService;
+
+    @Autowired
+    ISysRoleMenuService sysRoleMenuService;
 
     @GetMapping("/getRoleInfo")
     @ResponseBody
@@ -165,5 +171,20 @@ public class RoleController {
     public String setPermissList(){
         return "role/permissSet";
     }
+
+
+    @PostMapping("/savePermiss")
+    @ResponseBody
+    public Response savePermiss(Long  roleId,String infos){
+        List<MenuInfo> menuInfos = JSON.parseArray(infos, MenuInfo.class);
+        Boolean aBoolean = sysRoleMenuService.saveRoleAndPermiss(roleId, menuInfos);
+        if(aBoolean){
+            return new Response(200,"保存成功");
+        }else{
+            return new Response(500,"保存失败");
+        }
+
+    }
+
 
 }

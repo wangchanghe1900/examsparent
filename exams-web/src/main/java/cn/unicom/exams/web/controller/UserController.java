@@ -17,7 +17,7 @@ import cn.unicom.exams.web.utils.ShiroUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +35,7 @@ import java.util.List;
  * @create 2019-12-23 16:30
  */
 @Controller
+@Slf4j
 public class UserController {
     @Autowired
     private ISysUserService userService;

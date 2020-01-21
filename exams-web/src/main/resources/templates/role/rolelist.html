@@ -36,6 +36,14 @@
 		</form>
 	</blockquote>
 	<table id="roleList" lay-filter="roleList"></table>
+	<!--角色状态-->
+	<script type="text/html" id="roleStatus">
+		{{#  if(d.isenable == 0){ }}
+		<span class="layui-badge">未启用</span>
+		{{#  } else if(d.isenable == 1){ }}
+		<span class="layui-bg-blue">启用</span>
+		{{#  }  }}
+	</script>
 
 	<!--操作-->
 	<script type="text/html" id="roleListBar">
@@ -48,15 +56,6 @@
 		{{#  if(d.isSetPower ){ }}
 		<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="setPower">配置权限</a>
 		{{#  } }}
-	</script>
-
-	<!--角色状态-->
-	<script type="text/html" id="roleStatus">
-		{{#  if(d.isenable == 0){ }}
-		<span class="layui-red">未启用</span>
-		{{#  } else if(d.isenable == 1){ }}
-		<span class="layui-blue">启用</span>
-		{{#  }  }}
 	</script>
 </form>
 <script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
