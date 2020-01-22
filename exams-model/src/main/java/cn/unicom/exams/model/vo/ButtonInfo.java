@@ -51,4 +51,8 @@ public class ButtonInfo {
      * 保存按钮权限
      */
     private Boolean isSave;
+    /**
+     * 查看详情按钮权限
+     */
+    private Boolean isDetail;
 }

@@ -54,6 +54,10 @@ public class ButtonAuthorUtils {
                 if(s.getPerms().contains("save")){
                     bi.setIsSave(true);
                 }
+
+                if(s.getPerms().contains("detail")){
+                    bi.setIsDetail(true);
+                }
             }
             return bi;
         }catch(Exception e){
