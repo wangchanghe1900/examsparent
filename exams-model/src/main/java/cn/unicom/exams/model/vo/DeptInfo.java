@@ -11,6 +11,7 @@ import java.util.List;
  */
 @Data
 public class DeptInfo {
+    private String parentName;
     private Long parentId;
     private String title;
     private Long id;

@@ -1,11 +1,16 @@
-layui.use(['form','layer'],function(){
+layui.config({
+    base : "js/"
+}).extend({
+    treeSelect: 'treeSelect'
+})
+layui.use(['form','layer','treeSelect'],function(){
     var form = layui.form
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery;
     var formSelects = layui.formSelects;
+    var treeSelect= layui.treeSelect;
 
-
-    $.ajax({
+/*    $.ajax({
         url: 'dept/deptnamelist',
         dataType: 'json',
         data:{'delFlag': 0},	//查询状态为正常的所有机构类型
@@ -21,8 +26,55 @@ layui.use(['form','layer'],function(){
             });
             layui.form.render("select");
         }
-    });
+    });*/
+    //添加验证规则
 
+    var deptId;
+    treeSelect.render({
+        // 选择器
+        elem: '#depttree',
+        // 数据
+        data: 'dept/getDeptAllInfo',
+        // 异步加载方式：get/post，默认get
+        type: 'get',
+        // 占位符
+        placeholder: '请选择所属部门',
+        // 是否开启搜索功能：true/false，默认false
+        search: true,
+        style: {
+            folder: {
+                enable: false
+            },
+            line: {
+                enable: true
+            }
+        },
+        // 点击回调
+        click: function(d){
+            deptId= d.current.id;
+        },
+        // 加载完成后的回调函数
+        success: function (d) {
+            var deptId=window.sessionStorage.getItem("deptId");
+            treeSelect.checkNode('depttree', deptId);
+            //                选中节点，根据id筛选
+            //                treeSelect.checkNode('tree', 3);
+
+            //                获取zTree对象，可以调用zTree方法
+            //                var treeObj = treeSelect.zTree('tree');
+            //                console.log(treeObj);
+
+            //                刷新树结构
+            //                treeSelect.refresh();
+        }
+    });
+    form.verify({
+        notNull : function(value, item){
+            if(deptId==null){
+                return "请选择所属部门";
+            }
+        }
+    });
     layui.formSelects.config('role', {
         searchUrl: 'role/getRoleInfo',
         success: function(id, url, searchVal, result){
@@ -43,14 +95,13 @@ layui.use(['form','layer'],function(){
             email : $(".email").val(),  //邮箱
             mobile : $(".mobile").val(),  //电话
             //userGrade : data.field.userGrade,  //会员等级
-            deptId : data.field.deptname,
+            deptId : deptId,
             status : data.field.status,    //用户状态
             roles : layui.formSelects.value('role', 'valStr')
             //userDesc : $(".userDesc").text(),    //用户简介
         },function(res){
             if(res.code!=200){
                 layer.msg(res.msg);
-
             }else{
                 setTimeout(function(){
                     top.layer.close(index);

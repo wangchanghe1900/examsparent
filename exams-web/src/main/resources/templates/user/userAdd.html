@@ -40,7 +40,7 @@
 		<div class="layui-form-item layui-row layui-col-xs12">
 			<label class="layui-form-label">电话号码:</label>
 			<div class="layui-input-block">
-				<input type="text" name="mobile" class="layui-input mobile" lay-verify="required" placeholder="请输入电话号码">
+				<input type="text" name="mobile" class="layui-input mobile" lay-verify="required|number" placeholder="请输入电话号码">
 			</div>
 		</div>
 		<div class="layui-form-item layui-row layui-col-xs12">
@@ -54,9 +54,7 @@
 		<div class="magb15 layui-col-md4 layui-col-xs12">
 			<label class="layui-form-label">所属部门:</label>
 			<div class="layui-input-block">
-				<select id="deptname" name="deptname" class="deptname" lay-verify="required">
-					<option value="">请选择部门</option>
-				</select>
+				<input type="text" id="depttree" name="deptname" lay-filter="depttree" class="layui-input" lay-verify="notNull">
 			</div>
 		</div>
 		<div class="magb15 layui-col-md4 layui-col-xs12">

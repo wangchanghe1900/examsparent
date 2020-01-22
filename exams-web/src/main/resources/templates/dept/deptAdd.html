@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>部门管理</title>
+	<title>部门新增</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -12,45 +12,8 @@
 	<link rel="stylesheet" href="${request.contextPath}/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="${request.contextPath}/css/public.css" media="all" />
 </head>
-<style type="text/css">
-	.disp{
-		display: none;
-	}
-	#dept_main, #dept_particulars{
-		width: 48.5%;
-		display: inline-block;
-		vertical-align: top;
-		padding: 20px;
-		background: white;
-		box-sizing: border-box;
-	}
-	#dept_tree{
-		margin-top: 20px;
-	}
-
-</style>
 <body class="childrenBody">
-<form class="layui-form" method="post">
-	<blockquote class="layui-elem-quote quoteBox">
-		<!--<form class="layui-form">-->
-			<div  class="layui-inline disp">
-				<button type="button" class="layui-btn layui-btn-radius layui-btn-normal" lay-filter="addDept" lay-submit="">
-					<i class="layui-icon">&#xe608;</i> 添加
-				</button>
-			</div>
-			<div class="layui-inline disp">
-				<button type="button" class="layui-btn  layui-btn-radius  layui-btn-danger" lay-filter="delDept" lay-submit="">
-					<i class="layui-icon">&#xe640;</i>删除
-				</button>
-			</div>
-		<!--</form>-->
-	</blockquote>
-	<div id="dept_main" style="margin-right: 2%;">
-		<fieldset class="layui-elem-field layui-field-title">
-			<legend>所有部门</legend>
-		</fieldset>
-		<div id="dept_tree"></div>
-	</div>
+<form class="layui-form" style="width:80%;">
 	<div id="dept_particulars">
 		<fieldset class="layui-elem-field layui-field-title">
 			<legend>部门详情</legend>
@@ -59,27 +22,25 @@
 			<div class="layui-form-item layui-row layui-col-xs12">
 				<label class="layui-form-label">上级部门:</label>
 				<div class="layui-input-block">
-					<input type="hidden" name="parentId" class="parentId" />
-					<input type="text" name="parentName" class="layui-input parentName"  disabled >
+					<input type="text" id="tree2" name="parentId" lay-filter="tree2" class="layui-input" lay-verify="notNull">
 				</div>
 			</div>
 			<div class="layui-form-item layui-row layui-col-xs12">
 				<label class="layui-form-label">部门名称:</label>
 				<div class="layui-input-block">
-					<input type="hidden" name="id" class="id" />
-					<input type="text" name="title" class="layui-input name"  placeholder="请输入部门名称">
+					<input type="text" name="title" class="layui-input name" lay-verify="required" placeholder="请输入部门名称">
 				</div>
 			</div>
 			<div class="layui-form-item layui-row layui-col-xs12">
 				<label class="layui-form-label">部门描述:</label>
 				<div class="layui-input-block">
-					<textarea placeholder="请输入部门描述" name="content" class="layui-textarea content" ></textarea>
+					<textarea placeholder="请输入部门描述" name="content" class="layui-textarea content" lay-verify="required"></textarea>
 				</div>
 			</div>
 			<div class="layui-form-item layui-row layui-col-xs12">
 				<label class="layui-form-label">排序:</label>
 				<div class="layui-input-block">
-					<select name="ordernum" class="layui-select ordernum" >
+					<select name="ordernum" class="layui-select ordernum" lay-verify="required">
 						<option value="">请选择排序编号</option>
 						<option value="1">排序1</option>
 						<option value="2">排序2</option>
@@ -96,8 +57,8 @@
 			</div>
 			<div class="layui-form-item layui-row layui-col-xs12">
 				<div class="layui-input-block disp edit">
-					<button type="button" class="layui-btn layui-btn-radius layui-btn-normal " lay-filter="editDept" lay-submit>
-						<i class="layui-icon">&#xe642;</i> 编辑保存
+					<button type="button" class="layui-btn layui-btn-radius layui-btn-normal " lay-filter="saveDept" lay-submit>
+						<i class="layui-icon">&#xe642;</i> 保存
 					</button>
 				</div>
 			</div>
@@ -105,6 +66,7 @@
 	</div>
 </form>
 <script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
-<script type="text/javascript" src="${request.contextPath}/js/deptList.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/deptAdd.js"></script>
 </body>
+
 </html>

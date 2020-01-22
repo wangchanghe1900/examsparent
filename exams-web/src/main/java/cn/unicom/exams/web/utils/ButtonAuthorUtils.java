@@ -51,6 +51,9 @@ public class ButtonAuthorUtils {
                 if(s.getPerms().contains("setpower")){
                     bi.setIsSetPower(true);
                 }
+                if(s.getPerms().contains("save")){
+                    bi.setIsSave(true);
+                }
             }
             return bi;
         }catch(Exception e){

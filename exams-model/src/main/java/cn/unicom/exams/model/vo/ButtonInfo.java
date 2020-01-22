@@ -46,4 +46,9 @@ public class ButtonInfo {
      * 设置权限按钮权限
      */
     private Boolean isSetPower;
+
+    /**
+     * 保存按钮权限
+     */
+    private Boolean isSave;
 }

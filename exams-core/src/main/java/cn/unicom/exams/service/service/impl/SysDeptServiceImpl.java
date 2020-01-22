@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -29,7 +30,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     @Override
     public List<DeptInfo> getAllDeptInfo() {
         QueryWrapper<SysDept> queryWrapper=new QueryWrapper<>();
-        queryWrapper.ne("del_flag",1)
+        queryWrapper.ne("del_flag",-1)
                 .orderByAsc("parent_id")
                 .orderByAsc("order_num");
         List<SysDept> sysDepts = deptMapper.selectList(queryWrapper);
@@ -47,6 +48,12 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             info.setContent(dept.getContent());
             info.setOrderNum(dept.getOrderNum());
             info.setParentId(dept.getParentId());
+            Optional<SysDept> first = deptList.stream().filter(s -> s.getId() == dept.getParentId()).findFirst();
+            if(!first.isPresent()){
+                info.setParentName("");
+            }else {
+                info.setParentName(first.get().getDeptname());
+            }
             info.setSpread(true);
             info.setChecked(false);
             info.setChildren(filterDeptList(info.getId(),deptList));
