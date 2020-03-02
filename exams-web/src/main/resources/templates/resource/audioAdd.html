@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>新增资源</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="${request.contextPath}/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="${request.contextPath}/css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+<form class="layui-form" style="width:80%;" enctype="multipart/form-data" >
+	<input type="hidden" name="id" class="id" />
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">资源名称:</label>
+		<div class="layui-input-block">
+			<input type="text" name="resourceName" class="layui-input resourcename" lay-verify="notNull" placeholder="请输入资源名称">
+		</div>
+	</div>
+	<div class="layui-row">
+		<div class="layui-form-item layui-row layui-col-xs12">
+			<label class="layui-form-label">上传音频:</label>
+			<div class="layui-input-block layui-upload">
+				<button class="layui-btn layui-btn-normal" id="fileupload" type="button"><i class="layui-icon"></i>上传视频</button>
+			</div>
+			<div class="layui-input-block ">
+				<audio  controls="controls" id="audiotmp" width="300px" height="200px">
+					your browser does not support the audio tag
+				</audio>
+			</div>
+		</div>
+		<div class="layui-form-item layui-row layui-col-xs12">
+			<label class="layui-form-label">备注:</label>
+			<div class="layui-input-block">
+				<textarea placeholder="备注" name="remark" class="layui-textarea remark" lay-verify="required"></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="layui-input-block">
+			<button class="layui-btn" id="btnupload"  type="button">开始上传</button>
+			<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+		</div>
+	</div>
+</form>
+<script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/audioResourceAdd.js"></script>
+
+</body>
+
+</html>

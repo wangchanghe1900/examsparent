@@ -42,10 +42,10 @@
 		{{#  if(d.isEdit ){ }}
 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 		{{#  } }}
-		{{#  if(d.isDel ){ }}
+		{{#  if(d.isResetPwd  ){ }}
 		<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="usable">重置密码</a>
 		{{#  } }}
-		{{#  if(d.isResetPwd ){ }}
+		{{#  if(d.isDel){ }}
 		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 		{{#  } }}
 

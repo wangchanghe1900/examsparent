@@ -18,6 +18,6 @@ public class MyExceptionHandler {
     @ExceptionHandler
     public String ErrorHandler(Exception e) {
         log.error("系统错误："+e.getMessage());
-        return "redirect:/404";
+        return "redirect:/list404";
     }
 }

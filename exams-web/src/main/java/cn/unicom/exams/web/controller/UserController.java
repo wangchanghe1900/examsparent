@@ -48,13 +48,13 @@ public class UserController {
 
 
     @GetMapping("/userList")
+    @RequiresPermissions("user:list")
     public String userList()throws Exception{
         return "user/userList";
     }
 
     @GetMapping("/getUserList")
     @ResponseBody
-    @RequiresPermissions("user:select")
     public WebResponse getUserList(int page, int limit, UserVo userVo){
         WebResponse userResponse=new WebResponse();
         try{

@@ -2,7 +2,13 @@ server:
   port: 10086
   servlet:
     context-path: /examsweb
+  tomcat:
+    max-http-post-size: 0
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 200MB
   freemarker:
     suffix: .html
     request-context-attribute: request
