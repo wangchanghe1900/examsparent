@@ -58,6 +58,19 @@ public class ButtonAuthorUtils {
                 if(s.getPerms().contains("detail")){
                     bi.setIsDetail(true);
                 }
+
+                if(s.getPerms().contains("import")){
+                    bi.setIsImport(true);
+                }
+                if(s.getPerms().contains("singleadd")){
+                    bi.setIsSingleAdd(true);
+                }
+                if(s.getPerms().contains("multipleadd")){
+                    bi.setIsMultipleAdd(true);
+                }
+                if(s.getPerms().contains("judgeadd")){
+                    bi.setIsJudgeAdd(true);
+                }
             }
             return bi;
         }catch(Exception e){

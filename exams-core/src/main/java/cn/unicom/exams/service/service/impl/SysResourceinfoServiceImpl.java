@@ -1,6 +1,7 @@
 package cn.unicom.exams.service.service.impl;
 
 import cn.unicom.exams.model.entity.SysResourceinfo;
+import cn.unicom.exams.model.vo.DeptResourceInfo;
 import cn.unicom.exams.model.vo.ResourceInfo;
 import cn.unicom.exams.model.vo.ResourceVo;
 import cn.unicom.exams.service.mapper.SysResourceinfoMapper;
@@ -10,10 +11,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -45,5 +46,16 @@ public class SysResourceinfoServiceImpl extends ServiceImpl<SysResourceinfoMappe
         }
         queryWrapper.orderByDesc("a.createTime").orderByDesc("a.id");
         return sysResourceinfoMapper.getResourceInfoByPage(ipage,queryWrapper);
+    }
+
+    @Override
+    public List<DeptResourceInfo> getDeptResourceInfo(ResourceVo resourceVo) throws Exception {
+        QueryWrapper<ResourceVo> queryWrapper=new QueryWrapper<>();
+        if(resourceVo!=null){
+            if(!"admin".equals(resourceVo.getUserName())){
+                queryWrapper.eq(resourceVo.getDeptId()!=null,"a.id",resourceVo.getDeptId());
+            }
+        }
+        return sysResourceinfoMapper.getDeptResourceInfoByCondition(queryWrapper);
     }
 }

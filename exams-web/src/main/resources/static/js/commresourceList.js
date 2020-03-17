@@ -38,6 +38,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         id : "commListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
+            {field: 'id', title: '资源ID', minWidth:50, align:"center"},
             {field: 'resourceName', title: '资源名称', minWidth:200, align:"center"},
             {field: 'resourceType', title: '资源类型', minWidth:100, align:"center",templet:function (d) {
                 var resourceName;

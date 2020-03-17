@@ -23,12 +23,12 @@
 		<form class="layui-form">
 			<div class="layui-inline disp">
 				<div class="layui-input-inline">
-					<input type="text" class="layui-input searchVal" placeholder="请输入搜索的内容(人名)" />
+					<input type="text" class="layui-input searchVal" placeholder="请输入搜索的内容(试卷名称)" />
 				</div>
-				<a class="layui-btn search_btn" data-type="reload">搜索</a>
+				<a class="layui-btn search_btn" data-type="reload" id="search">搜索</a>
 			</div>
 			<div  class="layui-inline disp">
-				<a class="layui-btn layui-btn-normal addNews_btn">添加试卷</a>
+				<a class="layui-btn layui-btn-normal addTest_btn">添加试卷</a>
 			</div>
 			<div class="layui-inline disp">
 				<a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
@@ -50,8 +50,16 @@
 		{{#  } }}-->
 
 	</script>
+
+	<script type="text/html" id="testStatus">
+		{{#  if(d.testStatus == "未发布"){ }}
+		  <input type="checkbox" name="testStatus" lay-filter="testStatus" lay-skin="switch"   lay-text="发布|未发布"  >
+		{{#  } else if(d.testStatus == "发布"){ }}
+		  <input type="checkbox" name="testStatus" lay-filter="testStatus" lay-skin="switch"   lay-text="发布|未发布"  checked="">
+		{{#  }  }}
+	</script>
 </form>
 <script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
-<script type="text/javascript" src="${request.contextPath}/js/empList.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/testPaperList.js"></script>
 </body>
 </html>

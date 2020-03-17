@@ -55,4 +55,23 @@ public class ButtonInfo {
      * 查看详情按钮权限
      */
     private Boolean isDetail;
+
+    /**
+     * 导入按钮权限
+     */
+    private Boolean isImport;
+
+    /**
+     * 单选按钮权限
+     */
+    private Boolean isSingleAdd;
+
+    /**
+     * 多选按钮权限
+     */
+    private Boolean isMultipleAdd;
+    /**
+     * 判断按钮权限
+     */
+    private Boolean isJudgeAdd;
 }

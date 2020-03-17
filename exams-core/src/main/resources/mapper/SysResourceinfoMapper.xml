@@ -26,4 +26,10 @@
         INNER JOIN sys_user c on a.u_id=c.id
          ${ew.customSqlSegment}
     </select>
+
+    <select id="getDeptResourceInfoByCondition" resultType="cn.unicom.exams.model.vo.DeptResourceInfo">
+        select * from (select id,parent_id,deptname from sys_dept where del_flag=0 order by order_num desc) a left join (select id rid,case when resourceType=0 then '普通资源' when  resourceType=1 then '视频资源' else '音频资源' end resourceTypes,resourceName,dept_id from  sys_resourceinfo order by dept_id,resourceType,createTime desc,id desc) b
+        on a.id=b.dept_id
+        ${ew.customSqlSegment}
+    </select>
 </mapper>

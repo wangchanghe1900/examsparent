@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unicom.exams.service.mapper.SysQuestionsMapper">
+    <resultMap id="BaseResultMap" type="cn.unicom.exams.model.vo.QuestionInfo" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="questionName" property="questionName" jdbcType="VARCHAR" />
+        <result column="questionType" property="questionType" jdbcType="VARCHAR" />
+        <result column="res_id" property="resId" jdbcType="BIGINT" />
+        <result column="questionStatus" property="questionStatus" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" />
+        <result column="updateTime" property="updateTime" />
+        <result column="qAnswer" property="qAnswer" jdbcType="VARCHAR" />
+        <association property="resourceinfo" javaType="cn.unicom.exams.model.entity.SysResourceinfo" >
+            <id  column="rid" property="id"/>
+            <result column="resourceName" property="resourceName" />
+            <result column="dept_id" property="deptId" />
+        </association>
+        <collection property="optionsList" ofType="cn.unicom.exams.model.entity.SysOptions" javaType="java.util.List" select="getOptionInfo" column="id">
+            <id  column="oid" property="id"/>
+            <result column="option_No" property="optionNO" />
+            <result column="option_Content" property="optionContent" />
+            <result column="quesId" property="quesId" />
+        </collection>
+    </resultMap>
+
+    <select id="getQuestionInfoByPage"  resultMap="BaseResultMap">
+        select q.*,r.id rid,r.resourceName,r.dept_id
+        from sys_questions q
+        INNER JOIN sys_resourceinfo r
+        on q.res_id=r.id
+        ${ew.customSqlSegment}
+
+
+    </select>
+    <select id="getOptionInfo" resultType="cn.unicom.exams.model.entity.SysOptions">
+        select o.id oid,o.optionNO option_No,o.optionContent option_Content,o.ques_id quesId
+        from sys_options o
+        where o.ques_id=#{id}
+    </select>
+</mapper>

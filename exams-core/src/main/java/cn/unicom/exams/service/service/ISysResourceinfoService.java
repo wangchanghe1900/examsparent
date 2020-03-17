@@ -1,10 +1,13 @@
 package cn.unicom.exams.service.service;
 
 import cn.unicom.exams.model.entity.SysResourceinfo;
+import cn.unicom.exams.model.vo.DeptResourceInfo;
 import cn.unicom.exams.model.vo.ResourceInfo;
 import cn.unicom.exams.model.vo.ResourceVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -24,6 +27,14 @@ public interface ISysResourceinfoService extends IService<SysResourceinfo> {
      * @throws Exception
      */
     public IPage<ResourceInfo> getResourceInfoByPage(int page, int limit, ResourceVo resourceVo) throws Exception;
+
+    /**
+     * 部门资源树形选择数据
+     * @param resourceVo
+     * @return
+     * @throws Exception
+     */
+    public List<DeptResourceInfo> getDeptResourceInfo(ResourceVo resourceVo) throws Exception;
 
 
 }

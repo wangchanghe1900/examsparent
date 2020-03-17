@@ -1,16 +1,15 @@
 package cn.unicom.exams.service.mapper;
 
 import cn.unicom.exams.model.entity.SysResourceinfo;
-import cn.unicom.exams.model.vo.ResourceInfo;
-import cn.unicom.exams.model.vo.ResourceVo;
-import cn.unicom.exams.model.vo.UserInfo;
-import cn.unicom.exams.model.vo.UserVo;
+import cn.unicom.exams.model.vo.*;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -29,5 +28,13 @@ public interface SysResourceinfoMapper extends BaseMapper<SysResourceinfo> {
      * @throws Exception
      */
     public IPage<ResourceInfo> getResourceInfoByPage(Page<ResourceVo> page, @Param(Constants.WRAPPER) Wrapper<ResourceVo> wrapper) throws Exception;
+
+    /**
+     * 查询部门所有学习资源
+     * @param wrapper
+     * @return
+     * @throws Exception
+     */
+    public List<DeptResourceInfo> getDeptResourceInfoByCondition(@Param(Constants.WRAPPER) Wrapper<ResourceVo> wrapper) throws Exception;
 
 }

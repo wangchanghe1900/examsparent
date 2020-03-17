@@ -1,9 +1,6 @@
 package cn.unicom.exams.web.controller;
 
-import cn.unicom.exams.model.vo.ButtonInfo;
-import cn.unicom.exams.model.vo.ResourceInfo;
-import cn.unicom.exams.model.vo.ResourceVo;
-import cn.unicom.exams.model.vo.UserInfo;
+import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysResourceinfoService;
@@ -27,9 +24,8 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author 王长何
@@ -374,6 +370,61 @@ public class ResourceController {
             return new Response(500,"修改错误，系统异常");
         }
         return new Response(0,"资源更新成功");
+    }
+
+    @GetMapping("/getDeptResourceInfo")
+    @ResponseBody
+    public List<CheckResourceInfo> getDeptResourceInfo() throws Exception{
+        Subject subject = ShiroUtils.getSubject();
+        UserInfo user = (UserInfo) subject.getPrincipal();
+        ResourceVo resourceVo=new ResourceVo();
+        resourceVo.setUserName(user.getUsername());
+        try {
+            List<DeptResourceInfo> deptResourceList = resourceinfoService.getDeptResourceInfo(resourceVo);
+            return changeDeptResourceInfo(deptResourceList);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw new Exception("提取数据失败："+e.getMessage());
+        }
+    }
+
+    private List<CheckResourceInfo> changeDeptResourceInfo(List<DeptResourceInfo> resourceInfos) throws Exception{
+        List<Long> deptIdList = resourceInfos.stream().map(DeptResourceInfo::getId).distinct().collect(Collectors.toList());
+        List<CheckResourceInfo> parentList=new ArrayList<>();
+        for(int i=0;i<deptIdList.size();i++){
+            Long deptId=deptIdList.get(i);
+            List<DeptResourceInfo> resourceList = resourceInfos.stream().filter(r -> r.getId() == deptId).collect(Collectors.toList());
+            if(resourceList.get(0).getRid()==null){
+                continue;
+            }
+            Map<String, List<DeptResourceInfo>> groupInfoMap = resourceList.stream().collect(Collectors.groupingBy(DeptResourceInfo::getResourceTypes));
+            CheckResourceInfo checkResourceInfo=new CheckResourceInfo();
+            checkResourceInfo.setTitle(resourceList.get(0).getDeptname());
+            List<CheckResourceInfo> nodeInfo=new ArrayList<>();
+            if(groupInfoMap!=null){
+                Set<String> keys = groupInfoMap.keySet();
+                if(keys.size()!=0){
+                    for(String key:keys){
+                        CheckResourceInfo childinfo=new CheckResourceInfo();
+                        List<DeptResourceInfo> drInfos = groupInfoMap.get(key);
+                        childinfo.setTitle(key);
+                        List<CheckResourceInfo> childList=new ArrayList<>();
+                        for(DeptResourceInfo info:drInfos){
+                            CheckResourceInfo childreninfo=new CheckResourceInfo();
+                            childreninfo.setTitle(info.getResourceName());
+                            childreninfo.setId(info.getRid());
+                            childList.add(childreninfo);
+                        }
+                        childinfo.setChildren(childList);
+                        nodeInfo.add(childinfo);
+                    }
+                }
+
+            }
+            checkResourceInfo.setChildren(nodeInfo);
+            parentList.add(checkResourceInfo);
+        }
+        return parentList;
     }
 
 }

@@ -15,9 +15,9 @@
             <result column="deptname" property="deptname" />
         </association>
         <collection property="roles" ofType="cn.unicom.exams.model.entity.SysRole">
-            <id  column="role_id" property="id"/>
-            <result column="role_name" property="name" />
-        </collection>
+        <id  column="role_id" property="id"/>
+        <result column="role_name" property="name" />
+    </collection>
     </resultMap>
 
     <resultMap id="UserResultMap" type="cn.unicom.exams.model.vo.UserInfo" >

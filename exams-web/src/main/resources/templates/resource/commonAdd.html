@@ -18,7 +18,7 @@
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">资源名称:</label>
 		<div class="layui-input-block">
-			<input type="text" name="resourceName" class="layui-input resourcename" lay-verify="notNull" placeholder="请输入资源名称">
+			<input type="text" name="resourceName" class="layui-input resourcename" required lay-verify="required" placeholder="请输入资源名称">
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
@@ -36,12 +36,15 @@
 			<label class="layui-form-label">上传文件:</label>
 			<div class="layui-input-block layui-upload">
 				<button class="layui-btn layui-btn-normal" id="fileupload" type="button">选择文件</button>
+				<div class="layui-inline layui-word-aux">
+					上传限制100M
+				</div>
 			</div>
 		</div>
 		<div class="layui-form-item layui-row layui-col-xs12">
 			<label class="layui-form-label">备注:</label>
 			<div class="layui-input-block">
-				<textarea placeholder="备注" name="remark" class="layui-textarea remark" lay-verify="required"></textarea>
+				<textarea placeholder="备注" name="remark" class="layui-textarea remark" required lay-verify="required" ></textarea>
 			</div>
 		</div>
 	</div>
