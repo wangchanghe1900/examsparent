@@ -1,8 +1,14 @@
 package cn.unicom.exams.model.entity;
 
 import java.time.LocalDate;
+
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -18,6 +24,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
 public class SysEmployee implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,19 +32,20 @@ public class SysEmployee implements Serializable {
     /**
      * 主键
      */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
      * 手机号码作为代码
      */
-    @TableField("userCode")
-    private Integer userCode;
+    @TableField("employeeCode")
+    private String employeeCode;
 
     /**
      * 姓名
      */
-    @TableField("userName")
-    private String userName;
+    @TableField("employeeName")
+    private String employeeName;
 
     /**
      * 部门Id
@@ -82,7 +90,7 @@ public class SysEmployee implements Serializable {
     /**
      * 手机号
      */
-    private Integer mobile;
+    private Long mobile;
 
     /**
      * 入职时间
@@ -208,6 +216,49 @@ public class SysEmployee implements Serializable {
      */
     @TableField("mealCard")
     private String mealCard;
+
+    /**
+     * 登录密码
+     */
+    @TableField("password")
+    private String password;
+
+    /**
+     * 盐
+     */
+    @TableField("salt")
+    private String salt;
+
+    /**
+     * 用户状态
+     */
+    @TableField("employeeStatus")
+    private String employeeStatus;
+
+    /**
+     * 修改密码日期
+     */
+    @TableField("modfiyPwdTime")
+    private LocalDateTime modfiyPwdTime;
+
+    /**
+     *
+     * 最后登录日期
+     */
+    @TableField("lastLoginTime")
+    private LocalDateTime lastLoginTime;
+
+    /**
+     * 更新日期
+     */
+    @TableField("updateTime")
+    private LocalDateTime updateTime;
+
+    /**
+     * 创建日期
+     */
+    @TableField("createTime")
+    private LocalDateTime createTime;
 
 
 }

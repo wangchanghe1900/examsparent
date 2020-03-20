@@ -6,6 +6,8 @@ import cn.unicom.exams.model.vo.QuestionVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -24,5 +26,12 @@ public interface ISysQuestionsService extends IService<SysQuestions> {
      * @throws Exception
      */
     public IPage<QuestionInfo> getQuestionInfoByPage(int page, int limit, QuestionVo questionVo) throws Exception;
+
+    /**
+     * 保存考题信息（包含选项）
+     * @param questionInfoList
+     * @throws Exception
+     */
+    public void saveQuestionInfo(List<QuestionInfo> questionInfoList) throws Exception;
 
 }

@@ -19,6 +19,11 @@ public class QuestionVo extends SysQuestions {
      * 所属部门
      */
     private Long deptId;
+
+    /**
+     * 所属资源名称
+     */
+    private String resourceName;
     /**
      * 选项A
      */

@@ -1,6 +1,7 @@
 package cn.unicom.exams.web.controller;
 
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.unicom.exams.model.entity.SysOptions;
@@ -33,6 +34,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -292,12 +294,95 @@ public class QuestionController {
             }
             ExcelReader reader = ExcelUtil.getReader(excelinfo.getInputStream());
             List<Map<String, Object>> maps = reader.readAll();
-            System.out.println("maps = " + maps);
+            //System.out.println("maps = " + maps);
+            List<QuestionInfo> questionsList=new ArrayList<>();
+            for(Map<String,Object> obj :maps){
+                QuestionInfo questions=new QuestionInfo();
+                List<SysOptions> optionsList=new ArrayList<>();
+                for(Map.Entry<String,Object> entry: obj.entrySet()){
+                    if("题目名称".equals(entry.getKey())){
+                        questions.setQuestionName(entry.getValue().toString());
+                    }
+                    if("题目类型".equals(entry.getKey())){
+                        questions.setQuestionType(entry.getValue().toString());
+                    }
+                    if("所属资源ID".equals(entry.getKey())){
+                        questions.setResId(Long.valueOf(entry.getValue().toString()));
+                    }
+                    if("是否启用".equals(entry.getKey())){
+                        questions.setQuestionStatus(entry.getValue().toString());
+                    }
+                    if("标准答案".equals(entry.getKey())){
+                        questions.setQAnswer(entry.getValue().toString().toUpperCase());
+                    }
 
+                    if("选项A".equals(entry.getKey())){
+                        if(entry.getValue()!=null && !"".equals(entry.getValue())){
+                            SysOptions options=new SysOptions();
+                            options.setOptionNO("A");
+                            options.setOptionContent(StrUtil.upperFirst(entry.getValue().toString().trim()));
+                            optionsList.add(options);
+                        }
+                    }
+                    if("选项B".equals(entry.getKey())){
+                        if(entry.getValue()!=null && !"".equals(entry.getValue())){
+                            SysOptions options=new SysOptions();
+                            options.setOptionNO("B");
+                            options.setOptionContent(StrUtil.upperFirst(entry.getValue().toString().trim()));
+                            optionsList.add(options);
+                        }
+                    }
+                    if("选项C".equals(entry.getKey())){
+                        if(entry.getValue()!=null && !"".equals(entry.getValue())){
+                            SysOptions options=new SysOptions();
+                            options.setOptionNO("C");
+                            options.setOptionContent(StrUtil.upperFirst(entry.getValue().toString().trim()));
+                            optionsList.add(options);
+                        }
+                    }
+                    if("选项D".equals(entry.getKey())){
+                        if(entry.getValue()!=null && !"".equals(entry.getValue())){
+                            SysOptions options=new SysOptions();
+                            options.setOptionNO("D");
+                            options.setOptionContent(StrUtil.upperFirst(entry.getValue().toString().trim()));
+                            optionsList.add(options);
+                        }
+                    }
+                    if("选项E".equals(entry.getKey())){
+                        if(entry.getValue()!=null && !"".equals(entry.getValue())){
+                            SysOptions options=new SysOptions();
+                            options.setOptionNO("E");
+                            options.setOptionContent(StrUtil.upperFirst(entry.getValue().toString().trim()));
+                            optionsList.add(options);
+                        }
+                    }
+                    if("选项F".equals(entry.getKey())){
+                        if(entry.getValue()!=null && !"".equals(entry.getValue())){
+                            SysOptions options=new SysOptions();
+                            options.setOptionNO("F");
+                            options.setOptionContent(StrUtil.upperFirst(entry.getValue().toString().trim()));
+                            optionsList.add(options);
+                        }
+                    }
+                    if("选项G".equals(entry.getKey())){
+                        if(entry.getValue()!=null && !"".equals(entry.getValue())){
+                            SysOptions options=new SysOptions();
+                            options.setOptionNO("G");
+                            options.setOptionContent(StrUtil.upperFirst(entry.getValue().toString().trim()));
+                            optionsList.add(options);
+                        }
+                    }
+                    questions.setOptionsList(optionsList);
+                }
+                questionsList.add(questions);
+            }
+            //System.out.println(questionsList);
+            questionsService.saveQuestionInfo(questionsList);
+            return new Response(0,"题库导入成功！");
         }catch (Exception e){
             log.error(e.getMessage());
             return new Response(500,"题库导入失败,请与系统管理员联系！");
         }
-        return new Response(0,"题库导入成功！");
+
     }
 }

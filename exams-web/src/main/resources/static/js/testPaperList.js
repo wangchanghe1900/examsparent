@@ -47,6 +47,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 }},
             {field: 'testCount', title: '试题数', minWidth:100, align:"center"},
            {field: 'testStatus', title: '考试状态', align:'center',minWidth:180,templet:'#testStatus'},
+            {field: 'createUser', title: '创建人', align:'center',minWidth:120},
             {field: 'createTime', title: '创建日期', minWidth:150, align:"center"},
             {field: 'updateTime', title: '更新日期', align:'center',minWidth:150},
             {title: '操作', minWidth:200, templet:'#testListBar',fixed:"right",align:"center"}

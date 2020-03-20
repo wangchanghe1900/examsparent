@@ -90,5 +90,11 @@ public class SysTestpaper implements Serializable {
      */
     private String remark;
 
+    /**
+     * 创建人
+     */
+    @TableField("createUser")
+    private String createUser;
+
 
 }

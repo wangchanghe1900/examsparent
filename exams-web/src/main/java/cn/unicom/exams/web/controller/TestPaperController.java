@@ -111,6 +111,8 @@ public class TestPaperController {
     }
 
     private void saveUploadFile(String savePath, TestPaperVo testPaperVo, MultipartFile imginfo, HttpServletRequest request) throws Exception{
+        Subject subject = ShiroUtils.getSubject();
+        UserInfo user = (UserInfo) subject.getPrincipal();
         DateTimeFormatter df=DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate now=LocalDate.now();
         String path=savePath+now.format(df);
@@ -128,6 +130,7 @@ public class TestPaperController {
             testPaperVo.setExamsEndTime(testPaperVo.getEndDate());
             testPaperVo.setCreateTime(LocalDateTime.now());
             testPaperVo.setUpdateTime(LocalDateTime.now());
+            testPaperVo.setCreateUser(user.getRealname());
             if(testPaperVo.getTestStatus()==null){
                 testPaperVo.setTestStatus("未发布");
             }else{

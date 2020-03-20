@@ -1,9 +1,17 @@
-layui.use(['form','layer','table','laytpl'],function(){
+layui.config({
+    base : "../js/"
+}).extend({
+    treeSelect: 'treeSelect'
+})
+layui.use(['form','layer','table','laytpl','treeSelect','laydate'],function(){
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery,
         laytpl = layui.laytpl,
-        table = layui.table;
+        table = layui.table,
+        laydate=layui.laydate;
+    var formSelects = layui.formSelects;
+    var treeSelect= layui.treeSelect;
     //提取网页根目录
     var curWwwPath = window.document.location.href;
     var pathName = window.document.location.pathname;
@@ -16,13 +24,16 @@ layui.use(['form','layer','table','laytpl'],function(){
         function (data) {
             if(data){
                 if(data.isFind){
-                    $('div:first').removeClass("disp");
-                }
-                if(data.isAdd){
                     $('div:nth-child(2)').removeClass("disp");
                 }
-                if(data.isBatchDel){
+                if(data.isAdd){
                     $('div:nth-child(3)').removeClass("disp");
+                }
+                if(data.isBatchDel){
+                    $('div:nth-child(4)').removeClass("disp");
+                }
+                if(data.isDetail){
+                    $('div:nth-child(5)').removeClass("disp");
                 }
             }
     });
@@ -38,59 +49,90 @@ layui.use(['form','layer','table','laytpl'],function(){
         id : "empListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
-            {field: 'userCode', title: '用户编码', minWidth:100, align:"center"},
-            {field: 'userName', title: '用户姓名', minWidth:100, align:"center"},
+            {field: 'employeeCode', title: '员工编码', minWidth:120, align:"center"},
+            {field: 'employeeName', title: '员工姓名', minWidth:100, align:"center"},
             {field: 'mobile', title: '移动电话', minWidth:100, align:"center"},
+            {field: 'employeeStatus', title: '员工状态', minWidth:100, align:"center",templet:'#empStatus'},
             {field: 'capacity', title: '职位', minWidth:100, align:"center"},
             {field: 'deptname', title: '所属部门', align:'center',templet:function(d){
                 return d.sysDept.deptname;
             }},
             {field: 'identitys', title: '身份', align:'center',minWidth:80},
             {field: 'entryTime', title: '入职时间', align:'center',minWidth:120},
+            {field: 'workType', title: '工时核算', align:'center',minWidth:120},
+            {field: 'lastLoginTime', title: '最后登录日期', align:'center',minWidth:120},
             {title: '操作', minWidth:200, templet:'#empListBar',fixed:"right",align:"center"}
         ]]
     });
-
+    var deptId;
+    treeSelect.render({
+        // 选择器
+        elem: '#depttree',
+        // 数据
+        data: webpath+'/dept/getDeptAllInfo',
+        // 异步加载方式：get/post，默认get
+        type: 'get',
+        // 占位符
+        placeholder: '请选择员工部门',
+        // 是否开启搜索功能：true/false，默认false
+        search: true,
+        style: {
+            folder: {
+                enable: false
+            },
+            line: {
+                enable: true
+            }
+        },
+        // 点击回调
+        click: function(d){
+            deptId= d.current.id;
+        },
+        // 加载完成后的回调函数
+        success: function (d) {
+      }
+    });
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
-    $(".search_btn").on("click",function(){
-        //console.log($(".searchVal").val());
-        if($(".searchVal").val() != ''){
-            table.reload("empListTable",{
-                page: {
-                    curr: 1 //重新从第 1 页开始
-                },
-                where: {
-                    realname: $(".searchVal").val()  //搜索的关键字
-                }
-            })
-        }else{
-            layer.msg("请输入搜索的内容");
-        }
+    layui.$('#btnreload').on('click', function(){
+        var data = form.val('querycondition');
+        data.deptId=deptId;
+        table.reload("empListTable",{
+            page: {
+                curr: 1 //重新从第 1 页开始
+            },
+            where: {
+                data: JSON.stringify(data)
+            }
+        })
     });
 
+    laydate.render({
+        elem: '#entryStartTime'
+        ,format:'yyyy-MM-dd'
+        ,trigger: 'click'
+        ,theme: 'molv'
+    });
+    laydate.render({
+        elem: '#entryEndTime'
+        ,format:'yyyy-MM-dd'
+        ,trigger: 'click'
+        ,theme: 'molv'
+    });
     //编辑用户
-    function editUser(edit){
+    function editEmployee(edit){
         var index = layui.layer.open({
-            title : "编辑用户",
+            title : "编辑员工信息",
+            skin: 'layui-layer-lan',
             type : 2,
             content : "editempList",
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
-                    //console.log(edit);
                     body.find(".id").val(edit.id);
-                    body.find(".username").val(edit.username);  //登录名
-                    body.find(".realname").val(edit.realname);  //真实姓名
-                    body.find(".email").val(edit.email);  //邮箱
-                    //body.find(".userSex input[value="+edit.userSex+"]").prop("checked","checked");  //性别
-                    body.find(".mobile").val(edit.mobile);  //电话号码
-                    body.find(".status").val(edit.status);    //用户状态
-                    body.find(".deptname").val(edit.sysDept.id);    //所属部门
-                    //body.find(".roles").val(edit.roles);
                     form.render();
                 }
                 setTimeout(function(){
-                    layui.layer.tips('点击此处返回用户列表', '.layui-layer-setwin .layui-layer-close', {
+                    layui.layer.tips('点击此处返回员工列表', '.layui-layer-setwin .layui-layer-close', {
                         tips: 3
                     });
                 },500)
@@ -105,15 +147,16 @@ layui.use(['form','layer','table','laytpl'],function(){
     };
 
     //添加用户
-    function addUser(){
+    function addEmployee(){
         var index = layui.layer.open({
-            title : "新增用户",
+            title : "新增员工信息",
             type : 2,
-            content : "addempList",
+            skin: 'layui-layer-lan',
+            content : "addEmpList",
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 setTimeout(function(){
-                    layui.layer.tips('点击此处返回用户列表', '.layui-layer-setwin .layui-layer-close', {
+                    layui.layer.tips('点击此处返回员工列表', '.layui-layer-setwin .layui-layer-close', {
                         tips: 3
                     });
                 },500)
@@ -126,58 +169,83 @@ layui.use(['form','layer','table','laytpl'],function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
         })
     };
-    $(".addNews_btn").click(function(){
-        window.sessionStorage.setItem("roles","");
-        window.sessionStorage.setItem("deptId","");
-        addUser();
+    $(".addEmp_btn").click(function(){
+        addEmployee();
     });
+    //浏览详情
+    function showDetail(edit){
+        top.layui.layer.open({
+            title : "员工详情",
+            type : 2,
+            anim: 5,
+            skin: 'layui-layer-lan',
+            area: ['700px', '550px'],
+            content : "emp/showDetailList",
+            success : function(layero, index){
+                //var body = layui.layer.getChildFrame('body', index);
 
+            }
+        })
+    }
     //批量删除
     $(".delAll_btn").click(function(){
         var checkStatus = table.checkStatus('empListTable'),
             data = checkStatus.data,
-            userId ="" ;//[];
+            empIds ="" ;//[];
         if(data.length > 0) {
             for (var i in data) {
                 //userId.push(data[i].id);
-                userId +=data[i].id+",";
+                empIds +=data[i].id+",";
             }
-            userId=userId.substring(0,userId.length-1);
-            layer.confirm('确定删除选中用户？',{icon:3, title:'提示信息'},function(index){
-                $.post("delUserByIds",{
-                    userids : userId  //将需要删除的newsId作为参数传入
+            empIds=empIds.substring(0,empIds.length-1);
+            layer.confirm('确定删除选中员工信息？',{icon:3, title:'提示信息'},function(index){
+                $.post("delEmployeeByIds",{
+                    ids : empIds  //将需要删除的newsId作为参数传入
                 },function(data){
                     tableIns.reload();
                     layer.close(index);
                 })
             });
         }else{
-            layer.msg("请选择需要删除的用户");
+            layer.msg("请选择需要删除的员工");
         }
     });
+    //导入信息
+    $(".import_btn").click(function () {
+        layui.layer.open({
+            title : "导入员工信息",
+            type : 2,
+            anim: 5,
+            skin: 'layui-layer-rim',
+            area: ['500px', '300px'],
+            content : "importEmpList",
+            success : function(layero, index){
+                //var body = layui.layer.getChildFrame('body', index);
 
+
+            }
+        })
+    });
     //列表操作
     table.on('tool(empList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
 
         if(layEvent === 'edit'){ //编辑
-            window.sessionStorage.setItem("deptId",data.sysDept.id);
-            ids=[];
-            for(var i=0;i<data.roles.length;i++){
-                ids.push(data.roles[i].id);
-            };
-            window.sessionStorage.setItem("roles",JSON.stringify(ids));
-            editUser(data);
+            sessionStorage.setItem("empinfo",JSON.stringify(data));
+            editEmployee(data);
         }else if(layEvent === 'del'){ //删除
-            layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
-                 $.get("delUserById",{
+            layer.confirm('确定删除此员工信息？',{icon:3, title:'提示信息'},function(index){
+                 $.get("delEmployeeById",{
                      id : data.id  //将需要删除的newsId作为参数传入
                  },function(data){
                     tableIns.reload();
                     layer.close(index);
                 })
             });
+        }else if(layEvent === 'detail'){
+            sessionStorage.setItem("empinfo",JSON.stringify(data));
+           showDetail(data);
         }
     });
 

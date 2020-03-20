@@ -9,6 +9,7 @@
         <result column="testCount" property="testCount" jdbcType="INTEGER" />
         <result column="imgUrl" property="imgUrl" jdbcType="VARCHAR" />
         <result column="testStatus" property="testStatus" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
         <result column="examsStartTime" property="examsStartTime" />
         <result column="examsEndTime" property="examsEndTime" />
         <result column="createTime" property="createTime" />

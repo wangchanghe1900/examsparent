@@ -66,18 +66,16 @@ layui.use(['form','layer','table','laytpl','jquery'],function(){
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
         //console.log($(".searchVal").val());
-        if($(".searchVal").val() != ''){
-            table.reload("questionListTable",{
-                page: {
-                    curr: 1 //重新从第 1 页开始
-                },
-                where: {
-                    questionName: $(".searchVal").val()  //搜索的关键字
-                }
-            })
-        }else{
-            layer.msg("请输入搜索的内容");
-        }
+        table.reload("questionListTable",{
+            page: {
+                curr: 1 //重新从第 1 页开始
+            },
+            where: {
+                questionName: $(".questionName").val(),
+                resourceName: $(".resourceName").val()
+            }
+        })
+
     });
      //单选新建
     $(".addSingle_btn").click(function () {

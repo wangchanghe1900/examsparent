@@ -21,11 +21,23 @@
 <form class="layui-form">
 	<blockquote class="layui-elem-quote quoteBox">
 		<form class="layui-form">
-			<div class="layui-inline disp">
-				<div class="layui-input-inline">
-					<input type="text" class="layui-input searchVal" placeholder="请输入搜索的内容" />
+			<div class="layui-block disp">
+				<div class="layui-form-item layui-row layui-col-xs">
+					<div class="magb15 layui-col-md4 layui-col-xs12">
+						<label class="layui-form-label">考题内容:</label>
+						<div class="layui-input-block">
+							<input type="text"  name="questionName" class="layui-input questionName"  placeholder="请输入考题内容">
+						</div>
+					</div>
+					<div class="magb15 layui-col-md4 layui-col-xs12">
+						<label class="layui-form-label">所属资源:</label>
+						<div class="layui-input-block">
+							<input type="text"  name="resourceName" class="layui-input resourceName"  placeholder="请输入资源名称">
+						</div>
+					</div>
+					<a class="layui-btn search_btn" data-type="reload">搜索</a>
 				</div>
-				<a class="layui-btn search_btn" data-type="reload">搜索</a>
+
 			</div>
 			<div  class="layui-inline disp">
 				<a class="layui-btn layui-btn-normal addSingle_btn">添加单选</a>
