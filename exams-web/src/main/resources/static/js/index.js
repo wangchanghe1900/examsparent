@@ -167,15 +167,3 @@ function addTab(_this){
 	tab.tabAdd(_this);
 };
 
-//图片管理弹窗
-function showImg(){
-	console.log("aaa");
-/*	$.getJSON('', function(json){
-        var res = json;
-        layer.photos({
-            photos: res,
-            anim: 5
-        });
-    });*/
-}
-//showImg();

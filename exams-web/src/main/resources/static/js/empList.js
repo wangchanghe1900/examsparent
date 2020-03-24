@@ -35,6 +35,9 @@ layui.use(['form','layer','table','laytpl','treeSelect','laydate'],function(){
                 if(data.isDetail){
                     $('div:nth-child(5)').removeClass("disp");
                 }
+                if(data.isResetPwd){
+                    $('div:nth-child(6)').removeClass("disp");
+                }
             }
     });
     //用户列表
@@ -225,6 +228,28 @@ layui.use(['form','layer','table','laytpl','treeSelect','laydate'],function(){
 
             }
         })
+    });
+
+    $(".resetPwd_btn").click(function(){
+        var checkStatus = table.checkStatus('empListTable'),
+            data = checkStatus.data,
+            empIds ="" ;//[];
+        if(data.length > 0) {
+            for (var i in data) {
+                //userId.push(data[i].id);
+                empIds +=data[i].id+",";
+            }
+            empIds=empIds.substring(0,empIds.length-1);
+            layer.confirm('确定初始化密码？',{icon:3, title:'提示信息'},function(index){
+                $.post("resetPwdEmpByIds",{
+                    ids : empIds  //将需要删除的newsId作为参数传入
+                },function(data){
+                   layer.msg(data.msg,{icon: 0});
+                })
+            });
+        }else{
+            layer.msg("请选择需要删除的员工");
+        }
     });
     //列表操作
     table.on('tool(empList)', function(obj){

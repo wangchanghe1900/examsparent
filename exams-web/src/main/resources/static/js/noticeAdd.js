@@ -1,51 +1,91 @@
 layui.config({
-    base : "js/"
+    base : "../js/"
 }).extend({
     treeSelect: 'treeSelect'
 })
-layui.use(['form','layer','layedit','treeSelect'],function(){
-    var form = layui.form
+layui.use(['form','layer','layedit','treeSelect','tree'],function(){
+    var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
-        $ = layui.jquery,
-            layedit = layui.layedit;
+        $ = layui.jquery ;
+    var layedit = layui.layedit;
     var formSelects = layui.formSelects;
     var treeSelect= layui.treeSelect;
+    var tree = layui.tree;
+    var curWwwPath = window.document.location.href;
+    var pathName = window.document.location.pathname;
+    var pos = curWwwPath.indexOf(pathName);
+    var localhostPaht = curWwwPath.substring(0, pos);
+    var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+    var webpath=localhostPaht + projectName;
+    var editIndex = layedit.build('noticeContent');
 
-    var editIndex = layedit.build('content');
 
     form.verify({
         notNull : function(value, item){
-            if(deptId==null){
-                return "请选择所属部门";
+            var treeNode = tree.getChecked('depttree');
+            //console.log(treeNode);
+            if(treeNode == ""){
+                return "请选择接收部门";
             }
         }
+        ,content: function(value){
+          layedit.sync(editIndex);
+    }
     });
-    layui.formSelects.config('role', {
-        searchUrl: 'role/getRoleInfo',
-        success: function(id, url, searchVal, result){
-            var roles=window.sessionStorage.getItem("roles");
-            var s=JSON.parse(roles);
-            formSelects.value('role', s);
+    function getData(){
+        var data = [];
+        $.ajax({
+            url: webpath+"/dept/getAllDeptInfo",    //后台数据请求地址
+            type: "get",
+            async:false,
+            success: function(resut){
+                data = resut;
+            }
+        });
+        return data;
+    };
+
+    tree.render({
+        elem: '#dept_tree'
+        ,showCheckbox: true
+        ,data: getData()
+        ,id: 'depttree'
+        ,isJump: false //是否允许点击节点时弹出新窗口跳转
+        ,click: function(d){
+
+            //deptId= d.current.id;
+            //form.render('select');
         }
     });
-
-    form.on("submit(addUser)",function(data){
+    function initValue(){
+        var noticeInfo=sessionStorage.getItem("noticeInfo");
+        if(noticeInfo!=null){
+            sessionStorage.removeItem("noticeInfo");
+            noticeInfo=JSON.parse(noticeInfo);
+            form.val("noticeinfo",{
+                "id":noticeInfo.id
+                ,"title":noticeInfo.title
+                ,"content":noticeInfo.content
+                ,"status":noticeInfo.status
+                ,"isSendSysUser": noticeInfo.isSendSysUser==="是" ? true:false
+                ,"isSendEmp":noticeInfo.isSendEmp==="是" ? true:false
+            });
+            //console.log(noticeInfo.deptIds);
+            tree.setChecked('depttree', noticeInfo.deptIds);
+        }
+    }
+    initValue();
+    form.on("submit(addNotice)",function(data){
         //弹出loading
+        var treeNode = tree.getChecked('depttree');
+        data.field.deptName=JSON.stringify(treeNode);
         var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
         // 实际使用时的提交信息
-        $.post("addUser",{
-            id :  $(".id").val(),
-            username : $(".username").val(),  //登录名
-            realname : $(".realname").val(),  //登录名
-            email : $(".email").val(),  //邮箱
-            mobile : $(".mobile").val(),  //电话
-            //userGrade : data.field.userGrade,  //会员等级
-            deptId : deptId,
-            status : data.field.status,    //用户状态
-            roles : layui.formSelects.value('role', 'valStr')
-            //userDesc : $(".userDesc").text(),    //用户简介
+        $.post("saveNotice",{
+            infos : JSON.stringify(data.field)
         },function(res){
             if(res.code!=200){
+                top.layer.close(index);
                 layer.msg(res.msg);
             }else{
                 setTimeout(function(){

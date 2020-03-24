@@ -68,11 +68,23 @@ public class SysNotice implements Serializable {
      */
     @TableField("receiveCount")
     private Integer receiveCount;
+    /**
+     * 系统用户是否接收
+     */
+    @TableField("isSendSysUser")
+    private String isSendSysUser;
+
+    /**
+     * 系统用户是否接收
+     */
+    @TableField("isSendEmp")
+    private String isSendEmp;
 
     /**
      * 公告创建日期
      */
-    private LocalDateTime createtime;
+    @TableField("createTime")
+    private LocalDateTime createTime;
 
 
 }

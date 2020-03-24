@@ -14,10 +14,6 @@
             <id  column="dept_id" property="id"/>
             <result column="deptname" property="deptname" />
         </association>
-        <collection property="roles" ofType="cn.unicom.exams.model.entity.SysRole">
-        <id  column="role_id" property="id"/>
-        <result column="role_name" property="name" />
-    </collection>
     </resultMap>
 
     <resultMap id="UserResultMap" type="cn.unicom.exams.model.vo.UserInfo" >
@@ -52,12 +48,15 @@
         </collection>
     </resultMap>
   <select id="getSysUserByPage" resultMap="BaseResultMap">
-      select a.id,a.username,a.realname,a.email,a.mobile,a.status,a.lastlogintime,b.id dept_id ,b.deptname,d.id  role_id,d.`name` role_name from sys_user a
+      select a.id,a.username,a.realname,a.email,a.mobile,a.status,a.lastlogintime,b.id dept_id ,b.deptname
+      /*,d.id  role_id,d.`name` role_name */
+      from sys_user a
         inner join sys_dept b on a.dept_id=b.id
-        inner join sys_user_role c on a.id=c.user_id
-        inner join sys_role d on c.role_id=d.id
+/*        inner join sys_user_role c on a.id=c.user_id
+        inner join sys_role d on c.role_id=d.id*/
         ${ew.customSqlSegment}
   </select>
+
 
     <select id="getUserInfoByPage" resultType="cn.unicom.exams.model.vo.UserInfo">
       select a.id,a.username,a.realname,a.email,a.mobile,a.status,a.lastlogintime,b.id dept_id ,b.deptname from sys_user a inner join sys_dept b on a.dept_id=b.id  ${ew.customSqlSegment}

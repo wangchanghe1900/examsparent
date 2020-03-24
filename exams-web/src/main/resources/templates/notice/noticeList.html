@@ -25,10 +25,10 @@
 				<div class="layui-input-inline">
 					<input type="text" class="layui-input searchVal" placeholder="请输入搜索的内容" />
 				</div>
-				<a class="layui-btn search_btn" data-type="reload">搜索</a>
+				<a class="layui-btn search_btn" data-type="reload"><i class="layui-icon">&#xe615;</i>搜索</a>
 			</div>
 			<div class="layui-inline disp">
-				<a class="layui-btn layui-btn-normal addnotice_btn">添加消息</a>
+				<a class="layui-btn layui-btn-normal addnotice_btn">添加公告</a>
 			</div>
 			<div class="layui-inline disp">
 				<a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
@@ -36,10 +36,17 @@
 		</form>
 	</blockquote>
 	<table id="noticeList" lay-filter="noticeList"></table>
-
+	<!--状态-->
+	<script type="text/html" id="noticeStatus">
+		{{#  if(d.status == "发布"){ }}
+		<input type="checkbox" name="status" lay-filter="noticeStatus" lay-skin="switch" value="{{d.id}}"  lay-text="发布|未发布"  checked="">
+		{{#  } else if(d.status == "未发布"){ }}
+		<input type="checkbox" name="status" lay-filter="noticeStatus" lay-skin="switch" value="{{d.id}}"  lay-text="发布|未发布"  >
+		{{#  }  }}
+	</script>
 
 	<!--操作-->
-	<script type="text/html" id="roleListBar">
+	<script type="text/html" id="noticeListBar">
 		{{#  if(d.isEdit ){ }}
 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 		{{#  } }}
@@ -47,7 +54,7 @@
 		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 		{{#  } }}
 		{{#  if(d.isDetail ){ }}
-		<a class="layui-btn layui-btn-xs layui-bg-cyanr" lay-event="del">预览</a>
+		<a class="layui-btn layui-btn-xs layui-bg-cyanr" lay-event="detail">预览</a>
 		{{#  } }}
 
 	</script>

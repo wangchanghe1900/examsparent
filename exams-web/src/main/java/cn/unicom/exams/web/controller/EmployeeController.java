@@ -2,6 +2,7 @@ package cn.unicom.exams.web.controller;
 
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
+import cn.unicom.exams.model.entity.SysEmployee;
 import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -183,6 +185,29 @@ public class EmployeeController {
     @ResponseBody
     public Response login(String userInfo){
         return null;
+    }
+
+    @PostMapping("/resetPwdEmpByIds")
+    @ResponseBody
+    public Response resetPwdEmpByIds(String ids){
+        try{
+            String[] idArr=ids.split(",");
+            List<Long> empIds=new ArrayList<>();
+            for(String id:idArr){
+                empIds.add(Long.parseLong(id));
+            }
+            Collection<SysEmployee> sysEmployees = employeeService.listByIds(empIds);
+            for(SysEmployee employee:sysEmployees){
+                String salt = employee.getSalt();
+                String pwd = MD5Utils.getAuthenticationInfo("Abcd#123!", salt);
+                employee.setPassword(pwd);
+                employeeService.updateById(employee);
+            }
+            return new Response(200, "初始化密码成功,初始密码为:Abcd#123!");
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new Response(500, "初始化密码失败！");
+        }
     }
 
 }

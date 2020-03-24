@@ -10,6 +10,7 @@ layui.use(['form','layer','jquery'],function(){
         $(this).text("登录中...").attr("disabled","disabled").addClass("layui-disabled");
         let curWwwPath=window.document.location.href;
         //let userpageurl="http://127.0.0.1:9001/v1/getUserByName"
+        curWwwPath=curWwwPath.substring(0,curWwwPath.lastIndexOf("/")+1);
         let userInfo = data.field;
         let url = curWwwPath+"login";
         setTimeout(function(){

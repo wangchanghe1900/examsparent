@@ -47,7 +47,6 @@ public class TestPaperController {
     private ButtonAuthorUtils buttonAuthorUtils;
 
     @GetMapping("/testList")
-    @RequiresPermissions("test:list")
     public String testList(){
         return "test/testList";
     }

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -221,12 +222,14 @@ public class SysEmployee implements Serializable {
      * 登录密码
      */
     @TableField("password")
+    @JsonIgnore
     private String password;
 
     /**
      * 盐
      */
     @TableField("salt")
+    @JsonIgnore
     private String salt;
 
     /**

@@ -3,10 +3,11 @@ layui.config({
 }).extend({
     treeSelect: 'treeSelect'
 })
-layui.use(['form','layer','treeSelect', 'util','laydate'],function(){
+layui.use(['form','layer','treeSelect', 'util','laydate','table'],function(){
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery,
+        table = layui.table,
         laydate=layui.laydate;
     var treeSelect= layui.treeSelect;
     var curWwwPath = window.document.location.href;
@@ -17,7 +18,7 @@ layui.use(['form','layer','treeSelect', 'util','laydate'],function(){
     var webpath = localhostPaht + projectName;
 
     //显示页面按钮
-    $.get("sysmenu/btnAuthroInfo",{"btn":"notice"},
+    $.get(webpath+"/sysmenu/btnAuthroInfo",{"btn":"notice"},
         function (data) {
             if(data){
                 if(data.isFind){
@@ -43,46 +44,178 @@ layui.use(['form','layer','treeSelect', 'util','laydate'],function(){
         id : "noticeListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
-            {field: 'username', title: '用户名', minWidth:100, align:"center"},
-            {field: 'realname', title: '真实姓名', minWidth:100, align:"center"},
-            {field: 'mobile', title: '移动电话', minWidth:100, align:"center"},
-            {field: 'email', title: '用户邮箱', minWidth:200, align:'center',templet:function(d){
-                    return '<a class="layui-blue" href="mailto:'+d.email+'">'+d.email+'</a>';
-                }},
-            {field: 'deptname', title: '所属部门', align:'center',templet:function(d){
-                    return d.sysDept.deptname;
-                }},
-            {field: 'rolesname', title: '权限名称',  minWidth:150 ,align:'center',templet:function(d){
-                    var rolename="";
-                    for(var i=0;i<d.roles.length;i++){
-                        rolename+=d.roles[i].name+",";
-                    }
-                    rolename=rolename.substring(0,rolename.length-1);
-                    return rolename;
-                }},
-            {field: 'status', title: '用户状态',  align:'center',templet:function(d){
-                    return d.status == "1" ? "正常使用" : "禁止使用";
-                }},
-            {field: 'lastlogintime', title: '最后登录时间', align:'center',minWidth:150},
-            {title: '操作', minWidth:220, templet:'#userListBar',fixed:"right",align:"center"}
+            {field: 'title', title: '公告标题', minWidth:200, align:"center"},
+            {field: 'createTime', title: '发布日期', minWidth:150, align:"center",sort: true},
+            {field: 'createUser', title: '创建人', minWidth:100, align:"center"},
+            {field: 'status', title: '公告状态', minWidth:180, align:'center',templet:'#noticeStatus'},
+            {field: 'deptName', title: '接收部门', align:'center',minWidth:200},
+            {field: 'readerCount', title: '已读数量', align:'center',minWidth:100},
+            {field: 'receiveCount', title: '接收数量', align:'center',minWidth:100},
+            {title: '操作', minWidth:220, templet:'#noticeListBar',fixed:"right",align:"center"}
         ]]
     });
 
-    //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
+    //搜索
     $(".search_btn").on("click",function(){
         //console.log($(".searchVal").val());
         if($(".searchVal").val() != ''){
-            table.reload("userListTable",{
+            table.reload("noticeListTable",{
                 page: {
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    realname: $(".searchVal").val()  //搜索的关键字
+                    title: $(".searchVal").val()  //搜索的关键字
                 }
             })
         }else{
             layer.msg("请输入搜索的内容");
         }
     });
+    //添加用户
+    function addNotice(){
+        var index = layui.layer.open({
+            title : "新增公告",
+            type : 2,
+            skin: 'layui-layer-lan',
+            content : "addNoticeList",
+            success : function(layero, index){
+                var body = layui.layer.getChildFrame('body', index);
+                setTimeout(function(){
+                    layui.layer.tips('点击此处返回公告列表', '.layui-layer-setwin .layui-layer-close', {
+                        tips: 3
+                    });
+                },500)
+            }
+        })
+        layui.layer.full(index);
+        window.sessionStorage.setItem("index",index);
+        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+        $(window).on("resize",function(){
+            layui.layer.full(window.sessionStorage.getItem("index"));
+        })
+    };
+    $(".addnotice_btn").click(function(){
+        addNotice();
+    });
+    //编辑公告
+    function editNotice(edit){
+        var index = layui.layer.open({
+            title : "编辑公告信息",
+            skin: 'layui-layer-lan',
+            type : 2,
+            content : "editNoticeList",
+            success : function(layero, index){
+                var body = layui.layer.getChildFrame('body', index);
+                if(edit){
+                    body.find(".content").val(edit.content);
+                    form.render();
+                }
+                setTimeout(function(){
+                    layui.layer.tips('点击此处返回员工列表', '.layui-layer-setwin .layui-layer-close', {
+                        tips: 3
+                    });
+                },500)
+            }
+        })
+        layui.layer.full(index);
+        window.sessionStorage.setItem("index",index);
+        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+        $(window).on("resize",function(){
+            layui.layer.full(window.sessionStorage.getItem("index"));
+        })
+    };
+    //批量删除
+    $(".delAll_btn").click(function(){
+        var checkStatus = table.checkStatus('noticeListTable'),
+            data = checkStatus.data,
+            noticeIds ="" ;//[];
+        if(data.length > 0) {
+            for (var i in data) {
+                //userId.push(data[i].id);
+                noticeIds +=data[i].id+",";
+            }
+            noticeIds=noticeIds.substring(0,noticeIds.length-1);
+            layer.confirm('确定删除选中公告信息？',{icon:3, title:'提示信息'},function(index){
+                $.post("delNoticeByIds",{
+                    ids : noticeIds  //将需要删除的newsId作为参数传入
+                },function(data){
+                    tableIns.reload();
+                    layer.close(index);
+                })
+            });
+        }else{
+            layer.msg("请选择需要删除的公告");
+        }
+    });
+    form.on('switch(noticeStatus)', function(data){
+        var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
+        var id=this.value;
+        setTimeout(function(){
+            //layer.close(index);
+            if(data.elem.checked){
+                $.get("publishNotice",{
+                    id : id,
+                    status:'发布'
+                },function(data){
+                    layer.close(index);
+                    tableIns.reload();
+                    if(data.msg==null){
+                        layer.msg("您没有权限");
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                })
 
+            }else{
+                    $.get("publishNotice",{
+                        id : id,
+                        status:'未发布'
+                    },function(data){
+                        layer.close(index);
+                        tableIns.reload();
+                        if(data.msg==null){
+                            layer.msg("您没有权限");
+                        }else{
+                            layer.msg(data.msg);
+                        }
+
+                    })
+            }
+        },500);
+    });
+    //浏览详情
+    function showDetail(edit){
+        top.layui.layer.open({
+            title : "公告预览",
+            type : 2,
+            anim: 5,
+            area: ['700px', '550px'],
+            content : "notice/showDetailList",
+            success : function(layero, index){
+                //var body = layui.layer.getChildFrame('body', index);
+            }
+        })
+    }
+    //列表操作
+    table.on('tool(noticeList)', function(obj){
+        var layEvent = obj.event,
+            data = obj.data;
+
+        if(layEvent === 'edit'){ //编辑
+            sessionStorage.setItem("noticeInfo",JSON.stringify(data));
+            editNotice(data);
+        }else if(layEvent === 'del'){ //删除
+            layer.confirm('确定删除此公告信息？',{icon:3, title:'提示信息'},function(index){
+                $.get("delNoticeById",{
+                    id : data.id  //将需要删除的newsId作为参数传入
+                },function(data){
+                    tableIns.reload();
+                    layer.close(index);
+                })
+            });
+        }else if(layEvent === 'detail'){
+            sessionStorage.setItem("noticeInfo",JSON.stringify(data));
+            showDetail(data);
+        }
+    });
 })

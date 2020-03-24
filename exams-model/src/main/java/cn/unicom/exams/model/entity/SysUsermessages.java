@@ -36,17 +36,12 @@ public class SysUsermessages implements Serializable {
     @TableField("sendUser")
     private String sendUser;
 
-    /**
-     * 消息内容
-     */
-    @TableField("messageContent")
-    private String messageContent;
 
     /**
-     * 接收人ID
+     * 接收人Code
      */
-    @TableField("receviceUserId")
-    private Long receviceUserId;
+    @TableField("receviceUserCode")
+    private String receviceUserCode;
 
     /**
      * 公告ID

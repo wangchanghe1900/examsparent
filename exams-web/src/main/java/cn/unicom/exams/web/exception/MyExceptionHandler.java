@@ -11,7 +11,7 @@ public class MyExceptionHandler {
 
     @ExceptionHandler
     public String AuthorizationErrorHandler(AuthorizationException e) {
-        log.info("没有通过权限验证！");
+        log.error("没有通过权限验证！");
         return "redirect:/403";
     }
 

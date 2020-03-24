@@ -1,6 +1,7 @@
 package cn.unicom.exams.web.controller;
 
 import cn.unicom.exams.model.entity.SysMenu;
+import cn.unicom.exams.model.entity.SysRole;
 import cn.unicom.exams.model.entity.SysUser;
 import cn.unicom.exams.model.vo.ButtonInfo;
 import cn.unicom.exams.model.vo.NavsMenuInfo;
@@ -9,6 +10,7 @@ import cn.unicom.exams.model.vo.UserVo;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysMenuService;
+import cn.unicom.exams.service.service.ISysRoleService;
 import cn.unicom.exams.service.service.ISysUserService;
 import cn.unicom.exams.web.utils.ButtonAuthorUtils;
 import cn.unicom.exams.web.utils.MD5Utils;
@@ -46,6 +48,9 @@ public class UserController {
     @Autowired
     private ButtonAuthorUtils buttonAuthorUtils;
 
+    @Autowired
+    private ISysRoleService roleService;
+
 
     @GetMapping("/userList")
     @RequiresPermissions("user:list")
@@ -56,7 +61,7 @@ public class UserController {
     @GetMapping("/getUserList")
     @ResponseBody
     public WebResponse getUserList(int page, int limit, UserVo userVo){
-        WebResponse userResponse=new WebResponse();
+        WebResponse userResponse=new WebResponse(0,"",0);
         try{
             IPage<UserInfo> sysUserByPage = userService.getSysUserByPage(page, limit, userVo);
             ButtonInfo userbutton = buttonAuthorUtils.getButtonAuthority("user");
@@ -67,6 +72,8 @@ public class UserController {
                 List<UserInfo> records = sysUserByPage.getRecords();
                 List<UserInfo> userList=new ArrayList<>();
                 for(UserInfo info:records){
+                    List<SysRole> roleList = roleService.getRoleInfoByUId(info.getId());
+                    info.setRoles(roleList);
                     info.setIsAdd(userbutton.getIsAdd());
                     info.setIsDel(userbutton.getIsDel());
                     info.setIsUpdate(userbutton.getIsUpdate());
