@@ -24,4 +24,11 @@ public interface ISysTestpaperService extends IService<SysTestpaper> {
      */
     public IPage<TestPaperInfo> getTestPaperInfoByPage(int page, int limit, TestPaperVo testPaperVo) throws Exception;
 
+    /**
+     * 根据试卷ID发布考试试题
+     * @param testId
+     * @throws Exception
+     */
+    public void publishTest(Long testId,String status) throws Exception;
+
 }

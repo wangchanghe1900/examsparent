@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.unicom.exams.service.mapper.SysTestquestionsMapper">
-
+  <select id="getEmpTestedByEmpCode" resultType="java.lang.Integer">
+      select count(distinct q.t_id) from (select * from sys_testpaper where examsStartTime>=date_add(curdate(),INTERVAL -1 year) and testStatus='发布') t
+      inner join sys_testquestions q on t.id=q.t_id
+      ${ew.customSqlSegment}
+  </select>
 </mapper>

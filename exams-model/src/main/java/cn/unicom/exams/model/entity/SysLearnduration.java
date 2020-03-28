@@ -38,7 +38,7 @@ public class SysLearnduration implements Serializable {
     /**
      * 已学用户ID
      */
-    private Long uId;
+    private Long empCode;
 
     /**
      * 资源ID

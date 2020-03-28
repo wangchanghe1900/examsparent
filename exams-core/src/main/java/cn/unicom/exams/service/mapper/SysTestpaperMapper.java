@@ -30,4 +30,14 @@ public interface SysTestpaperMapper extends BaseMapper<SysTestpaper> {
      */
     public IPage<TestPaperInfo> getTestPaperInfoByPage(Page<TestPaperVo> page, @Param(Constants.WRAPPER) Wrapper<TestPaperVo> wrapper) throws Exception;
 
+    /**
+     * 根据员工Code提取员工需要考试的总数量及需要学习资源的总数量
+     * @param wrapper
+     * @return
+     * @throws Exception
+     */
+    public Integer getEmpTestCountByEmpCode(@Param(Constants.WRAPPER) Wrapper<TestPaperVo> wrapper) throws Exception;
+
+
+
 }

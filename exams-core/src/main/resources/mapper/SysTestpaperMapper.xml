@@ -30,4 +30,10 @@
         INNER JOIN sys_resourceinfo c on a.res_id=c.id
         ${ew.customSqlSegment}
     </select>
+
+    <select id="getEmpTestCountByEmpCode" resultType="java.lang.Integer">
+        select count(1) from (select * from sys_testpaper where examsStartTime>=date_add(curdate(),INTERVAL -1 year) and testStatus='发布') t inner join
+        sys_employee e on t.dept_id=e.dept_id
+        ${ew.customSqlSegment}
+    </select>
 </mapper>

@@ -134,16 +134,16 @@ layui.use(['form','layer','treeSelect','upload','laydate'],function(){
     }
     var startDate=window.sessionStorage.getItem("startDate");
     var endDate= window.sessionStorage.getItem("endDate");
-    if(startDate!=null){
+    if(startDate!=null && startDate!=""){
         startDate=startDate.substring(0,10);
-        window.sessionStorage.setItem("startDate","");
+        window.sessionStorage.removeItem("startDate");
     }else{
         startDate=new Date();
         startDate.setDate(startDate.getDate()+1);
     }
-    if(endDate!=null){
+    if(endDate!=null && endDate!=""){
         endDate=endDate.substring(0,10);
-        window.sessionStorage.setItem("endtDate","");
+        window.sessionStorage.removeItem("endtDate");
     }else{
         endDate=new Date();
         endDate.setDate(endDate.getDate()+30);

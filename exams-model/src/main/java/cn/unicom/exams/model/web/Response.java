@@ -14,24 +14,15 @@ public class Response implements Serializable {
     private Integer code;
     private String msg;
     private Object data;
-    private String token;
     private Long  timestamp;
 
-    public Response(Integer code, String msg, Object data, String token, Long timestamp) {
+    public Response(Integer code, String msg, Object data, Long timestamp) {
         this.code = code;
         this.msg = msg;
         this.data = data;
-        this.token = token;
         this.timestamp = timestamp;
     }
 
-    public Response(Integer code, String msg, Object data, String token) {
-        this.code = code;
-        this.msg = msg;
-        this.data = data;
-        this.token = token;
-        this.timestamp= LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
-    }
 
     public Long getTimestamp() {
         return timestamp;
@@ -41,13 +32,6 @@ public class Response implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public Response() {
     }
@@ -95,7 +79,6 @@ public class Response implements Serializable {
                 "code=" + code +
                 ", msg='" + msg + '\'' +
                 ", data=" + data +
-                ", token='" + token + '\'' +
                 ", timestamp=" + timestamp +
                 '}';
     }

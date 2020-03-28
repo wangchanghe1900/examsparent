@@ -133,6 +133,7 @@ layui.define(["element","jquery"],function(exports){
 			menu = JSON.parse(window.sessionStorage.getItem("menu"));
 		}
 		var that = this;
+		//console.dir(_this);
 		var openTabNum = that.tabConfig.openTabNum;
 			tabFilter = that.tabConfig.tabFilter;
 		if(_this.attr("target") == "_blank"){

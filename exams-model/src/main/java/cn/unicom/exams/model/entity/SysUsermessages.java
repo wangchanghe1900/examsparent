@@ -41,7 +41,7 @@ public class SysUsermessages implements Serializable {
      * 接收人Code
      */
     @TableField("receviceUserCode")
-    private String receviceUserCode;
+    private Long receviceUserCode;
 
     /**
      * 公告ID

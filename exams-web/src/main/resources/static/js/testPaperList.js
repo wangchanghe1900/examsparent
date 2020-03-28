@@ -109,7 +109,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         })
     };
 
-    //添加用户
+    //添加试卷
     function addTest(){
         var index = layui.layer.open({
             id:"addtest",
@@ -164,7 +164,43 @@ layui.use(['form','layer','table','laytpl'],function(){
             layer.msg("请选择需要删除的资源");
         }
     });
+    form.on('switch(status)', function(data){
+        layer.msg("ceshi");
+        var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
+        var id=this.value;
+        setTimeout(function(){
+            //layer.close(index);
+            if(data.elem.checked){
+                $.get("publishTest",{
+                    id : id,
+                    status:'发布'
+                },function(data){
+                    layer.close(index);
+                    tableIns.reload();
+                    if(data.msg==null){
+                        layer.msg("您没有权限");
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                })
 
+            }else{
+                $.get("publishTest",{
+                    id : id,
+                    status:'未发布'
+                },function(data){
+                    layer.close(index);
+                    tableIns.reload();
+                    if(data.msg==null){
+                        layer.msg("您没有权限");
+                    }else{
+                        layer.msg(data.msg);
+                    }
+
+                })
+            }
+        },500);
+    });
     //列表操作
     table.on('tool(testList)', function(obj){
         var layEvent = obj.event,

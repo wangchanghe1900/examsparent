@@ -39,6 +39,7 @@
         <result column="modfiyPwdTime" property="modfiyPwdTime"  />
         <result column="lastLoginTime" property="lastLoginTime"  />
         <result column="createTime" property="createTime" />
+        <result column="loginFailureTimes" property="loginFailureTimes" />
         <result column="updateTime" property="updateTime" />
 
         <association property="sysDept" javaType="cn.unicom.exams.model.entity.SysDept" >

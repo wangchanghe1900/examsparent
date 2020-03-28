@@ -232,6 +232,7 @@ public class NoticeController {
 
     private void sendMessages(List<DeptInfo> deptList,NoticeVo noticeVo,SysUser user){
         List<SysUsermessages> usermessagesList=new ArrayList<>();
+
         for(DeptInfo deptInfo:deptList){
             if(("是").equals(noticeVo.getIsSendSysUser())){
                 QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
@@ -239,7 +240,7 @@ public class NoticeController {
                 List<SysUser> userList = userService.list(queryWrapper);
                 for(SysUser sysUser:userList){
                     SysUsermessages usermessages=new SysUsermessages();
-                    usermessages.setReceviceUserCode(sysUser.getId().toString());
+                    usermessages.setReceviceUserCode(sysUser.getId());
                     usermessages.setNoticeId(noticeVo.getId());
                     usermessages.setSendUser(user.getRealname());
                     usermessages.setIsRead("否");
@@ -253,7 +254,7 @@ public class NoticeController {
                 List<SysEmployee> employeeList = employeeService.list(queryWrapper);
                 for(SysEmployee employee:employeeList){
                     SysUsermessages empmessages=new SysUsermessages();
-                    empmessages.setReceviceUserCode(employee.getEmployeeCode());
+                    empmessages.setReceviceUserCode(Long.parseLong(employee.getEmployeeCode()));
                     empmessages.setNoticeId(noticeVo.getId());
                     empmessages.setSendUser(user.getRealname());
                     empmessages.setIsRead("否");

@@ -41,7 +41,7 @@ public class SysTestquestions implements Serializable {
     /**
      * 用户ID
      */
-    private Long uId;
+    private Long empCode;
 
     /**
      * 答题状态（已答、未答）

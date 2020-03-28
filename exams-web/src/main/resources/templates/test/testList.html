@@ -37,6 +37,13 @@
 	</blockquote>
 	<table id="testList" lay-filter="testList"></table>
 
+	<script type="text/html" id="testStatus">
+		{{#  if(d.testStatus == "未发布"){ }}
+		<input type="checkbox" name="testStatus" lay-filter="status" value="{{d.id}}" lay-skin="switch"   lay-text="发布|未发布"  >
+		{{#  } else if(d.testStatus == "发布"){ }}
+		<input type="checkbox" name="testStatus" lay-filter="status" value="{{d.id}}" lay-skin="switch"   lay-text="发布|未发布"  checked="">
+		{{#  }  }}
+	</script>
 	<!--操作-->
 	<script type="text/html" id="testListBar">
 		{{#  if(d.isEdit ){ }}
@@ -51,13 +58,7 @@
 
 	</script>
 
-	<script type="text/html" id="testStatus">
-		{{#  if(d.testStatus == "未发布"){ }}
-		  <input type="checkbox" name="testStatus" lay-filter="testStatus" lay-skin="switch"   lay-text="发布|未发布"  >
-		{{#  } else if(d.testStatus == "发布"){ }}
-		  <input type="checkbox" name="testStatus" lay-filter="testStatus" lay-skin="switch"   lay-text="发布|未发布"  checked="">
-		{{#  }  }}
-	</script>
+
 </form>
 <script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/testPaperList.js"></script>

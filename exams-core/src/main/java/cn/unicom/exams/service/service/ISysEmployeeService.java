@@ -1,10 +1,7 @@
 package cn.unicom.exams.service.service;
 
 import cn.unicom.exams.model.entity.SysEmployee;
-import cn.unicom.exams.model.vo.EmployeeInfo;
-import cn.unicom.exams.model.vo.EmployeeVo;
-import cn.unicom.exams.model.vo.QuestionInfo;
-import cn.unicom.exams.model.vo.QuestionVo;
+import cn.unicom.exams.model.vo.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -26,5 +23,33 @@ public interface ISysEmployeeService extends IService<SysEmployee> {
      * @throws Exception
      */
     public IPage<EmployeeInfo> getEmployeeInfoByPage(int page, int limit, EmployeeVo employeeVo) throws Exception;
+
+    /**
+     * 根据员工code查询员工考试信息及已考信息
+     * @param empCode
+     * @return
+     * @throws Exception
+     */
+    public EmpTestInfo getEmpTestInfoByEmpCode(Long empCode) throws Exception;
+
+    /**
+     *查询员工未学资源及考试信息
+     * @param page
+     * @param limit
+     * @param empCode
+     * @return
+     * @throws Exception
+     */
+    public UnLearnResource getUnLearnResourceByPage(int page, int limit,Long empCode) throws Exception;
+
+    /**
+     *查询已学资源信息及考试信息
+     * @param page
+     * @param limit
+     * @param empCode
+     * @return
+     * @throws Exception
+     */
+    public LearnedResource getLearnedResourceByPage(int page, int limit,Long empCode) throws Exception;
 
 }

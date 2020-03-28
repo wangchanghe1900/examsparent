@@ -154,6 +154,7 @@ public class TestPaperController {
             testPaperVo.setImgUrl(path+"/"+filename);
             testpaperService.updateById(testPaperVo);
         }
+        testpaperService.publishTest(testPaperVo.getId(),testPaperVo.getTestStatus());
 
 
     }
@@ -198,5 +199,18 @@ public class TestPaperController {
     @GetMapping("/editTestInfoList")
     public String editTestInfoList(){
         return "test/testAdd";
+    }
+
+    @GetMapping("/publishTest")
+    @ResponseBody
+    @RequiresPermissions("test:publish")
+    public Response publishTest(Long id,String status){
+        try{
+            testpaperService.publishTest(id,status);
+            return new Response(200,status);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new Response(500,"发布失败!");
+        }
     }
 }

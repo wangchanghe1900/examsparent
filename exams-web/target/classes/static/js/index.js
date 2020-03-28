@@ -103,6 +103,7 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 	$("body").on("click",".layui-nav .layui-nav-item a:not('.mobileTopLevelMenus .layui-nav-item a')",function(){
 		//如果不存在子级
 		if($(this).siblings().length == 0){
+			//console.log($(this));
 			addTab($(this));
 			$('body').removeClass('site-mobile');  //移动端点击菜单关闭菜单层
 		}
@@ -118,10 +119,11 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
             layer.close(index);
             layer.msg("缓存清除成功！");
         },1000);
-    })
+    });
 
 	//刷新后还原打开的窗口
-    if(cacheStr == "true") {
+	var cacheStr="";
+    if(cacheStr!=null && cacheStr == "true") {
         if (window.sessionStorage.getItem("menu") != null) {
             menu = JSON.parse(window.sessionStorage.getItem("menu"));
             curmenu = window.sessionStorage.getItem("curmenu");
@@ -160,7 +162,7 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 		window.sessionStorage.removeItem("menu");
 		window.sessionStorage.removeItem("curmenu");
 	}
-})
+});
 
 //打开新窗口
 function addTab(_this){

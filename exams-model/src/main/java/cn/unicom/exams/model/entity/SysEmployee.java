@@ -258,6 +258,12 @@ public class SysEmployee implements Serializable {
     private LocalDateTime updateTime;
 
     /**
+     * 登录失败次数
+     */
+    @TableField("loginFailureTimes")
+    private Integer loginFailureTimes;
+
+    /**
      * 创建日期
      */
     @TableField("createTime")

@@ -2,10 +2,12 @@ package cn.unicom.exams.web.controller;
 
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
+import cn.unicom.exams.model.entity.SysDept;
 import cn.unicom.exams.model.entity.SysEmployee;
 import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
+import cn.unicom.exams.service.service.ISysDeptService;
 import cn.unicom.exams.service.service.ISysEmployeeService;
 import cn.unicom.exams.web.utils.ButtonAuthorUtils;
 import cn.unicom.exams.web.utils.MD5Utils;
@@ -13,7 +15,9 @@ import cn.unicom.exams.web.utils.SecurityCode;
 import cn.unicom.exams.web.utils.ShiroUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +48,12 @@ public class EmployeeController {
 
     @Autowired
     private ButtonAuthorUtils buttonAuthorUtils;
+
+    @Autowired
+    private Producer producer;
+
+    @Autowired
+    private ISysDeptService deptService;
 
     @GetMapping("/empList")
     public String empList(){
@@ -130,6 +140,7 @@ public class EmployeeController {
                     employeeVo.setEmployeeCode(employeeVo.getMobile().toString());
                     employeeVo.setCreateTime(LocalDateTime.now());
                     employeeVo.setUpdateTime(LocalDateTime.now());
+                    employeeVo.setLoginFailureTimes(0);
                     String salt = SecurityCode.getSecurityCode();
                     String pwd = MD5Utils.getAuthenticationInfo("Abcd#123!", salt);//初始密码：Abcd#123!
                     employeeVo.setSalt(salt);
@@ -183,8 +194,56 @@ public class EmployeeController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Response login(String userInfo){
-        return null;
+    public Response login(String code,Long timestamp){
+        code="["+code+"]";
+        try{
+            List<EmpInfo> empInfos = JSON.parseArray(code, EmpInfo.class);
+            if(empInfos!=null && empInfos.size()>0){
+                EmpInfo empInfo=empInfos.get(0);
+                if(!"".equals(empInfo.getValicode())){
+                    //1、从数据库或Redis提取验证码信息
+                    //2、进行验证码验证
+                    if(empInfo.getValicode().equalsIgnoreCase("abc")){
+
+                    }else{
+                        String text = producer.createText();
+                        //写到数据库或Redis中
+                        return new Response(550,"验证码错误!",text);
+                    }
+                }
+                QueryWrapper<SysEmployee> queryWrapper=new QueryWrapper<>();
+                queryWrapper.eq("employeeCode",empInfo.getEmpCode());
+                SysEmployee employee = employeeService.getOne(queryWrapper);
+                if(employee == null ){
+                    return new Response(400,"用户不存在！");
+                }
+                String pwd=MD5Utils.getAuthenticationInfo(empInfo.getPassword(), employee.getSalt());
+                if(!pwd.equals(employee.getPassword())){
+                    String text="";
+                    if(employee.getLoginFailureTimes()>=3){
+                        //生成文字验证码
+                        text = producer.createText();
+                        //写到数据库或Redis中
+                    }
+                    employee.setLoginFailureTimes(employee.getLoginFailureTimes()+1);
+                    employeeService.updateById(employee);
+                    return new Response(500,"用户名或密码错误!",text);
+                }
+                empInfo.setId(Long.parseLong(employee.getEmployeeCode()));
+                empInfo.setDeptId(employee.getDeptId());
+                SysDept dept = deptService.getById(employee.getDeptId());
+                empInfo.setDeptName(dept.getDeptname());
+                empInfo.setEmpImg("");
+                return new Response(200,"登录成功!",empInfo);
+            }else{
+                return new Response(560,"传递参数错误!");
+            }
+
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new Response(600,"系统错误！");
+        }
+
     }
 
     @PostMapping("/resetPwdEmpByIds")
@@ -209,5 +268,22 @@ public class EmployeeController {
             return new Response(500, "初始化密码失败！");
         }
     }
+
+    @PostMapping("/empTestInfo")
+    @ResponseBody
+    public Response empTestInfo(String code,Long timestamp){
+        //EncryptUtils解密code
+        Long empCode=Long.parseLong(code);
+        try{
+            EmpTestInfo testInfo = employeeService.getEmpTestInfoByEmpCode(empCode);
+            return new Response(200, "个人信息反馈成功！",testInfo);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new Response(500, "系统错误！");
+        }
+
+    }
+
+
 
 }

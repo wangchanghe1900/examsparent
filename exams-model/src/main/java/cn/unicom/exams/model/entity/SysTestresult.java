@@ -38,7 +38,7 @@ public class SysTestresult implements Serializable {
     /**
      * 用户id
      */
-    private Long uId;
+    private Long empCode;
 
     /**
      * 分数

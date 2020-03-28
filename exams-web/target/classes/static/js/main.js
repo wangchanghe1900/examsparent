@@ -23,4 +23,14 @@ layui.use(['form','element','layer','jquery'],function(){
         parent.addTab($(this));
     })
 
+    function init(){
+        var message=sessionStorage.getItem("messageCount");
+        if(message!=null){
+            $(".message").html(message);
+        }
+        $(".resoureCount").html(20);
+
+    }
+    init();
+
 })

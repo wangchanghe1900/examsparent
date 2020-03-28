@@ -36,7 +36,7 @@ public class SysUnlearnduration implements Serializable {
     /**
      * 未学用户ID
      */
-    private Long uId;
+    private Long empCode;
 
     /**
      * 资源ID

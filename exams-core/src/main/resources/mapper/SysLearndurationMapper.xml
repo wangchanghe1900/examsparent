@@ -2,4 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.unicom.exams.service.mapper.SysLearndurationMapper">
 
+    <select id="getEmpLearnResourceByEmpCode" resultType="java.lang.Integer">
+        select count(distinct l.res_id) from (select * from sys_testpaper where examsStartTime>=date_add(curdate(),INTERVAL -1 year) and testStatus='发布') t
+        inner join sys_learnduration l on t.id=l.t_id
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getEmpLearnLongDurationByEmpCode" resultType="java.lang.Integer">
+        select ifnull(sum(l.learnLong),0) from (select * from sys_testpaper
+		where examsStartTime>=date_add(curdate(),INTERVAL -1 year) and testStatus='发布') t
+        inner join sys_learnduration l on t.id=l.t_id
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getEmpLearnTimesByEmpCode" resultType="java.lang.Integer">
+        select count(l.res_id) from (select * from sys_testpaper
+		where examsStartTime>=date_add(curdate(),INTERVAL -1 year) and testStatus='发布') t
+        inner join sys_learnduration l on t.id=l.t_id
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getEmpLearnedResourceByPage" resultType="cn.unicom.exams.model.vo.LearnedMaterial">
+        select r.id materialID,r.resourceType materialType,r.resourceName materialName,r.url materialURL,t.id examID,t.testName examName,t.testCount examNum,t.imgUrl materialImg,t.updateTime publishDate,
+        studyTimes,studyDuration ,examTimes,maxScores
+        ,last.score lastScores
+        from (select * from sys_testpaper where examsStartTime>=date_add(curdate(),INTERVAL -1 year) and testStatus='发布') t inner join
+        sys_resourceinfo r on t.res_id=r.id
+        inner join
+        (select t_id,emp_code,res_id,count(res_id) studyTimes,sum(learnLong) studyDuration from sys_learnduration group by t_id,emp_code,res_id) u on r.id=u.res_id
+        inner join
+        (select t_id,emp_code, count(t_id) examTimes,max(score) maxScores from sys_testresult group by t_id,emp_code) tr on tr.t_id=t.id
+        inner join
+        (select * from sys_testresult order by testTime desc limit 1) last on last.t_id=t.id
+        ${ew.customSqlSegment}
+    </select>
 </mapper>
