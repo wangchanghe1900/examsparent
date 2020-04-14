@@ -39,21 +39,25 @@ public class SysTeststatistics implements Serializable {
      */
     @TableField("testCount")
     private Integer testCount;
-
+    /**
+     * 未考人数
+     */
+    @TableField("untestCount")
+    private Integer untestCount;
     /**
      * 及格率
      */
-    private Float passrate;
+    private Integer passrate;
 
     /**
      * 平均分
      */
-    private Float avgscore;
+    private Integer avgscore;
 
     /**
      * 优秀率
      */
-    private Float finerate;
+    private Integer finerate;
 
 
 }

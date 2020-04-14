@@ -19,14 +19,16 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.security.spec.ECGenParameterSpec;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * @author 王长何
@@ -180,10 +182,15 @@ public class NoticeController {
     private List<DeptInfo> getChildrenDeptInfo(List<DeptInfo> deptList){
         List<DeptInfo> deptInfos=new ArrayList<>();
         for(DeptInfo dept: deptList){
-            if(dept.getChildren()!=null){
-                getChildrenDeptInfo(dept.getChildren());
+            if(dept.getChildren().size()>0){
+                List<DeptInfo> childrenDeptInfo = getChildrenDeptInfo(dept.getChildren());
+                if(childrenDeptInfo.size()>0){
+                    deptInfos=childrenDeptInfo;
+                }
+            }else{
+                deptInfos.add(dept);
             }
-            deptInfos.add(dept);
+
         }
         return deptInfos;
     }
@@ -314,6 +321,47 @@ public class NoticeController {
     @GetMapping("/showDetailList")
     public String showDetailList(){
         return "notice/noticeDetail";
+    }
+
+    @PostMapping("/uploadImgFile")
+    @ResponseBody
+    public Response uploadImgFile(@RequestParam("file") MultipartFile[] files, HttpServletRequest request){
+        try{
+            String[] pathArr=new String[files.length];
+            int i=0;
+            for(MultipartFile file : files){
+                String filePath=saveUploadFile("/upload/noticeFile/",file,request);
+                pathArr[i]=filePath;
+                i++;
+            }
+            String path="";
+            for(String p: pathArr){
+               path +="/examsweb"+ p +",";
+            }
+            path=path.substring(0,path.length()-1);
+            Map<String,String> map=new HashMap<>();
+            map.put("src",path);
+            return new Response(0,"",map);
+        }catch (Exception e){
+            log.error("图片传输失败:"+e.getMessage());
+            return new Response(500,"图片传输失败！");
+        }
+
+    }
+    private String saveUploadFile(String savePath, MultipartFile fileinfo,  HttpServletRequest request) throws Exception{
+        DateTimeFormatter df=DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate now=LocalDate.now();
+        String path=savePath+now.format(df);
+        String realPath = request.getServletContext().getRealPath(path);//context.getRealPath("c:/upload/commFile");
+        File dir=new File(realPath);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        String filename = fileinfo.getOriginalFilename();
+        filename = UUID.randomUUID().toString()+ filename.substring(filename.lastIndexOf("."));
+        File f= new File(realPath, filename);
+        fileinfo.transferTo(f);
+        return path+"/"+filename;
     }
 
 }

@@ -69,6 +69,11 @@ public class SysQuestions implements Serializable {
     private LocalDateTime updateTime;
 
     /**
+     * 排序索引
+     */
+    @TableField("sortId")
+    private Integer sortId;
+    /**
      * 答案   (非空)
      */
     @TableField("qAnswer")

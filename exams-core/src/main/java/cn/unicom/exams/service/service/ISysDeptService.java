@@ -1,6 +1,7 @@
 package cn.unicom.exams.service.service;
 
 import cn.unicom.exams.model.entity.SysDept;
+import cn.unicom.exams.model.vo.DeptEmpInfo;
 import cn.unicom.exams.model.vo.DeptInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -19,6 +20,13 @@ public interface ISysDeptService extends IService<SysDept> {
      * 查询所有部门信息
      * @return
      */
-    public List<DeptInfo> getAllDeptInfo();
+    public List<DeptInfo> getAllDeptInfo() throws Exception;
+
+    /**
+     * 查询各个部门包含员工信息
+     * @return
+     * @throws Exception
+     */
+    public List<DeptInfo> getAllDeptAndEmpInfo() throws Exception;
 
 }

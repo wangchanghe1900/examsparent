@@ -3,6 +3,7 @@ package cn.unicom.exams.service.mapper;
 import cn.unicom.exams.model.entity.SysLearnduration;
 import cn.unicom.exams.model.vo.EmployeeVo;
 import cn.unicom.exams.model.vo.LearnedMaterial;
+import cn.unicom.exams.model.vo.LearnedResourceEmpInfo;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -51,5 +52,14 @@ public interface SysLearndurationMapper extends BaseMapper<SysLearnduration> {
      * @throws Exception
      */
     public IPage<LearnedMaterial> getEmpLearnedResourceByPage(Page<SysLearnduration> page, @Param(Constants.WRAPPER) Wrapper<SysLearnduration> wrapper) throws Exception;
+
+    /**
+     *查询员工已学信息(分页)
+     * @param page
+     * @param wrapper
+     * @return
+     * @throws Exception
+     */
+    public IPage<LearnedResourceEmpInfo> getLearnedResEmpByPage(Page<SysLearnduration> page, @Param(Constants.WRAPPER) Wrapper<SysLearnduration> wrapper) throws Exception;
 
 }

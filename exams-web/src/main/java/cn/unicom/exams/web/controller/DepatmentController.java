@@ -8,6 +8,7 @@ import cn.unicom.exams.service.service.ISysDeptService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/dept")
+@Slf4j
 public class DepatmentController {
 
     @Resource
@@ -48,8 +50,14 @@ public class DepatmentController {
     @GetMapping("/getAllDeptInfo")
     @ResponseBody
     public List<DeptInfo> getAllDeptInfo(){
-        List<DeptInfo> allDeptInfo = deptService.getAllDeptInfo();
-        return allDeptInfo;
+        try{
+            List<DeptInfo> allDeptInfo = deptService.getAllDeptAndEmpInfo();
+            return allDeptInfo;
+        }catch(Exception e){
+            log.error("提取部门信息错误："+e.getMessage());
+            return null;
+        }
+
     }
 
     @PostMapping("/editDept")
@@ -101,8 +109,14 @@ public class DepatmentController {
     @GetMapping("/getDeptAllInfo")
     @ResponseBody
     public Object getDeptAllInfo(){
-        List<DeptInfo> allDeptInfo = deptService.getAllDeptInfo();
-        return buildTree(allDeptInfo);
+        try{
+            List<DeptInfo> allDeptInfo = deptService.getAllDeptInfo();
+            return buildTree(allDeptInfo);
+        }catch (Exception e){
+            log.error("提取部门信息错误："+e.getMessage());
+            return null;
+        }
+
     }
 
     private Object buildTree(List<DeptInfo> list) {

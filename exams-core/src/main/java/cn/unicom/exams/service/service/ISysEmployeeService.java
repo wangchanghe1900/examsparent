@@ -5,6 +5,9 @@ import cn.unicom.exams.model.vo.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -52,4 +55,11 @@ public interface ISysEmployeeService extends IService<SysEmployee> {
      */
     public LearnedResource getLearnedResourceByPage(int page, int limit,Long empCode) throws Exception;
 
+    /**
+     * 导入员工信息
+     * @param maps
+     * @return
+     * @throws Exception
+     */
+    public Integer importEmpInfo(List<Map<String, Object>> maps) throws Exception;
 }

@@ -7,8 +7,8 @@ server:
 spring:
   servlet:
     multipart:
-      max-file-size: 100MB
-      max-request-size: 200MB
+      max-file-size: 200MB
+      max-request-size: 250MB
   freemarker:
     suffix: .html
     request-context-attribute: request
@@ -35,8 +35,8 @@ spring:
     testOnReturn: false
     poolPreparedStatements: true
   redis:
-    host: 132.78.181.36
-    password: ghzx7519
+    host: 127.0.0.1
+    #password: ghzx7519
     database: 0
     lettuce:
       pool:
@@ -69,3 +69,6 @@ mybatis-plus:
     cache-enabled: true
   mapper-locations: classpath*:/mapper/*Mapper.xml
   typeAliasesPackage: cn.unicom.exams.model.entity
+
+exams:
+  passNum: 60

@@ -51,7 +51,9 @@ layui.use(['form','layer','table','laytpl','tree', 'util'],function(){
             $(".parentId").val(data.parentId);
             $(".id").val(data.id);
             $(".parentName").val(data.parentName);
-            $(".name").val(data.title);
+            var title=data.title;
+            title.indexOf("(")==-1?$(".name").val(title):$(".name").val(title.substring(0,title.indexOf("(")));
+
             $(".content").val(data.content);
             $(".ordernum").val(data.orderNum);
             form.render('select');

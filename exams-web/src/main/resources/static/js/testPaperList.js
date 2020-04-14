@@ -99,6 +99,10 @@ layui.use(['form','layer','table','laytpl'],function(){
                         tips: 3
                     });
                 },500)
+            },
+            cancel: function(index, layero){
+                location.reload();
+                return false;
             }
         })
         layui.layer.full(index);
@@ -123,6 +127,10 @@ layui.use(['form','layer','table','laytpl'],function(){
                         tips: 3
                     });
                 },500)
+            },
+            cancel: function(index, layero){
+                location.reload();
+                return false;
             }
         })
         layui.layer.full(index);
@@ -180,7 +188,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     if(data.msg==null){
                         layer.msg("您没有权限");
                     }else{
-                        layer.msg(data.msg);
+                        layer.msg(data.msg+"成功");
                     }
                 })
 

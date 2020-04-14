@@ -93,6 +93,10 @@ layui.use(['form','layer','table','laytpl','jquery'],function(){
                         tips: 3
                     });
                 },500);
+            },
+            cancel: function(index, layero){
+                location.reload();
+                return false;
             }
         });
         layui.layer.full(index);
@@ -117,6 +121,10 @@ layui.use(['form','layer','table','laytpl','jquery'],function(){
                         tips: 3
                     });
                 },500)
+            },
+            cancel: function(index, layero){
+                location.reload();
+                return false;
             }
         });
         layui.layer.full(index);
@@ -141,6 +149,10 @@ layui.use(['form','layer','table','laytpl','jquery'],function(){
                         tips: 3
                     });
                 },500)
+            },
+            cancel: function(index, layero){
+                location.reload();
+                return false;
             }
         });
         layui.layer.full(index);
@@ -187,8 +199,12 @@ layui.use(['form','layer','table','laytpl','jquery'],function(){
                         tips: 3
                     });
                 },500)
+            },
+            cancel: function(index, layero){
+                location.reload();
+                return false;
             }
-        })
+        });
         layui.layer.full(index);
         window.sessionStorage.setItem("index",index);
         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）

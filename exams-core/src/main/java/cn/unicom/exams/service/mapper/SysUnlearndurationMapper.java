@@ -3,6 +3,7 @@ package cn.unicom.exams.service.mapper;
 import cn.unicom.exams.model.entity.SysUnlearnduration;
 import cn.unicom.exams.model.vo.Material;
 import cn.unicom.exams.model.vo.UnLearnResource;
+import cn.unicom.exams.model.vo.UnlearnEmpInfo;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -20,11 +21,23 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface SysUnlearndurationMapper extends BaseMapper<SysUnlearnduration> {
     /**
-     * 查询员工未学资料及考试信息
+     * 查询员工未学资料及考试信息(接口)
      * @param page
      * @param wrapper
      * @return
      * @throws Exception
      */
    public IPage<Material> getEmpUnlearnResourceByPage(Page<UnLearnResource> page, @Param(Constants.WRAPPER) Wrapper<SysUnlearnduration> wrapper) throws Exception;
+
+    /**
+     * 查询员工未学资源信息
+     * @param page
+     * @param wrapper
+     * @return
+     * @throws Exception
+     */
+   public IPage<UnlearnEmpInfo> getUnlearnResEmpInfoByPage(Page<UnLearnResource> page, @Param(Constants.WRAPPER) Wrapper<UnLearnResource> wrapper) throws Exception;
+
+
+
 }

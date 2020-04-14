@@ -27,8 +27,74 @@ layui.use(['form','element','layer','jquery'],function(){
         var message=sessionStorage.getItem("messageCount");
         if(message!=null){
             $(".message").html(message);
+        }else{
+            $(".message").html(0);
+        };
+        var resourceCount=sessionStorage.getItem("resourceCount");
+        if(resourceCount != null){
+            $(".resoureCount").html(resourceCount);
+        }else{
+            $.get("resource/getResourceCount",function (data) {
+                if(data.code==200){
+                    sessionStorage.setItem("resourceCount",data.data);
+                    $(".resoureCount").html(data.data);
+                }else{
+                    $(".resoureCount").html(0);
+                }
+            });
         }
-        $(".resoureCount").html(20);
+        var empCount=sessionStorage.getItem("empCount");
+        if(empCount != null){
+            $(".empCount").html(empCount);
+        }else{
+            $.get("emp/getEmployeeCount",function (data) {
+                if(data.code==200){
+                    sessionStorage.setItem("empCount",data.data);
+                    $(".empCount").html(data.data);
+                }else{
+                    $(".empCount").html(0);
+                }
+            });
+        }
+        var testCount=sessionStorage.getItem("testCount");
+        if(testCount != null){
+            $(".testCount").html(testCount);
+        }else{
+            $.get("test/getTestCount",function (data) {
+                if(data.code==200){
+                    sessionStorage.setItem("testCount",data.data);
+                    $(".testCount").html(data.data);
+                }else{
+                    $(".testCount").html(0);
+                }
+            });
+        }
+        var questionCount=sessionStorage.getItem("questionCount");
+        if(questionCount != null){
+            $(".questionCount").html(questionCount);
+        }else{
+            $.get("question/getQuestionCount2",function (data) {
+                if(data.code==200){
+                    sessionStorage.setItem("questionCount",data.data);
+                    $(".questionCount").html(data.data);
+                }else{
+                    $(".questionCount").html(0);
+                }
+            });
+        }
+        var answerCount=sessionStorage.getItem("answerCount");
+        if(answerCount != null){
+            $(".answerCount").html(answerCount);
+        }else{
+            $.get("statis/getAnswerCount",function (data) {
+                if(data.code==200){
+                    sessionStorage.setItem("answerCount",data.data);
+                    $(".answerCount").html(data.data);
+                }else{
+                    $(".answerCount").html(0);
+                }
+            });
+        }
 
     }
     init();

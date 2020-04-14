@@ -1,8 +1,11 @@
 package cn.unicom.exams.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -47,6 +50,16 @@ public class SysTestquestions implements Serializable {
      * 答题状态（已答、未答）
      */
     private String status;
+    /**
+     * 答题结果
+     */
+    private String answer;
+
+    /**
+     * 答题日期
+     */
+    @TableField("answerTime")
+    private LocalDateTime answerTime;
 
 
 }

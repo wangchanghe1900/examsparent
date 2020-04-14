@@ -16,5 +16,7 @@ public class LearnedResource {
     private Integer showNum;
     private Integer pageNum;
     private Long totalNum;
+    private Integer examNum; //已考试的试卷数量
+    private Integer examPassNum; //已达标（通过）的试卷数量
     private List<LearnedMaterial> learnedMaterialList;
 }

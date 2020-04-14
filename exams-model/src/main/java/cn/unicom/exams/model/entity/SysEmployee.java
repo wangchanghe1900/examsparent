@@ -14,6 +14,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * <p>
  * 
@@ -37,43 +39,50 @@ public class SysEmployee implements Serializable {
     private Long id;
 
     /**
-     * 手机号码作为代码
+     * 员工ID
      */
     @TableField("employeeCode")
+    @NotBlank(message="工号不能为空")
     private String employeeCode;
 
     /**
      * 姓名
      */
     @TableField("employeeName")
+    @NotBlank(message="姓名不能为空")
     private String employeeName;
 
     /**
      * 部门Id
      */
+    @NotBlank(message="部门不能为空")
     private Long deptId;
 
     /**
      * 职位
      */
+    @NotBlank(message="职位不能为空")
     private String capacity;
 
     /**
      * 身份证
      */
     @TableField("cardId")
+    @NotBlank(message="身份证不能为空")
     private String cardId;
 
     /**
      * 银行卡号
      */
     @TableField("bankCard")
+    @NotBlank(message="银行卡号不能为空")
     private String bankCard;
 
     /**
      * 银行名称
      */
     @TableField("bankName")
+    @NotBlank(message="银行名称不能为空")
     private String bankName;
 
     /**

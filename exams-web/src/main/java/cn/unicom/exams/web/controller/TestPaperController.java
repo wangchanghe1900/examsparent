@@ -1,9 +1,6 @@
 package cn.unicom.exams.web.controller;
 
-import cn.unicom.exams.model.vo.ButtonInfo;
-import cn.unicom.exams.model.vo.TestPaperInfo;
-import cn.unicom.exams.model.vo.TestPaperVo;
-import cn.unicom.exams.model.vo.UserInfo;
+import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysTestpaperService;
@@ -213,4 +210,17 @@ public class TestPaperController {
             return new Response(500,"发布失败!");
         }
     }
+
+    @GetMapping("getTestCount")
+    @ResponseBody
+    public Response getTestCount(){
+        try{
+            int count = testpaperService.count();
+            return new Response(200,"",count);
+        }catch (Exception e){
+            log.error("提取系统考卷数量错误："+e.getMessage());
+            return  new Response(500,"提取系统考卷数量错误");
+        }
+    }
+
 }

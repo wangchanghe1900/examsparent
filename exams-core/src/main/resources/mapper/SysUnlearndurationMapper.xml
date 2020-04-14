@@ -9,4 +9,12 @@
     sys_unlearnduration u on t.id=u.t_id
     ${ew.customSqlSegment}
     </select>
+
+    <select id="getUnlearnResEmpInfoByPage" resultType="cn.unicom.exams.model.vo.UnlearnEmpInfo">
+        select b.employeeName,c.deptname deptName,d.resourceName from sys_unlearnduration a
+        INNER JOIN sys_employee b on a.emp_code=b.employeeCode
+        INNER JOIN sys_dept c on b.dept_id=c.id
+        INNER JOIN sys_resourceinfo d on d.id=a.res_id
+        ${ew.customSqlSegment}
+    </select>
 </mapper>

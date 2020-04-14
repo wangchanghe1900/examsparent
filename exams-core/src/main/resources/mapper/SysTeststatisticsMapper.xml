@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.unicom.exams.service.mapper.SysTeststatisticsMapper">
+    <resultMap id="BaseResultMap" type="cn.unicom.exams.model.vo.TestStatisticsInfo" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="testCount" property="testCount" jdbcType="INTEGER" />
+        <result column="untestCount" property="untestCount" jdbcType="INTEGER" />
+        <result column="passrate" property="passrate" jdbcType="INTEGER" />
+        <result column="avgscore" property="avgscore" jdbcType="INTEGER" />
+        <result column="finerate" property="finerate" jdbcType="INTEGER" />
+        <association property="testpaper" javaType="cn.unicom.exams.model.entity.SysTestpaper" >
+            <id  column="test_id" property="id"/>
+            <result column="testName" property="testName" />
+            <result column="dept_id" property="deptId" />
+        </association>
+    </resultMap>
+    <select id="getTestStatisticsInfoByPage" resultMap="BaseResultMap">
+           select s.*,t.id test_id,t.testName,t.dept_id from sys_teststatistics s
+           INNER JOIN sys_testpaper t on s.t_id=t.id
+           ${ew.customSqlSegment}
+    </select>
 
+    <select id="getUntestInfoByPage" resultType="cn.unicom.exams.model.vo.UnTestInfo">
+        select a.t_id tId,a.emp_code empCode,b.testName,b.updateTime publishDate,c.resourceName,d.employeeName,e.deptname deptName from (select t_id,emp_code from sys_testquestions where `status`='未答'group by t_id,emp_code) a
+        INNER JOIN (select * from sys_testpaper where testStatus='发布' and updateTime>=date_add(now(),INTERVAL -1 YEAR)) b on  a.t_id=b.id
+        INNER JOIN sys_resourceinfo c on c.id=b.res_id
+        INNER JOIN  sys_employee d on d.employeecode=a.emp_code
+        INNER JOIN sys_dept e on e.id=d.dept_id
+        ${ew.customSqlSegment}
+    </select>
 </mapper>

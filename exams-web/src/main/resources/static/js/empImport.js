@@ -26,14 +26,13 @@ layui.use(['form','layer','upload','jquery'],function(){
             layer.load(); //上传loading
         }
         ,done: function(res, index, upload){
-            if(res.code==0){
+            if(res.code==200){
                 layer.closeAll('loading'); //关闭loading
-                setTimeout(function(){
-                    top.layer.msg(res.msg);
-                    layer.closeAll("iframe");
-                    //刷新父页面
-                    parent.location.reload();
-                },1000);
+                top.layer.msg(res.msg);
+                layer.closeAll("iframe");
+                //刷新父页面
+                parent.location.reload();
+
             }else{
                 layer.closeAll('loading');
                 layer.msg(res.msg);

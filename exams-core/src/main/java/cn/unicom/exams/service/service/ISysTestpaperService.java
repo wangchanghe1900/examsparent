@@ -1,6 +1,7 @@
 package cn.unicom.exams.service.service;
 
 import cn.unicom.exams.model.entity.SysTestpaper;
+import cn.unicom.exams.model.vo.ExamInfo;
 import cn.unicom.exams.model.vo.TestPaperInfo;
 import cn.unicom.exams.model.vo.TestPaperVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -30,5 +31,16 @@ public interface ISysTestpaperService extends IService<SysTestpaper> {
      * @throws Exception
      */
     public void publishTest(Long testId,String status) throws Exception;
+
+    /**
+     * 根据员工ID及试卷ID查询员工考题
+     * @param empID
+     * @param examID
+     * @param showNum
+     * @param pageNum
+     * @return
+     * @throws Exception
+     */
+    public ExamInfo getExamInfoByEmpCode(Long empID,Long examID,Integer showNum,Integer pageNum) throws Exception;
 
 }

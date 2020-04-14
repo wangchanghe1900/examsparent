@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
  */
 @Data
 public class LearnedMaterial {
+    //学习材料ID、学习材料类型、名称、学习材料url、试卷ID、试卷名称、试卷题目数、考题ID、学习材料的图片、发布时间、学习次数、学习时长(分钟）、考试次数、最高分数、上一次分数
     private Long materialID;
     private Integer materialType;
     private String materialName;

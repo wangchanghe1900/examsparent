@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -32,11 +33,13 @@ public class SysUser implements Serializable {
     /**
      * 登录用户名
      */
+    @NotBlank(message="登录名不能为空")
     private String username;
 
     /**
      * 真实姓名
      */
+    @NotBlank(message="姓名不能为空")
     private String realname;
     /**
      * 密码
@@ -58,6 +61,7 @@ public class SysUser implements Serializable {
     /**
      * 手机号
      */
+    @NotBlank(message="手机号不能为空")
     private String mobile;
 
     /**
@@ -72,6 +76,7 @@ public class SysUser implements Serializable {
     /**
      * 部门ID
      */
+    @NotBlank(message="部门不能为空")
     private Long deptId;
     /**
      * 最后登录时间

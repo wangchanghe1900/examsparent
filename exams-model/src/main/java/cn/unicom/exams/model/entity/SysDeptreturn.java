@@ -38,7 +38,10 @@ public class SysDeptreturn implements Serializable {
      * 考试ID
      */
     private Long tId;
-
+    /**
+     * 部门总人数
+     */
+    private Integer totalEmployee;
     /**
      * 返回总次数
      */
@@ -49,7 +52,7 @@ public class SysDeptreturn implements Serializable {
      * 人均返回次数
      */
     @TableField("AvgCount")
-    private Float AvgCount;
+    private Integer AvgCount;
 
 
 }

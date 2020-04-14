@@ -35,10 +35,15 @@ public class SysDeptduration implements Serializable {
     private Long deptId;
 
     /**
-     * 试卷ID
+     * 学习资源ID
      */
-    private Long tId;
+    private Long resId;
 
+    /**
+     * 学习资源ID
+     */
+    @TableField("totalEmployee")
+    private Integer totalEmployee;
     /**
      * 学习总时长
      */
@@ -49,7 +54,7 @@ public class SysDeptduration implements Serializable {
      * 人均时长
      */
     @TableField("AvgCount")
-    private Float AvgCount;
+    private Long AvgCount;
 
 
 }

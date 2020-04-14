@@ -114,6 +114,13 @@ public class QuestionController {
 
             questions.setQuestionName(questionVo.getQuestionName());
             questions.setQuestionType(questionVo.getQuestionType());
+            if("单选题".equals(questionVo.getQuestionType())){
+                questions.setSortId(1);
+            }else if("多选题".equals(questionVo.getQuestionType())){
+                questions.setSortId(2);
+            }else{
+                questions.setSortId(3);
+            }
             questions.setResId(questionVo.getResId());
             questions.setUpdateTime(LocalDateTime.now());
             List<SysOptions> optionsList=new ArrayList<>();
@@ -305,6 +312,13 @@ public class QuestionController {
                     }
                     if("题目类型".equals(entry.getKey())){
                         questions.setQuestionType(entry.getValue().toString());
+                        if("单选题".equals(questions.getQuestionType())){
+                            questions.setSortId(1);
+                        }else if("多选题".equals(questions.getQuestionType())){
+                            questions.setSortId(2);
+                        }else{
+                            questions.setSortId(3);
+                        }
                     }
                     if("所属资源ID".equals(entry.getKey())){
                         questions.setResId(Long.valueOf(entry.getValue().toString()));
@@ -313,7 +327,7 @@ public class QuestionController {
                         questions.setQuestionStatus(entry.getValue().toString());
                     }
                     if("标准答案".equals(entry.getKey())){
-                        questions.setQAnswer(entry.getValue().toString().toUpperCase());
+                        questions.setQAnswer(entry.getValue().toString().trim().toUpperCase());
                     }
 
                     if("选项A".equals(entry.getKey())){
@@ -384,5 +398,17 @@ public class QuestionController {
             return new Response(500,"题库导入失败,请与系统管理员联系！");
         }
 
+    }
+
+    @GetMapping("/getQuestionCount2")
+    @ResponseBody
+    public Response getQuestionCount2(){
+        try{
+            int count = questionsService.count();
+            return new Response(200,"",count);
+        }catch (Exception e){
+            log.error("提取系统试题数量错误："+e.getMessage());
+            return  new Response(500,"提取系统试题数量错误");
+        }
     }
 }

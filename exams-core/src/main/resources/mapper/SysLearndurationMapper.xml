@@ -36,4 +36,14 @@
         (select * from sys_testresult order by testTime desc limit 1) last on last.t_id=t.id
         ${ew.customSqlSegment}
     </select>
+
+    <select id="getLearnedResEmpByPage" resultType="cn.unicom.exams.model.vo.LearnedResourceEmpInfo">
+        select d.resourceName,b.employeeName,c.deptname deptName,a.learnTimes,a.learnLong from (
+        select res_id,emp_code,count(*) learnTimes,sum(learnLong) learnLong from sys_learnduration where learnTime>=date_add(now(),interval -1 year) group by res_id,emp_code) a
+        INNER JOIN sys_employee b on a.emp_code=b.employeeCode
+        INNER JOIN sys_dept c on c.id=b.dept_id
+        INNER JOIN sys_resourceinfo d on d.id=a.res_id
+        ${ew.customSqlSegment}
+    </select>
+
 </mapper>

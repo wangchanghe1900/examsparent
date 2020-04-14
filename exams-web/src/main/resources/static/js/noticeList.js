@@ -85,6 +85,10 @@ layui.use(['form','layer','treeSelect', 'util','laydate','table'],function(){
                         tips: 3
                     });
                 },500)
+            },
+            cancel: function(index, layero){
+                location.reload();
+                return false;
             }
         })
         layui.layer.full(index);
@@ -115,6 +119,10 @@ layui.use(['form','layer','treeSelect', 'util','laydate','table'],function(){
                         tips: 3
                     });
                 },500)
+            },
+            cancel: function(index, layero){
+                location.reload();
+                return false;
             }
         })
         layui.layer.full(index);

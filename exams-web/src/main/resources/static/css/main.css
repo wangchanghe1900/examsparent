@@ -146,7 +146,7 @@
 .orange .top_menu.layui-nav-itemed .layui-nav-more,.orange .top_menu.layui-nav .layui-nav-mored,.blue .top_menu.layui-nav-itemed .layui-nav-more,.blue .top_menu.layui-nav .layui-nav-mored{border-color:transparent transparent #fff !important;}
 
 /*底部*/
-.footer{ text-align: center; line-height:44px;border-left: 2px solid #1AA094;}
+/*.footer{ text-align: center; line-height:44px;border-left: 2px solid #1AA094;}*/
 
 
 /*响应式*/

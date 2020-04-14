@@ -7,4 +7,24 @@
         inner join sys_testresult r on t.id=r.t_id
         ${ew.customSqlSegment}
     </select>
+
+    <select id="getTestedScoreByPage" resultType="cn.unicom.exams.model.vo.TestScoreInfo">
+        select p.testName examName,p.res_id materialID,count(1) examTimes,min(tr.score) minScore ,max(tr.score) maxScore,cast(AVG(tr.score) as SIGNED) averageScore  from sys_testresult tr
+        INNER JOIN sys_testpaper p on tr.t_id=p.id
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getExamCountByEmpID" resultType="java.lang.Integer">
+        select count(distinct t_id) from sys_testresult
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getEmpTestResultInfoByPage" resultType="cn.unicom.exams.model.vo.EmpTestResultInfo">
+        select d.testName,b.employeeName,c.deptname deptName,a.score,a.testDuration,a.returnCount,a.testTime from (
+        select * from sys_testresult where testTime>=date_add(now(),interval -1 year)) a
+        INNER JOIN sys_employee b on b.employeeCode=a.emp_code
+        INNER JOIN sys_dept c on c.id=b.dept_id
+        INNER JOIN sys_testpaper d on d.id=a.t_id
+        ${ew.customSqlSegment}
+    </select>
 </mapper>

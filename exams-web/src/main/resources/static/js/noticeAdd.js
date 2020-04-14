@@ -17,6 +17,12 @@ layui.use(['form','layer','layedit','treeSelect','tree'],function(){
     var localhostPaht = curWwwPath.substring(0, pos);
     var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
     var webpath=localhostPaht + projectName;
+    layedit.set({
+        uploadImage: {
+            url: 'uploadImgFile' //接口url
+            ,type: 'post' //默认post
+        }
+    });
     var editIndex = layedit.build('noticeContent');
 
 

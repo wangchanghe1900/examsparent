@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>资料学习统计</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="${request.contextPath}/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="${request.contextPath}/css/public.css" media="all" />
+</head>
+<style type="text/css">
+	#dept_main{
+		width: 30%;
+		display: inline-block;
+		vertical-align: top;
+		padding: 20px;
+		background: white;
+		box-sizing: border-box;
+	}
+	#dept_particulars{
+		display: inline-block;
+		vertical-align: top;
+		padding: 20px;
+		background: white;
+		box-sizing: border-box;
+	}
+	#dept_tree{
+		margin-top: 20px;
+	}
+
+</style>
+<body class="childrenBody">
+<form class="layui-form" method="post">
+	<div id="dept_main" style="margin-right: 2%;">
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend>所有部门</legend>
+		</fieldset>
+		<div id="dept_tree"></div>
+	</div>
+	<div id="dept_particulars">
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend>学习详情</legend>
+		</fieldset>
+		<table id="unlearnResList" lay-filter="unlearnResList"></table>
+		<table id="learnResList" lay-filter="learnResList" style="margin-top: 50px"></table>
+		<table id="empTestList" lay-filter="empTestList" style="margin-top: 50px"></table>
+	</div>
+</form>
+<script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/statisresourceList.js"></script>
+</body>
+</html>

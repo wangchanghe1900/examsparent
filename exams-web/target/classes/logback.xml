@@ -9,7 +9,7 @@
     <!-- 日志级别过滤器 -->
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
       <!-- 过滤的级别 -->
-      <level>info</level>
+      <level>debug</level>
       <!-- 匹配时的操作：接收（记录） -->
       <onMatch>ACCEPT</onMatch>
       <!-- 不匹配时的操作：拒绝（不记录） -->
@@ -23,21 +23,43 @@
 <!--日志文件输出的文件名-->
 <FileNamePattern>/logs/exams/service-web.log.%d{yyyy-MM-dd}.log</FileNamePattern>
 <!--日志文件保留天数-->
-<MaxHistory>30</MaxHistory>
+<MaxHistory>365</MaxHistory>
 </rollingPolicy>
 <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
 <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
 </encoder>
+<filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印ERROR日志 -->
+  <level>info</level>
+  <onMatch>ACCEPT</onMatch>
+  <onMismatch>DENY</onMismatch>
+</filter>
 <!--日志文件最大的大小-->
 <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
 <MaxFileSize>10MB</MaxFileSize>
 </triggeringPolicy>
 </appender>
 
+<!--输出到error-->
+<appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    <fileNamePattern>/logs/exams/service-web.error.%d{yyyy-MM-dd}.log</fileNamePattern>
+  </rollingPolicy>
+  <append>true</append>
+  <encoder>
+    <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+    <charset>utf-8</charset>
+  </encoder>
+  <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印ERROR日志 -->
+    <level>ERROR</level>
+    <onMatch>ACCEPT</onMatch>
+    <onMismatch>DENY</onMismatch>
+  </filter>
+</appender>
   <!-- 基于dubug处理日志：具体控制台或者文件对日志级别的处理还要看所在appender配置的filter，如果没有配置filter，则使用root配置 -->
   <root level="info">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="LOG-OUT" />
+    <appender-ref ref="error" />
   </root>
 </configuration>

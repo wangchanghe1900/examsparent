@@ -1,13 +1,17 @@
 package cn.unicom.exams.web.controller;
 
+import cn.unicom.exams.model.entity.SysResourceinfo;
 import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysEmployeeService;
+import cn.unicom.exams.service.service.ISysLearndurationService;
 import cn.unicom.exams.service.service.ISysResourceinfoService;
 import cn.unicom.exams.web.utils.ButtonAuthorUtils;
 import cn.unicom.exams.web.utils.ShiroUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +48,9 @@ public class ResourceController {
 
     @Autowired
     private ISysEmployeeService employeeService;
+
+    @Autowired
+    private ISysLearndurationService learndurationService;
 
     @GetMapping("/commResourceList")
     public String commResourceList(){
@@ -431,36 +438,20 @@ public class ResourceController {
         return parentList;
     }
 
-    @PostMapping("/unlearnedResource")
+    @GetMapping("/getResourceCount")
     @ResponseBody
-    public Response unlearnedResource(String code,Long  timestamp){
+    public Response getResourceCount(){
         try{
-            //EncryptUtils解密 {"empID"："","showNum":10,"pageNum":1}
-            Integer showNum=10;
-            Integer pageNum=1;
-            Long empCode=Long.parseLong(code);
-            UnLearnResource unLearnResource = employeeService.getUnLearnResourceByPage(pageNum, showNum, empCode);
-            return new Response(200, "提取数据成功！",unLearnResource);
+            int count = resourceinfoService.count();
+            return new Response(200,"",count);
         }catch (Exception e){
-            log.error(e.getMessage());
-            return new Response(500, "提取数据失败！");
+            log.error("提取系统资源数量错误："+e.getMessage());
+            return  new Response(500,"提取系统资源数量错误");
         }
     }
 
-    @PostMapping("/learnedResource")
-    @ResponseBody
-    public Response learnedResource(String code,Long  timestamp){
-        try{
-            //EncryptUtils解密 {"empID"："","showNum":10,"pageNum":1}
-            Integer showNum=10;
-            Integer pageNum=1;
-            Long empCode=Long.parseLong(code);
-            LearnedResource learnedResource = employeeService.getLearnedResourceByPage(pageNum, showNum, empCode);
-            return new Response(200, "提取数据成功！",learnedResource);
-        }catch (Exception e){
-            log.error(e.getMessage());
-            return new Response(500, "提取数据失败！");
-        }
-    }
+
+
+
 
 }

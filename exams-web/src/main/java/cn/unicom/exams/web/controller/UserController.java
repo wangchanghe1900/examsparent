@@ -24,6 +24,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author 王长何
@@ -219,23 +221,36 @@ public class UserController {
     @PostMapping("/updatePwd")
     @ResponseBody
     public Response updatePwd(String username,String oldPwd,String newPass){
-        QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("username",username);
-        SysUser sysUser = userService.getOne(queryWrapper);
-        if(sysUser==null){
-            return new Response(500,"用户不存在！");
-        }
-        String salt = sysUser.getSalt();
-        String pwd = MD5Utils.getAuthenticationInfo(oldPwd, salt);
-        if(!pwd.equals(sysUser.getPassword())){
-            return  new Response(500,"旧密码不正确！");
-        }
-        UpdateWrapper<SysUser> updateWrapper=new UpdateWrapper<>();
-        updateWrapper.eq("username",username);
-        String newpass = MD5Utils.getAuthenticationInfo(newPass, salt);
-        SysUser user=new SysUser();
-        user.setPassword(newpass);
         try {
+            QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("username",username);
+            SysUser sysUser = userService.getOne(queryWrapper);
+            if(sysUser==null){
+                return new Response(500,"用户不存在！");
+            }
+            String salt = sysUser.getSalt();
+            String pwd = MD5Utils.getAuthenticationInfo(oldPwd, salt);
+            if(!pwd.equals(sysUser.getPassword())){
+                return  new Response(500,"旧密码不正确！");
+            }
+            String regex="^^(?![a-zA-z]+$)(?!\\d+$)(?![!@#$%^&*_-]+$)(?![a-zA-z\\d]+$)(?![a-zA-z!@#$%^&*_-]+$)(?![\\d!@#$%^&*_-]+$)[a-zA-Z\\d!@#$%^&*_-]+$";
+            if(oldPwd.equals(newPass)){
+                return new Response(400,"新密码和旧密码一样");
+            }
+            if(StringUtils.isEmpty(oldPwd) || StringUtils.isEmpty(newPass)){
+                return new Response(400,"密码为空");
+            }
+            if(newPass.length()<8){
+                return new Response(400,"新密码需要8位以上");
+            }
+            if(!Pattern.matches(regex, newPass)){
+                return new Response(400,"密码复杂度不符合要求");
+            }
+            UpdateWrapper<SysUser> updateWrapper=new UpdateWrapper<>();
+            updateWrapper.eq("username",username);
+            String newpass = MD5Utils.getAuthenticationInfo(newPass, salt);
+            SysUser user=new SysUser();
+            user.setPassword(newpass);
             boolean update = userService.update(user, updateWrapper);
             return  new Response(200,"密码更新成功！");
         }catch (Exception e){

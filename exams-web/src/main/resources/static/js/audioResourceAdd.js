@@ -12,7 +12,7 @@ layui.use(['form','layer','upload'],function(){
 /*        ,exts: 'PDF|pdf'*/
         ,acceptMime:'audio/*'
         ,field:'fileinfo'
-        ,size: 1024*100
+        ,size: 1024*300
         ,data: {
             resourceName: function(){
                 return $(".resourcename").val();

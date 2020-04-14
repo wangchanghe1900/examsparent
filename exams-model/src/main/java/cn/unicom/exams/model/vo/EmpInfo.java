@@ -12,15 +12,18 @@ public class EmpInfo {
     /**
      * 员工ID
      */
-    private Long id;
+    private Long empID;
     /**
-     *员工姓名
+     *
+     *登录名称
      */
-    private String empName;
+    private String userName;
+
+
     /**
      *员工所属（部门|组）ID
      */
-    private Long deptId;
+    private Long deptID;
     /**
      *员工所属部门|组名称
      */
@@ -28,12 +31,11 @@ public class EmpInfo {
     /**
      *员工图片
      */
-    private String empImg;
+    private String userImg;
 
     /**
      * 员工Code
      */
-    @JsonIgnore
     private String empCode;
     /**
      * 员工密码
@@ -44,5 +46,9 @@ public class EmpInfo {
      * 验证码
      */
     @JsonIgnore
-    private String valicode;
+    private String validcode;
+    /**
+     * 用户姓名
+     */
+    private String realName;
 }

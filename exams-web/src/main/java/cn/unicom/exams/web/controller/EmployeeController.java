@@ -21,6 +21,7 @@ import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,6 +55,7 @@ public class EmployeeController {
 
     @Autowired
     private ISysDeptService deptService;
+
 
     @GetMapping("/empList")
     public String empList(){
@@ -184,67 +186,14 @@ public class EmployeeController {
             }
             ExcelReader reader = ExcelUtil.getReader(excelinfo.getInputStream());
             List<Map<String, Object>> maps = reader.readAll();
-
-
+            Integer count=employeeService.importEmpInfo(maps);
+            return new Response(200,"导入员工信息成功,共导入"+count+"条",count);
         }catch (Exception e){
-
+           log.error("导入员工信息出错："+e.getMessage());
+           return new Response(500,"导入员工信息错误");
         }
-        return null;
     }
 
-    @PostMapping("/login")
-    @ResponseBody
-    public Response login(String code,Long timestamp){
-        code="["+code+"]";
-        try{
-            List<EmpInfo> empInfos = JSON.parseArray(code, EmpInfo.class);
-            if(empInfos!=null && empInfos.size()>0){
-                EmpInfo empInfo=empInfos.get(0);
-                if(!"".equals(empInfo.getValicode())){
-                    //1、从数据库或Redis提取验证码信息
-                    //2、进行验证码验证
-                    if(empInfo.getValicode().equalsIgnoreCase("abc")){
-
-                    }else{
-                        String text = producer.createText();
-                        //写到数据库或Redis中
-                        return new Response(550,"验证码错误!",text);
-                    }
-                }
-                QueryWrapper<SysEmployee> queryWrapper=new QueryWrapper<>();
-                queryWrapper.eq("employeeCode",empInfo.getEmpCode());
-                SysEmployee employee = employeeService.getOne(queryWrapper);
-                if(employee == null ){
-                    return new Response(400,"用户不存在！");
-                }
-                String pwd=MD5Utils.getAuthenticationInfo(empInfo.getPassword(), employee.getSalt());
-                if(!pwd.equals(employee.getPassword())){
-                    String text="";
-                    if(employee.getLoginFailureTimes()>=3){
-                        //生成文字验证码
-                        text = producer.createText();
-                        //写到数据库或Redis中
-                    }
-                    employee.setLoginFailureTimes(employee.getLoginFailureTimes()+1);
-                    employeeService.updateById(employee);
-                    return new Response(500,"用户名或密码错误!",text);
-                }
-                empInfo.setId(Long.parseLong(employee.getEmployeeCode()));
-                empInfo.setDeptId(employee.getDeptId());
-                SysDept dept = deptService.getById(employee.getDeptId());
-                empInfo.setDeptName(dept.getDeptname());
-                empInfo.setEmpImg("");
-                return new Response(200,"登录成功!",empInfo);
-            }else{
-                return new Response(560,"传递参数错误!");
-            }
-
-        }catch (Exception e){
-            log.error(e.getMessage());
-            return new Response(600,"系统错误！");
-        }
-
-    }
 
     @PostMapping("/resetPwdEmpByIds")
     @ResponseBody
@@ -269,19 +218,16 @@ public class EmployeeController {
         }
     }
 
-    @PostMapping("/empTestInfo")
+    @GetMapping("/getEmployeeCount")
     @ResponseBody
-    public Response empTestInfo(String code,Long timestamp){
-        //EncryptUtils解密code
-        Long empCode=Long.parseLong(code);
+    public Response getEmployeeCount(){
         try{
-            EmpTestInfo testInfo = employeeService.getEmpTestInfoByEmpCode(empCode);
-            return new Response(200, "个人信息反馈成功！",testInfo);
+            int count = employeeService.count();
+            return new Response(200, "",count);
         }catch (Exception e){
-            log.error(e.getMessage());
-            return new Response(500, "系统错误！");
+            log.error("提取员工数量失败："+e.getMessage());
+            return new Response(500, "提取员工数量失败！");
         }
-
     }
 
 

@@ -43,12 +43,22 @@ public class SysTestresult implements Serializable {
     /**
      * 分数
      */
-    private Float score;
+    private Integer score;
 
     /**
      * 是否通过
      */
     private String outcome;
+    /**
+     * 答题时长(分)
+     */
+    @TableField("testDuration")
+    private Integer testDuration;
+    /**
+     * 返回次数
+     */
+    @TableField("returnCount")
+    private Integer returnCount;
 
     /**
      * 考试日期

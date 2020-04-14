@@ -12,7 +12,7 @@ import java.util.List;
 public class UnLearnResource {
 
     private  Long empID;
-    private  Long departmentId;
+    private  Long departmentID;
     private Integer showNum;
     private Integer pageNum;
     private Long totalNum;

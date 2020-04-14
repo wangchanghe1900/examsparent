@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.unicom.exams.service.mapper.SysDeptreturnMapper">
+  <select id="getDeptTestStatisInfo" resultType="cn.unicom.exams.model.vo.DeptTestStatisInfo">
+        select c.deptName,b.testName, a.totalEmployee deptEmpCount,a.returnCount ,a.AvgCount avgCount from sys_deptreturn a
+        INNER JOIN sys_testpaper b on a.t_id=b.id
+        INNER JOIN sys_dept c on c.id=a.dept_id
+        ${ew.customSqlSegment}
 
+  </select>
 </mapper>
