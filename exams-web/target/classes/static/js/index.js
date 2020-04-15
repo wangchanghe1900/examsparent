@@ -34,8 +34,8 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 			 $("#userInfo").append(info);
 			 var p="<a class='img' title='我的头像' ><img src='images/xm.jpg' class='userAvatar'></a>";
 			$(".user-photo").append(p);
-			 var u="<p>你好！<span class='userName'>"+data.realname+"</span>, 欢迎登录</p>"
-             $(".user-photo").append(u)
+			 var u="<p>所属部门:<span class='deptName'>"+data.deptname+"</span></p>";
+             $(".user-photo").append(u);
 		}
 
 	});

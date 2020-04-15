@@ -71,11 +71,13 @@ public class RoleController {
     }
 
     @GetMapping("/roleList")
+    @RequiresPermissions("role:list")
     public String roleList(){
         return "role/rolelist";
     }
 
     @GetMapping("/getRoleList")
+    @RequiresPermissions("role:find")
     @ResponseBody
     public WebResponse getRoleList(int page, int limit, SysRole role){
         try {
@@ -110,11 +112,13 @@ public class RoleController {
     }
 
     @GetMapping("/editRoleList")
+    @RequiresPermissions("role:edit")
     public String editRoleList(){
         return "role/roleAdd";
     }
 
     @GetMapping("/addRoleList")
+    @RequiresPermissions("role:add")
     public String addRoleList(){
         return "role/roleAdd";
     }
@@ -146,6 +150,7 @@ public class RoleController {
     }
 
     @PostMapping("/delRoleByIds")
+    @RequiresPermissions("role:batchdel")
     @ResponseBody
     public Boolean delRoleByIds(String roleIds){
         String[] arr=roleIds.split(",");
@@ -158,6 +163,7 @@ public class RoleController {
     }
 
     @GetMapping("/delRoleById")
+    @RequiresPermissions("role:delete")
     @ResponseBody
     public Boolean delRoleById(Long id){
         if(id!=null){
@@ -168,6 +174,7 @@ public class RoleController {
     }
 
     @GetMapping("/setPermissList")
+    @RequiresPermissions("role:setpower")
     public String setPermissList(){
         return "role/permissSet";
     }

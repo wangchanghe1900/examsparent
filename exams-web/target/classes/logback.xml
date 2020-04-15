@@ -9,7 +9,7 @@
     <!-- 日志级别过滤器 -->
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
       <!-- 过滤的级别 -->
-      <level>debug</level>
+      <level>info</level>
       <!-- 匹配时的操作：接收（记录） -->
       <onMatch>ACCEPT</onMatch>
       <!-- 不匹配时的操作：拒绝（不记录） -->
@@ -56,10 +56,30 @@
     <onMismatch>DENY</onMismatch>
   </filter>
 </appender>
+  <!--输出到error-->
+  <appender name="warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>/logs/exams/service-web-interface.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <append>true</append>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+      <charset>utf-8</charset>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印ERROR日志 -->
+      <level>WARN</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>10MB</MaxFileSize>
+    </triggeringPolicy>
+  </appender>
   <!-- 基于dubug处理日志：具体控制台或者文件对日志级别的处理还要看所在appender配置的filter，如果没有配置filter，则使用root配置 -->
   <root level="info">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="LOG-OUT" />
     <appender-ref ref="error" />
+    <appender-ref ref="warn" />
   </root>
 </configuration>

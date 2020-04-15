@@ -8,6 +8,7 @@ import cn.unicom.exams.service.service.*;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,12 +42,14 @@ public class StatisticsController {
     private ISysDeptreturnService deptreturnService;
 
     @GetMapping("teststatisList")
+    @RequiresPermissions("teststatis:list")
     public String teststatisList(){
         return "statis/teststatistics";
     }
 
 
     @GetMapping("/getTestStatisList")
+    @RequiresPermissions("teststatis:find")
     @ResponseBody
     public WebResponse getTestStatisList(int page, int limit, TestStatisticsVo testStatisticsVo){
         try{
@@ -60,11 +63,13 @@ public class StatisticsController {
     }
 
     @GetMapping("/untestList")
+    @RequiresPermissions("untest:list")
     public String untestList(){
         return "/statis/untest";
     }
 
     @GetMapping("/getUntestList")
+    @RequiresPermissions("untest:find")
     @ResponseBody
     public WebResponse getUntestList(int page, int limit, String  data){
         try {
@@ -79,11 +84,13 @@ public class StatisticsController {
     }
 
     @GetMapping("emplearntimesList")
+    @RequiresPermissions("emplearned:list")
     public String emplearntimesList(){
         return "statis/statisresource";
     }
 
     @GetMapping("/getUnlearnResourceList")
+    @RequiresPermissions("emplearned:find")
     @ResponseBody
     public WebResponse getUnlearnResourceList(int page, int limit,Long deptId){
         try{
@@ -97,6 +104,7 @@ public class StatisticsController {
     }
 
     @GetMapping("/getLearnResourceList")
+    @RequiresPermissions("emplearned:find")
     @ResponseBody
     public WebResponse getLearnResourceList(int page,int limit,Long deptId){
         try{
@@ -110,6 +118,7 @@ public class StatisticsController {
     }
 
     @GetMapping("/getEmpTestInfoList")
+    @RequiresPermissions("emplearned:find")
     @ResponseBody
     public WebResponse getEmpTestInfoList(int page,int limit,Long deptId){
         try{
@@ -123,11 +132,13 @@ public class StatisticsController {
     }
 
     @GetMapping("/deptstatisList")
+    @RequiresPermissions("deptstatis:list")
     public String deptstatisList(){
         return "statis/deptstatistest";
     }
 
     @GetMapping("/getDeptResourceList")
+    @RequiresPermissions("deptstatis:find")
     @ResponseBody
     public WebResponse getDeptResourceList(int page,int limit,Long deptId){
         try{
@@ -141,6 +152,7 @@ public class StatisticsController {
     }
 
     @GetMapping("/getDeptTestReturnList")
+    @RequiresPermissions("deptstatis:find")
     @ResponseBody
     public WebResponse getDeptTestReturnList(int page,int limit,Long deptId){
         try{

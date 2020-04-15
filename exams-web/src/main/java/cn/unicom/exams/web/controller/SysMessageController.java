@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,11 +35,13 @@ public class SysMessageController {
     private ISysUsermessagesService usermessagesService;
 
     @GetMapping("/messageList")
+    @RequiresPermissions("message:list")
     public String messageList(){
         return "notice/messageList";
     }
 
     @GetMapping("/getMessageList")
+    @RequiresPermissions("message:find")
     @ResponseBody
     public WebResponse getMessageList(int page, int limit, String data){
         try{

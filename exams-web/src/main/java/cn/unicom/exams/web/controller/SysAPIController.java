@@ -10,19 +10,17 @@ import cn.unicom.exams.web.utils.ShiroUtils;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.code.kaptcha.Constants;
-import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.ZoneOffset;
 import java.util.regex.Pattern;
 
 /**
@@ -55,6 +53,8 @@ public class SysAPIController {
     @PostMapping("/test/testpaper")
     public Response testpaper(String code, Long timestamp){
         try {
+            LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
+            log.warn(code+"----testpaper----"+localDateTime.toString());
             ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
             ExamInfo examInfo = testpaperService.getExamInfoByEmpCode(paramsVo.getEmpID(), paramsVo.getExamID(), paramsVo.getShowNum(), paramsVo.getPageNum());
             return new Response(200,"考题提取成功",examInfo);
@@ -68,6 +68,8 @@ public class SysAPIController {
     public Response login(String code,Long timestamp){
         //code="["+code+"]";
         try{
+            LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
+            log.warn(code+"----login----"+localDateTime.toString());
             EmpInfo empInfo = JSON.parseObject(code, EmpInfo.class);
             if(!StringUtils.isEmpty(empInfo)){
                 if(!StringUtils.isEmpty(empInfo.getValidcode())){
@@ -115,6 +117,8 @@ public class SysAPIController {
     public Response empTestInfo(String code,Long timestamp){
         //EncryptUtils解密code
         try{
+            LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
+            log.warn(code+"----empTestInfo----"+localDateTime.toString());
             ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
             EmpTestInfo testInfo = employeeService.getEmpTestInfoByEmpCode(paramsVo.getEmpID());
             return new Response(200, "个人信息反馈成功",testInfo);
@@ -129,6 +133,8 @@ public class SysAPIController {
     public Response unlearnedResource(String code,Long  timestamp){
         try{
             //EncryptUtils解密 {"empID"："","showNum":10,"pageNum":1}
+            LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
+            log.warn(code+"----unlearnedResource----"+localDateTime.toString());
             ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
 /*            Integer showNum=10;
             Integer pageNum=1;
@@ -145,6 +151,8 @@ public class SysAPIController {
     public Response learnedResource(String code,Long  timestamp){
         try{
             //EncryptUtils解密 {"empID"："","showNum":10,"pageNum":1}
+            LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
+            log.warn(code+"----learnedResource----"+localDateTime.toString());
             ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
 /*            Integer showNum=10;
             Integer pageNum=1;
@@ -160,6 +168,8 @@ public class SysAPIController {
     @PostMapping("resource/learnedResult")
     public Response learnedResult(String code,Long timestamp){
         try {
+            LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
+            log.warn(code+"----learnedResult----"+localDateTime.toString());
             ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
 /*            Long empID=18610810006L;
             Long testID=23L;
@@ -177,6 +187,8 @@ public class SysAPIController {
     @PostMapping("/test/testResult")
     public Response testResult(String code,Long timestamp){
         try {
+            LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
+            log.warn(code+"----testResult----"+localDateTime.toString());
             code="{\"empID\":\"18610810006\",\"examID\":\"21\",\"totalNum\":5,\"answerNum\":5," +
                     "\"quitTimes\":3,\"duration\":20,\"optionList\":[{\"questNo\":\"2\",\"answer\":\"A\"}," +
                     "{\"questNo\":\"7\",\"answer\":\"A,B,C\"}," +
@@ -200,6 +212,8 @@ public class SysAPIController {
     @PostMapping("/test/testedinfo")
     public Response testedinfo(String code,Long timestamp){
         try{
+            LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
+            log.warn(code+"----testedinfo----"+localDateTime.toString());
             ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
             TestedInfo testedInfo = testresultService.gettestedInfoByEmpID(paramsVo.getEmpID(), paramsVo.getShowNum(), paramsVo.getPageNum());
             return new Response(200,"数据提取成功",testedInfo);
@@ -210,8 +224,10 @@ public class SysAPIController {
     }
 
     @PostMapping("/emp/resetPwd")
-    public Response resetPwd(String code,Long Timestamp){
+    public Response resetPwd(String code,Long timestamp){
         try{
+            LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
+            log.warn(code+"----resetPwd----"+localDateTime.toString());
             ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
             String oldPassword=paramsVo.getOldPassword();
             String newPassword=paramsVo.getNewPassword();

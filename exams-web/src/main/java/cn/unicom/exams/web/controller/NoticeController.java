@@ -58,12 +58,14 @@ public class NoticeController {
 
 
     @GetMapping("/noticeList")
+    @RequiresPermissions("notice:list")
     public String noticeList(){
         return "notice/noticeList";
     }
 
 
     @GetMapping("/getNoticeList")
+    @RequiresPermissions("notice:find")
     @ResponseBody
     public WebResponse getNoticeList(int page, int limit,NoticeVo noticeVo){
         try{
@@ -98,6 +100,7 @@ public class NoticeController {
     }
 
     @GetMapping("/addNoticeList")
+    @RequiresPermissions("notice:add")
     public String addNoticeList(){
         return "notice/noticeAdd";
     }
@@ -196,6 +199,7 @@ public class NoticeController {
     }
 
     @GetMapping("/delNoticeById")
+    @RequiresPermissions("notice:delete")
     @ResponseBody
     public Response delNoticeById(Long id){
         try{
@@ -211,6 +215,7 @@ public class NoticeController {
     }
 
     @PostMapping("/delNoticeByIds")
+    @RequiresPermissions("notice:batchdel")
     @ResponseBody
     public Response delNoticeByIds(String ids){
         try{
@@ -233,6 +238,7 @@ public class NoticeController {
     }
 
     @GetMapping("/editNoticeList")
+    @RequiresPermissions("notice:edit")
     public String editNoticeList(){
         return "notice/noticeAdd";
     }
@@ -319,6 +325,7 @@ public class NoticeController {
     }
 
     @GetMapping("/showDetailList")
+    @RequiresPermissions("notice:detail")
     public String showDetailList(){
         return "notice/noticeDetail";
     }

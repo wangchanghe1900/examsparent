@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,7 +53,8 @@ public class ResourceController {
     @Autowired
     private ISysLearndurationService learndurationService;
 
-    @GetMapping("/commResourceList")
+    @GetMapping("/commResourceList")//commResource:list
+    @RequiresPermissions("commResource:list")
     public String commResourceList(){
         return "resource/commresourceList";
     }
@@ -81,6 +83,7 @@ public class ResourceController {
     }
 
     @GetMapping("/commResourceAdd")
+    @RequiresPermissions("commres:add")
     public String commResourceAdd(){
         return "resource/commonAdd";
     }
@@ -111,6 +114,7 @@ public class ResourceController {
     }
 
     @GetMapping("/editCommResourceList")
+    @RequiresPermissions("commres:edit")
     public String editCommResourceList(){
         return "resource/commonEdit";
     }
@@ -151,7 +155,7 @@ public class ResourceController {
         }
     }
 
-    @GetMapping("/delResourceById")
+    @GetMapping("/delResourceById")//commres:batchdel
     @ResponseBody
     public Response delResourceById(Long id,String url,HttpServletRequest request){
         try{
@@ -207,6 +211,7 @@ public class ResourceController {
     }
 
     @GetMapping("/commPDFList")
+    @RequiresPermissions("commres:detail")
     public String commPDFList(){
         return "resource/commPDFList";
     }
@@ -217,6 +222,7 @@ public class ResourceController {
     }
 
     @GetMapping("/videoResourceAdd")
+    @RequiresPermissions("video:add")
     public String  videoResourceAdd(ResourceVo resourceVo){
         return "resource/videoAdd";
     }
@@ -270,6 +276,7 @@ public class ResourceController {
     }
 
     @GetMapping("/editVideoResourceList")
+    @RequiresPermissions("video:edit")
     public String editVideoResourceList(){
         return "resource/videoEdit";
     }
@@ -306,25 +313,30 @@ public class ResourceController {
     }
 
     @GetMapping("/videoDetailView")
+    @RequiresPermissions("video:detail")
     public String videoDetailView(){
         return "resource/videoView";
     }
 
     @GetMapping("/audioList")
+    @RequiresPermissions("audio:list")
     public String audioList(){
         return "resource/audioResourceList";
     }
 
     @GetMapping("/audioResourceAdd")
+    @RequiresPermissions("audio:add")
     public String audioResourceAdd(){
         return "resource/audioAdd";
     }
 
     @GetMapping("/editAudioResourceList")
+    @RequiresPermissions("audio:edit")
     public String editAudioResourceList(){
         return "resource/audioEdit";
     }
     @GetMapping("/audioDetailView")
+    @RequiresPermissions("audio:detail")
     public String audioDetailView(){
         return "resource/audioView";
     }

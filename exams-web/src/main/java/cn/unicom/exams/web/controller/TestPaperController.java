@@ -44,6 +44,7 @@ public class TestPaperController {
     private ButtonAuthorUtils buttonAuthorUtils;
 
     @GetMapping("/testList")
+    @RequiresPermissions("test:list")
     public String testList(){
         return "test/testList";
     }
@@ -55,6 +56,7 @@ public class TestPaperController {
     }
 
     @GetMapping("/getTestList")
+    @RequiresPermissions("test:find")
     @ResponseBody
     public WebResponse getTestList(int page, int limit, TestPaperVo testPaperVo){
         Subject subject = ShiroUtils.getSubject();
@@ -156,6 +158,7 @@ public class TestPaperController {
 
     }
     @PostMapping("/delTestInfoByIds")
+    @RequiresPermissions("test:batchdel")
     @ResponseBody
     public Response delTestInfoByIds(String ids,String files,HttpServletRequest request){
         try{
@@ -179,6 +182,7 @@ public class TestPaperController {
     }
 
     @GetMapping("/delTestInfoById")
+    @RequiresPermissions("test:delete")
     @ResponseBody
     public Response delTestInfoById(Integer id,String url,HttpServletRequest request){
         try{
@@ -194,6 +198,7 @@ public class TestPaperController {
     }
 
     @GetMapping("/editTestInfoList")
+    @RequiresPermissions("test:edit")
     public String editTestInfoList(){
         return "test/testAdd";
     }

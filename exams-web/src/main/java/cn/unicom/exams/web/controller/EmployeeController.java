@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -58,11 +59,13 @@ public class EmployeeController {
 
 
     @GetMapping("/empList")
+    @RequiresPermissions("emp:list")
     public String empList(){
         return "employee/empList";
     }
 
     @GetMapping("/getEmpList")
+    @RequiresPermissions("emp:find")
     @ResponseBody
     public WebResponse getEmpList(int page, int limit, String data){
         EmployeeVo employeeVo=new EmployeeVo();
@@ -95,6 +98,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/delEmployeeById")
+    @RequiresPermissions("emp:delete")
     @ResponseBody
     public Response delEmployeeById(Long id){
         try{
@@ -107,6 +111,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/delEmployeeByIds")
+    @RequiresPermissions("emp:batchdel")
     @ResponseBody
     public Response delEmployeeByIds(String ids){
         try{
@@ -123,6 +128,7 @@ public class EmployeeController {
         }
     }
     @GetMapping("/addEmpList")
+    @RequiresPermissions("emp:add")
     public String addEmpList(){
         return "employee/empAdd";
     }
@@ -161,16 +167,19 @@ public class EmployeeController {
         }
     }
     @GetMapping("/editempList")
+    @RequiresPermissions("emp:edit")
     public String editempList(){
         return "employee/empAdd";
     }
 
     @GetMapping("/showDetailList")
+    @RequiresPermissions("emp:detail")
     public String showDetailList(){
         return "employee/empDetail";
     }
 
     @GetMapping("/importEmpList")
+    @RequiresPermissions("emp:import")
     public String importEmpList(){
         return "employee/empImport";
     }
@@ -196,6 +205,7 @@ public class EmployeeController {
 
 
     @PostMapping("/resetPwdEmpByIds")
+    @RequiresPermissions("emp:resetPwd")
     @ResponseBody
     public Response resetPwdEmpByIds(String ids){
         try{

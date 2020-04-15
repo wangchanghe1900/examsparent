@@ -32,7 +32,7 @@ layui.use(['form','layer','table','laytpl','treeSelect','laydate'],function(){
                 if(data.isBatchDel){
                     $('div:nth-child(4)').removeClass("disp");
                 }
-                if(data.isDetail){
+                if(data.isImport){
                     $('div:nth-child(5)').removeClass("disp");
                 }
                 if(data.isResetPwd){

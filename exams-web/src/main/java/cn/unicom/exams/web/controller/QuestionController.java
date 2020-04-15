@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,7 @@ public class QuestionController {
     private ISysOptionsService optionsService;
 
     @GetMapping("/questionList")
+    @RequiresPermissions("question:list")
     public String questionList(){
         return "question/questionList";
     }
@@ -71,6 +73,7 @@ public class QuestionController {
     }
 
     @GetMapping("/getquestionList")
+    @RequiresPermissions("question:find")
     @ResponseBody
     public WebResponse getquestionList(int page, int limit,QuestionVo questionVo){
         try{
@@ -96,6 +99,7 @@ public class QuestionController {
     }
 
     @GetMapping("/addSingleList")
+    @RequiresPermissions("question:singleadd")
     public String addSingleList(){
         return "question/singleAdd";
     }
@@ -230,6 +234,7 @@ public class QuestionController {
 
     }
     @PostMapping("/delQuestionByIds")
+    @RequiresPermissions("question:batchdel")
     @ResponseBody
     public Response delQuestionByIds(String ids){
         try {
@@ -251,6 +256,7 @@ public class QuestionController {
     }
 
     @GetMapping("/delQuestionById")
+    @RequiresPermissions("question:delete")
     @ResponseBody
     public Response delQuestionById(Long id){
         try{
@@ -266,26 +272,31 @@ public class QuestionController {
     }
 
     @GetMapping("/addMultipleList")
+    @RequiresPermissions("question:multipleadd")
     public String addMultipleList(){
         return "question/multipleAdd";
     }
     //addJudgeList
     @GetMapping("/addJudgeList")
+    @RequiresPermissions("question:judgeadd")
     public String addJudgeList(){
         return "question/judgeAdd";
     }
 
     @GetMapping("/editQuestionList")
+    @RequiresPermissions("question:edit")
     public String editQuestionList(String quesName){
         return "question/"+quesName;
     }
 
     @GetMapping("/showDetailList")
+    @RequiresPermissions("question:detail")
     public String showDetailList(){
         return "question/showDetail";
     }
 
     @GetMapping("/importQuestionList")
+    @RequiresPermissions("question:import")
     public String importQuestionList(){
         return "question/importQuestions";
     }

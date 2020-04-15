@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,7 @@ public class DepatmentController {
     }
 
     @GetMapping("/getAllDeptInfo")
+    @RequiresPermissions("dept:find")
     @ResponseBody
     public List<DeptInfo> getAllDeptInfo(){
         try{
@@ -61,6 +63,7 @@ public class DepatmentController {
     }
 
     @PostMapping("/editDept")
+    @RequiresPermissions("dept:edit")
     @ResponseBody
     public Response editDept(DeptVo deptVo){
         try{
@@ -83,6 +86,7 @@ public class DepatmentController {
     }
 
     @PostMapping("/delDept")
+    @RequiresPermissions("dept:delete")
     @ResponseBody
     public Response delDept(DeptVo deptVo){
         try{
@@ -102,6 +106,7 @@ public class DepatmentController {
     }
 
     @GetMapping("/addDeptList")
+    @RequiresPermissions("dept:add")
     public String addDeptList(){
         return "dept/deptAdd";
     }

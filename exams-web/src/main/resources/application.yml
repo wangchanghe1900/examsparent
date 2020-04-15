@@ -50,7 +50,7 @@ spring:
       time-to-live: 3m
 logging:
   level:
-    root: debug
+    root: info
     #cn.unicom.exams.service.mapper：debug
 management:
   endpoints:
