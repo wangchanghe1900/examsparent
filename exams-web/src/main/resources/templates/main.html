@@ -90,11 +90,117 @@
 	  <div class="layui-card">
 		  <div class="layui-card-header"><i class="seraph icon-chart-line"></i>报表统计</div>
 		  <div class="layui-card-body">
-			  <div id="echarts-records" style="width: 100%;min-height:200px"></div>
+			  <div id="echarts-records" style="width: 100%;min-height:400px"></div>
 		  </div>
 	  </div>
   </div>
 	<script type="text/javascript" src="layui/layui.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/echarts.common.min.js"></script>
+  <script type="text/javascript" src="js/jquery-3.5.0.min.js"></script>
+<script>
+	var testData,studyData,answerData,dateData;
+	$.ajaxSettings.async = false;
+	var sesstestData=sessionStorage.getItem("testData");
+	if(sesstestData!=null){
+		testData=JSON.parse(sesstestData);
+	}else{
+		$.get('statis/getSevenTestResultCount',function (data) {
+			sessionStorage.setItem("testData",JSON.stringify(data));
+			testData=data;
+			//console.log(dataArr);
+		});
+	}
+	var sessstudyData=sessionStorage.getItem("studyData");
+	if(sessstudyData!=null){
+		studyData=JSON.parse(sessstudyData);
+	}else{
+		$.get('statis/getSevenLearnCount',function (data) {
+			sessionStorage.setItem("studyData",JSON.stringify(data));
+			studyData=data;
+			//console.log(dataArr);
+		});
+	}
+	var sessanswerData=sessionStorage.getItem("answerData");
+	if(sessanswerData!=null){
+		answerData=JSON.parse(sessanswerData);
+	}else{
+		$.get('statis/getSevenAnswerCount',function (data) {
+			sessionStorage.setItem("answerData",JSON.stringify(data));
+			answerData=data;
+		});
+	}
+
+	var sessdateData=sessionStorage.getItem("dateData");
+	if(sessdateData !=null){
+		dateData=JSON.parse(sessdateData);
+	}else{
+		$.get('statis/getSevenDate',function (data) {
+			sessionStorage.setItem("dateData",JSON.stringify(data));
+			dateData=data;
+			//console.log(dataArr);
+		});
+	}
+
+	$.ajaxSettings.async = true;
+	//console.log(dataArr);
+	var myChart = echarts.init(document.getElementById('echarts-records'));
+
+	// 指定图表的配置项和数据
+	var option = {
+		title: {
+			text: '系统使用分析'
+		},
+		tooltip: {
+			trigger: 'axis'
+		},
+		legend: {
+			data: ['考试人数', '学习人数', '答题数量']
+		},
+		grid: {
+			left: '3%',
+			right: '4%',
+			bottom: '3%',
+			containLabel: true
+		},
+		toolbox: {
+			feature: {
+				saveAsImage: {}
+			}
+		},
+		xAxis: {
+			type: 'category',
+			boundaryGap: false,
+			data: dateData//['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+		},
+		yAxis: {
+			type: 'value'
+		},
+		series: [
+			{
+				name: '考试人数',
+				type: 'line',
+				stack: '总量',
+				data: testData//[180, 132, 101, 134, 90, 230, 210]
+			},
+			{
+				name: '学习人数',
+				type: 'line',
+				stack: '总量',
+				data:studyData // [220, 182, 191, 234, 290, 330, 310]
+			},
+			{
+				name: '答题数量',
+				type: 'line',
+				stack: '总量',
+				data: answerData //[150, 232, 201, 154, 190, 330, 410]
+			}
+		]
+	};
+
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+
+</script>
 </body>
 </html>

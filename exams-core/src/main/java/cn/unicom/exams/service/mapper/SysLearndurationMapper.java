@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -61,5 +63,12 @@ public interface SysLearndurationMapper extends BaseMapper<SysLearnduration> {
      * @throws Exception
      */
     public IPage<LearnedResourceEmpInfo> getLearnedResEmpByPage(Page<SysLearnduration> page, @Param(Constants.WRAPPER) Wrapper<SysLearnduration> wrapper) throws Exception;
+
+    /**
+     * 查询员工7天内学习次数
+     * @return
+     * @throws Exception
+     */
+    public List<Integer> getSenvenLearnResourceCount() throws Exception;
 
 }

@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author 王长何
  * @create 2020-04-09 10:10
@@ -40,6 +44,9 @@ public class StatisticsController {
 
     @Autowired
     private ISysDeptreturnService deptreturnService;
+
+    @Autowired
+    private ISysTestquestionsService testquestionsService;
 
     @GetMapping("teststatisList")
     @RequiresPermissions("teststatis:list")
@@ -177,4 +184,57 @@ public class StatisticsController {
         }
     }
 
+    @GetMapping("/getSevenTestResultCount")
+    @ResponseBody
+    public List<Integer> getSevenTestResultCount(){
+        try{
+            List<Integer> sevenTestResultCount = testresultService.getSevenTestResultCount();
+            return sevenTestResultCount;
+        }catch (Exception e){
+            log.error("提取七天内考试人数错误："+e.getMessage());
+            //return  new Response(500,"提取系统考卷数量错误");
+        }
+        return null;
+    }
+
+    @GetMapping("/getSevenDate")
+    @ResponseBody
+    public List<String> getSevenDate(){
+        try{
+            List<String> dateList=new ArrayList<>();
+            LocalDate now = LocalDate.now();
+            for(int i=7;i>0;i--){
+                dateList.add(now.plusDays(-i).toString());
+            }
+            //System.out.println(now.plusDays(-1));
+            //List<Integer> sevenTestResultCount = testresultService.getSevenTestResultCount();
+            return dateList;
+        }catch (Exception e){
+            log.error("提取七天内日期："+e.getMessage());
+            return null;
+        }
+
+    }
+
+    @GetMapping("/getSevenLearnCount")
+    @ResponseBody
+    public List<Integer> getSevenLearnCount(){
+        try{
+           return learndurationService.getSenvenLearnResourceCount();
+        }catch (Exception e){
+            log.error("提取七天内学习次数错误："+e.getMessage());
+            return null;
+        }
+    }
+
+    @GetMapping("/getSevenAnswerCount")
+    @ResponseBody
+    public List<Integer> getSevenAnswerCount(){
+        try{
+            return testquestionsService.getSevenAnswerCount();
+        }catch (Exception e){
+            log.error("提取七天内答题数量错误："+e.getMessage());
+            return null;
+        }
+    }
 }

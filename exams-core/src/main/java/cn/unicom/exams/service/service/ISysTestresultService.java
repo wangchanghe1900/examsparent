@@ -8,6 +8,8 @@ import cn.unicom.exams.model.vo.TestedInfo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -45,4 +47,11 @@ public interface ISysTestresultService extends IService<SysTestresult> {
      * @throws Exception
      */
     public IPage<EmpTestResultInfo> getEmpTestResultInfoByPage(int page, int limit, Long deptID) throws Exception;
+
+    /**
+     * 提取7天内每天考试人数
+     * @return
+     * @throws Exception
+     */
+    public List<Integer> getSevenTestResultCount() throws  Exception;
 }

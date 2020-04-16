@@ -5,6 +5,8 @@ import cn.unicom.exams.model.vo.LearnedResourceEmpInfo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -33,5 +35,12 @@ public interface ISysLearndurationService extends IService<SysLearnduration> {
      * @throws Exception
      */
     public IPage<LearnedResourceEmpInfo> getLearnedResEmpByPage(int page, int limit, Long deptID) throws Exception;
+
+    /**
+     * 查询7天员工学习次数
+     * @return
+     * @throws Exception
+     */
+    public List<Integer> getSenvenLearnResourceCount() throws Exception;
 
 }

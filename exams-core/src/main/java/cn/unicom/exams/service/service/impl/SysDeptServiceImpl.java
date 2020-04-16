@@ -52,10 +52,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     }
 
     private List<DeptInfo> filterDeptList(Long pId,List<SysDept> deptList){
-/*        QueryWrapper<SysDept> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("parent_id",pId);
-        List<SysDept> subDepts = deptMapper.selectList(queryWrapper);*/
-
         List<SysDept> subDepts = deptList.stream().filter(d -> d.getParentId().intValue() == pId.intValue()).collect(Collectors.toList());
         List<DeptInfo> depts=new ArrayList<>();
         for(SysDept dept: subDepts){
@@ -66,7 +62,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             info.setContent(dept.getContent());
             info.setOrderNum(dept.getOrderNum());
             info.setParentId(dept.getParentId());
-            Optional<SysDept> first = deptList.stream().filter(s -> s.getId() == dept.getParentId()).findFirst();
+            Optional<SysDept> first = deptList.stream().filter(s -> s.getId().intValue() == dept.getParentId().intValue()).findFirst();
             if(!first.isPresent()){
                 info.setParentName("");
             }else {
@@ -103,7 +99,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             info.setContent(dept.getContent());
             info.setOrderNum(dept.getOrderNum());
             info.setParentId(dept.getParentId());
-            Optional<SysDept> first = deptList.stream().filter(s -> s.getId() == dept.getParentId()).findFirst();
+            Optional<SysDept> first = deptList.stream().filter(s -> s.getId().intValue() == dept.getParentId().intValue()).findFirst();
             if(!first.isPresent()){
                 info.setParentName("");
             }else {

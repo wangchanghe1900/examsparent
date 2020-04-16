@@ -187,4 +187,9 @@ public class SysTestresultServiceImpl extends ServiceImpl<SysTestresultMapper, S
 
         return testresultMapper.getEmpTestResultInfoByPage(ipage,queryWrapper);
     }
+
+    @Override
+    public List<Integer> getSevenTestResultCount() throws Exception {
+        return testresultMapper.getSevenTestResultCount();
+    }
 }

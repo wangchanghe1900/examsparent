@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -53,5 +55,12 @@ public interface SysTestresultMapper extends BaseMapper<SysTestresult> {
      * @throws Exception
      */
     public IPage<EmpTestResultInfo> getEmpTestResultInfoByPage(Page<SysTestresult> page,@Param(Constants.WRAPPER) Wrapper<SysTestresult> wrapper) throws Exception;
+
+    /**
+     *提取七天内每天考试人数
+     * @return
+     * @throws Exception
+     */
+    public List<Integer> getSevenTestResultCount() throws Exception;
 
 }

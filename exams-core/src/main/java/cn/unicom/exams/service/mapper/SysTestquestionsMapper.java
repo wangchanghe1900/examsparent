@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -23,5 +25,12 @@ public interface SysTestquestionsMapper extends BaseMapper<SysTestquestions> {
      * @throws Exception
      */
     public Integer getEmpTestedByEmpCode(@Param(Constants.WRAPPER) Wrapper<SysTestquestions> wrapper) throws Exception;
+
+    /**
+     * 查询7天内员工答题数量
+     * @return
+     * @throws Exception
+     */
+    public List<Integer> getSevenAnswerCount() throws Exception;
 
 }

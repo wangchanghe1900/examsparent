@@ -27,4 +27,15 @@
         INNER JOIN sys_testpaper d on d.id=a.t_id
         ${ew.customSqlSegment}
     </select>
+
+    <select id="getSevenTestResultCount" resultType="java.lang.Integer">
+        select sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -7 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -6 day) then 1 else 0 end) testCount  from sys_testresult  union all
+        select sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -6 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -5 day) then 1 else 0 end) 6day from sys_testresult  union all
+        select sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -5 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -4 day) then 1 else 0 end) 5day from sys_testresult  union all
+        select sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -4 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -3 day) then 1 else 0 end) 4day from sys_testresult  union all
+        select sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -3 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -2 day) then 1 else 0 end) 3day from sys_testresult  union all
+        select sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -2 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -1 day) then 1 else 0 end) 2day from sys_testresult  union all
+        select sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -1 day)  then 1 else 0 end) 1day
+        from sys_testresult
+    </select>
 </mapper>

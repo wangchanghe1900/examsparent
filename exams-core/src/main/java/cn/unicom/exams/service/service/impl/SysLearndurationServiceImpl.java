@@ -58,4 +58,9 @@ public class SysLearndurationServiceImpl extends ServiceImpl<SysLearndurationMap
 
         return learndurationMapper.getLearnedResEmpByPage(ipage,queryWrapper);
     }
+
+    @Override
+    public List<Integer> getSenvenLearnResourceCount() throws Exception {
+        return learndurationMapper.getSenvenLearnResourceCount();
+    }
 }

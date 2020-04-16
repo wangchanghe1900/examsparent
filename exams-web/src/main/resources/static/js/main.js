@@ -1,16 +1,10 @@
-//获取系统时间
-var newDate = '';
-//getLangDate();
-//值小于10时，在前面补0
-function dateFilter(date){
-    if(date < 10){return "0"+date;}
-    return date;
-}
-layui.use(['form','element','layer','jquery'],function(){
+layui.use(['form','element','layer','jquery','util'],function(){
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
-        element = layui.element;
+        element = layui.element,
         $ = layui.jquery;
+    var util = layui.util;
+    //var echarts=layui.echarts;
     //上次登录时间【此处应该从接口获取，实际使用中请自行更换】
     //$(".loginTime").html(newDate.split("日")[0]+"日</br>"+newDate.split("日")[1]);
     //icon动画
@@ -98,5 +92,27 @@ layui.use(['form','element','layer','jquery'],function(){
 
     }
     init();
+    util.fixbar({
+        bar1: true
+        ,click: function(type){
+            //console.log(type);
+            if(type === 'bar1'){
+                layer.msg("点我了@——@");
+            }
+        }
+    });
+
+    function getdateArr(){
+        var dateArr=[];
+        var myDate = new Date();
+        var date = myDate.getDate();
+        date=date-7;
+        myDate.setDate(date);
+        var newDate=util.toDateString(myDate, "yyyy-MM-dd");
+        dateArr.push(newDate);
+        //console.log(newDate);
+        return dateArr;
+
+    }
 
 })
