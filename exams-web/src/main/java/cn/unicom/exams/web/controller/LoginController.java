@@ -1,8 +1,10 @@
 package cn.unicom.exams.web.controller;
 
+import cn.unicom.exams.model.entity.SysLoginlog;
 import cn.unicom.exams.model.entity.SysUser;
 import cn.unicom.exams.model.vo.UserInfo;
 import cn.unicom.exams.model.web.Response;
+import cn.unicom.exams.service.service.ISysLoginlogService;
 import cn.unicom.exams.service.service.ISysUserService;
 import cn.unicom.exams.web.utils.ShiroUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -34,6 +36,9 @@ public class LoginController {
 
     @Autowired
     private ISysUserService sysUserService;
+
+    @Autowired
+    private ISysLoginlogService sysLoginlogService;
 
 
     @GetMapping("/")
@@ -76,32 +81,40 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseBody
     public Response login(HttpServletRequest request, String username, String password, String code){
-            try{
-                String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
-                if(!code.equalsIgnoreCase(kaptcha)){
-                    return new Response(500,"验证码错误！");
-                }
-                Subject subject = ShiroUtils.getSubject();
-                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-                subject.login(token);
-                SysUser user=new SysUser();
-                user.setLastlogintime(LocalDateTime.now());
-                QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
-                queryWrapper.eq("username",username);
-                sysUserService.update(user,queryWrapper);
-            }catch (UnknownAccountException e) {
-                return new Response(500,e.getMessage());
-            }catch (IncorrectCredentialsException e) {
-                return new Response(500,"账号或密码不正确！");
-            }catch (LockedAccountException e) {
-                return new Response(500,"账号已被锁定,请联系管理员");
-            }catch (AuthenticationException e) {
-                return new Response(500,"账户验证失败");
-            }catch(Exception e){
-                return new Response(500,e.getMessage());
-            }
-            return new Response(200,"验证通过",username);
 
+        try{
+            String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+            if(!code.equalsIgnoreCase(kaptcha)){
+                return new Response(500,"验证码错误！");
+            }
+            Subject subject = ShiroUtils.getSubject();
+            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+            subject.login(token);
+            SysUser user=new SysUser();
+            user.setLastlogintime(LocalDateTime.now());
+            QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("username",username);
+            sysUserService.update(user,queryWrapper);
+            SysLoginlog log=new SysLoginlog();
+            log.setUserCode(username);
+            log.setRequestPath(request.getRequestURI());
+            log.setRequestAddress(request.getRemoteAddr());
+            log.setLoginDateTime(LocalDateTime.now());
+            log.setLoginStatus("成功");
+            sysLoginlogService.save(log);
+        }catch (UnknownAccountException e) {
+            return new Response(500,e.getMessage());
+        }catch (IncorrectCredentialsException e) {
+            return new Response(500,"账号或密码不正确！");
+        }catch (LockedAccountException e) {
+            return new Response(500,"账号已被锁定,请联系管理员");
+        }catch (AuthenticationException e) {
+            return new Response(500,"账户验证失败");
+        }catch(Exception e){
+            return new Response(500,e.getMessage());
+        }
+
+        return new Response(200,"验证通过",username);
 
     }
    @GetMapping("/main")

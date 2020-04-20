@@ -2,6 +2,7 @@ package cn.unicom.exams.web.controller;
 
 import cn.unicom.exams.model.entity.SysDept;
 import cn.unicom.exams.model.entity.SysEmployee;
+import cn.unicom.exams.model.entity.SysLoginlog;
 import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.service.service.*;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -47,6 +49,9 @@ public class SysAPIController {
     @Autowired
     private ISysTestresultService testresultService;
 
+    @Autowired
+    private ISysLoginlogService sysLoginlogService;
+
     @Value("${exams.passNum:60}")
     private Integer passNum;
 
@@ -65,11 +70,9 @@ public class SysAPIController {
     }
 
     @PostMapping("/emp/login")
-    public Response login(String code,Long timestamp){
+    public Response login(String code, Long timestamp, HttpServletRequest request){
         //code="["+code+"]";
         try{
-            LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
-            log.warn(code+"----login----"+localDateTime.toString());
             EmpInfo empInfo = JSON.parseObject(code, EmpInfo.class);
             if(!StringUtils.isEmpty(empInfo)){
                 if(!StringUtils.isEmpty(empInfo.getValidcode())){
@@ -101,6 +104,13 @@ public class SysAPIController {
                 employee.setLoginFailureTimes(0);
                 employee.setLastLoginTime(LocalDateTime.now());
                 employeeService.updateById(employee);
+                SysLoginlog log=new SysLoginlog();
+                log.setUserCode(empInfo.getEmpCode());
+                log.setRequestPath(request.getRequestURI());
+                log.setRequestAddress(request.getRemoteAddr());
+                log.setLoginDateTime(LocalDateTime.now());
+                log.setLoginStatus("成功");
+                sysLoginlogService.save(log);
                 return new Response(200,"登录成功",empInfo);
             }else{
                 return new Response(560,"传递参数错误");

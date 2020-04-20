@@ -4,6 +4,17 @@ server:
     context-path: /examsweb
   tomcat:
     max-http-post-size: 0
+    accesslog:
+      enabled: true
+      rotate: true
+      file-date-format: yyyy-MM-dd
+      request-attributes-enabled: false
+      rename-on-rotate: false
+      prefix: access-log-
+      buffered: true
+      pattern: "%h %l %T %t %r %s %b %{Referer}i %{User-Agent}i (%D ms)"
+      suffix: .log
+      directory: /logs/exams
 spring:
   servlet:
     multipart:
