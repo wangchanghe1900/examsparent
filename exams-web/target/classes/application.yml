@@ -14,7 +14,7 @@ server:
       buffered: true
       pattern: "%h %l %T %t %r %s %b %{Referer}i %{User-Agent}i (%D ms)"
       suffix: .log
-      directory: /logs/exams
+      directory: /usr/local/examsweb/logs/logs/
 spring:
   servlet:
     multipart:
@@ -29,7 +29,7 @@ spring:
   datasource:
     name: dataSource1
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/examsdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://127.0.0.1:3306/examsdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8C&allowPublicKeyRetrieval=true
     username: root
     password: ghzx@7519
     type: com.alibaba.druid.pool.DruidDataSource
@@ -72,7 +72,7 @@ management:
     health:
       show-details: always
   server:
-    port: 9001
+    port: 10087
 
 mybatis-plus:
   configuration:

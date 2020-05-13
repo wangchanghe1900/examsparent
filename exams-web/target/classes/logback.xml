@@ -21,7 +21,7 @@
 <appender name="LOG-OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
 <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 <!--日志文件输出的文件名-->
-<FileNamePattern>/logs/exams/service-web.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+<FileNamePattern>/usr/local/examsweb/logs/service-web.log.%d{yyyy-MM-dd}.log</FileNamePattern>
 <!--日志文件保留天数-->
 <MaxHistory>365</MaxHistory>
 </rollingPolicy>
@@ -43,7 +43,7 @@
 <!--输出到error-->
 <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-    <fileNamePattern>/logs/exams/service-web.error.%d{yyyy-MM-dd}.log</fileNamePattern>
+    <fileNamePattern>/usr/local/examsweb/logs/service-web.error.%d{yyyy-MM-dd}.log</fileNamePattern>
   </rollingPolicy>
   <append>true</append>
   <encoder>
@@ -59,7 +59,7 @@
   <!--输出到error-->
   <appender name="warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>/logs/exams/service-web-interface.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>/usr/local/examsweb/logs/service-web-interface.%d{yyyy-MM-dd}.log</fileNamePattern>
     </rollingPolicy>
     <append>true</append>
     <encoder>
