@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>乐在工作</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Document</title>
+	<!--导入css-->
+	<link rel="stylesheet" href="files/bootstrap/bootstrap.min.css" />
+	<!--导入jquery.js-->
+	<!--导入popper.js-->
+	<!--  <script type="text/javascript" src="files/comm/popper.min.js"> </script>-->
+	<script type="text/javascript" src="files/comm/jquery-3.4.1.min.js"> </script>
+	<!--导入bootstrap.js-->
+	<script type="text/javascript" src="files/bootstrap/bootstrap.min.js"></script>
+<style>
+	.img1{          
+		background:transparent url('images/comm/img60.png') 50% 50% no-repeat; 
+		-webkit-background-size:cover;  
+		-moz-background-size:cover;  
+		-o-background-size:cover;  
+		background-size:cover;  
+	} 
+
+</style>
+
+<script>  
+
+(function () {  
+
+	document.addEventListener('DOMContentLoaded', function () {  
+		var html = document.documentElement;  
+		var windowWidth = html.clientWidth * 0.9;                 
+		var windowHeiht = html.clientHeight * 0.9;  
+		//document.getElementById("container1").style.height =440/ 1334 * windowHeiht + "px";  
+		//document.getElementById("container1").style.paddingTop = 50/ 1334 * windowHeiht + "px"; 
+		document.getElementById("container1").style.height = windowHeiht + "px";  
+		document.getElementById("container1").style.paddingTop = 50/ 1334 * windowHeiht + "px";  
+		
+		var len = document.getElementsByClassName("img1").length;  
+		for (i = 0; i < len; i++) {    
+			//document.getElementsByClassName("img1").item(i).style.width = 700/ 750 * windowWidth + "px";      
+			//document.getElementsByClassName("img1").item(i).style.height = 390/ 1334 * windowHeiht + "px"; 
+			document.getElementsByClassName("img1").item(i).style.width =  windowWidth + "px";      
+			document.getElementsByClassName("img1").item(i).style.height =  windowHeiht + "px";  
+		}
+		
+	}, false);  
+})();
+
+</script>
+
+</head>
+<body>
+	<div class="container-fluid">
+		<div id='container1' >  
+			<video class="img1" controls="true" preload="none">  
+				<source src="video/test.mp4" type="video/mp4" />  
+			</video>    
+		</div>
+	</div>
+ </body>
+</html>
+
+
+

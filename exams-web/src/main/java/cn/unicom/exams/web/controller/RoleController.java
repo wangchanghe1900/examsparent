@@ -1,32 +1,28 @@
 package cn.unicom.exams.web.controller;
 
-import cn.unicom.exams.model.entity.SysMenu;
 import cn.unicom.exams.model.entity.SysRole;
 import cn.unicom.exams.model.vo.ButtonInfo;
 import cn.unicom.exams.model.vo.MenuInfo;
 import cn.unicom.exams.model.vo.RoleInfo;
-import cn.unicom.exams.model.vo.UserVo;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
 import cn.unicom.exams.service.service.ISysMenuService;
 import cn.unicom.exams.service.service.ISysRoleMenuService;
 import cn.unicom.exams.service.service.ISysRoleService;
 import cn.unicom.exams.web.utils.ButtonAuthorUtils;
-import cn.unicom.exams.web.utils.MD5Utils;
-import cn.unicom.exams.web.utils.SecurityCode;
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author 王长何

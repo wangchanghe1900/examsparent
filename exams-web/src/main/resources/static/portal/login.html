@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>登陆</title>
+	<link href="files/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+	<script src="files/comm/jquery-3.4.1.min.js"></script>
+	<script src="files/bootstrap/bootstrap.min.js"></script>
+	<link href="files/login/login.css" type="text/css" rel="stylesheet"/>
+	<link rel="stylesheet" href="files/comm/comm-styles.css">
+	<script src="files/comm/crypto-js.js"></script>  
+	<script src="files/comm/encrypt.js"></script>
+	<script src="files/comm/comm.js"></script>
+	<script src="files/login/login.js"></script>
+</head>
+<body >
+	<form class="form-signin" >
+		<img src="images/login/logo1.png"  alt="logo" />
+		<br>
+		<!-- username -->
+		<label for="username" >用户名</label>
+		<input type="text" id="username" class="form-control" placeholder="用户名" required autofocus>
+
+		<!-- passwd  -->
+		<label for="password">密&nbsp;&nbsp; 码</label>
+		<input type="password" id="password" class="form-control" placeholder="密码" required>
+				
+		<!-- 验证码  -->
+		<div style="display: none;" id="validdiv">
+			<label for="validcode" >验证码</label>
+			<div >
+				<input type="text" id="validcode" class="form-control" placeholder="验证码" style="width: 50%;display: inline;">
+				<img alt="#" src="#" border="2px" width="45%" height="30px" id="validimg" >
+			</div>
+		</div>		
+		<!-- submit -->
+		<div style="padding-top: 30px">
+			<button id="submit" type="button" class="btn btn-lg btn-primary btn-block">登&nbsp;&nbsp;&nbsp;&nbsp;陆</button>
+		</div>
+	
+		<div >
+		<br>
+			<span class="mt-5 mb-3  text-muted">
+				Copyright &copy; 2020  - Powered By <a href="#" target="_blank">技术开发中心</a> 
+			</span>
+		</div>
+	 </form>
+	
+	
+	<!-- 提示框 -->
+	<div class="align-items-center alert alert-danger alert-dismissible  fade show pr-1"  role="alert" id="tipdiv" 
+	   style="position:fixed; top:30%;left:25%; width:50%;display:none;">
+		<h5 class="alert-heading">错误提示</h5>
+		<p id="tipmsg" class="ml-4"></p>
+		<button type="button" class="close" onclick="$('#tipdiv').hide();">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div> 
+     
+</body>
+</html>

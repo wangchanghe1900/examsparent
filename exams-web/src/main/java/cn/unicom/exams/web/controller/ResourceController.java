@@ -1,6 +1,5 @@
 package cn.unicom.exams.web.controller;
 
-import cn.unicom.exams.model.entity.SysResourceinfo;
 import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
@@ -9,9 +8,7 @@ import cn.unicom.exams.service.service.ISysLearndurationService;
 import cn.unicom.exams.service.service.ISysResourceinfoService;
 import cn.unicom.exams.web.utils.ButtonAuthorUtils;
 import cn.unicom.exams.web.utils.ShiroUtils;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;

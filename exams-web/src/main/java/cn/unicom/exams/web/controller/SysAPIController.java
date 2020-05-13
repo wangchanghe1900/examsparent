@@ -6,6 +6,7 @@ import cn.unicom.exams.model.entity.SysLoginlog;
 import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.service.service.*;
+import cn.unicom.exams.web.utils.EncryptUtils;
 import cn.unicom.exams.web.utils.MD5Utils;
 import cn.unicom.exams.web.utils.ShiroUtils;
 import com.alibaba.fastjson.JSON;
@@ -55,12 +56,16 @@ public class SysAPIController {
     @Value("${exams.passNum:60}")
     private Integer passNum;
 
+    @Value("${exams.key}")
+    private String key;
+
     @PostMapping("/test/testpaper")
     public Response testpaper(String code, Long timestamp){
         try {
+            String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
             log.warn(code+"----testpaper----"+localDateTime.toString());
-            ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
+            ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             ExamInfo examInfo = testpaperService.getExamInfoByEmpCode(paramsVo.getEmpID(), paramsVo.getExamID(), paramsVo.getShowNum(), paramsVo.getPageNum());
             return new Response(200,"考题提取成功",examInfo);
         } catch (Exception e) {
@@ -71,9 +76,9 @@ public class SysAPIController {
 
     @PostMapping("/emp/login")
     public Response login(String code, Long timestamp, HttpServletRequest request){
-        //code="["+code+"]";
         try{
-            EmpInfo empInfo = JSON.parseObject(code, EmpInfo.class);
+            String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
+            EmpInfo empInfo = JSON.parseObject(decryptCode, EmpInfo.class);
             if(!StringUtils.isEmpty(empInfo)){
                 if(!StringUtils.isEmpty(empInfo.getValidcode())){
                     String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
@@ -125,11 +130,11 @@ public class SysAPIController {
 
     @PostMapping("/emp/empTestInfo")
     public Response empTestInfo(String code,Long timestamp){
-        //EncryptUtils解密code
         try{
+            String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
             log.warn(code+"----empTestInfo----"+localDateTime.toString());
-            ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
+            ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             EmpTestInfo testInfo = employeeService.getEmpTestInfoByEmpCode(paramsVo.getEmpID());
             return new Response(200, "个人信息反馈成功",testInfo);
         }catch (Exception e){
@@ -143,12 +148,10 @@ public class SysAPIController {
     public Response unlearnedResource(String code,Long  timestamp){
         try{
             //EncryptUtils解密 {"empID"："","showNum":10,"pageNum":1}
+            String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
             log.warn(code+"----unlearnedResource----"+localDateTime.toString());
-            ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
-/*            Integer showNum=10;
-            Integer pageNum=1;
-            Long empCode=Long.parseLong(code);*/
+            ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             UnLearnResource unLearnResource = employeeService.getUnLearnResourceByPage(paramsVo.getPageNum(), paramsVo.getShowNum(), paramsVo.getEmpID());
             return new Response(200, "提取数据成功",unLearnResource);
         }catch (Exception e){
@@ -161,12 +164,10 @@ public class SysAPIController {
     public Response learnedResource(String code,Long  timestamp){
         try{
             //EncryptUtils解密 {"empID"："","showNum":10,"pageNum":1}
+            String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
             log.warn(code+"----learnedResource----"+localDateTime.toString());
-            ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
-/*            Integer showNum=10;
-            Integer pageNum=1;
-            Long empCode=Long.parseLong(code);*/
+            ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             LearnedResource learnedResource = employeeService.getLearnedResourceByPage(paramsVo.getPageNum(), paramsVo.getShowNum(), paramsVo.getEmpID());
             return new Response(200, "提取数据成功",learnedResource);
         }catch (Exception e){
@@ -178,13 +179,10 @@ public class SysAPIController {
     @PostMapping("resource/learnedResult")
     public Response learnedResult(String code,Long timestamp){
         try {
+            String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
-            log.warn(code+"----learnedResult----"+localDateTime.toString());
-            ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
-/*            Long empID=18610810006L;
-            Long testID=23L;
-            Long resourceID=1L;
-            Integer studyDuration=10;*/
+            log.warn(decryptCode+"----learnedResult----"+localDateTime.toString());
+            ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             learndurationService.saveLearnInfo(paramsVo.getEmpID(),paramsVo.getExamID(),paramsVo.getResourceID(),paramsVo.getStudyDuration());
             return new Response(200,"数据提交成功");
         } catch (Exception e) {
@@ -197,16 +195,17 @@ public class SysAPIController {
     @PostMapping("/test/testResult")
     public Response testResult(String code,Long timestamp){
         try {
+            String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
             log.warn(code+"----testResult----"+localDateTime.toString());
-            code="{\"empID\":\"18610810006\",\"examID\":\"21\",\"totalNum\":5,\"answerNum\":5," +
+/*            code="{\"empID\":\"18610810006\",\"examID\":\"21\",\"totalNum\":5,\"answerNum\":5," +
                     "\"quitTimes\":3,\"duration\":20,\"optionList\":[{\"questNo\":\"2\",\"answer\":\"A\"}," +
                     "{\"questNo\":\"7\",\"answer\":\"A,B,C\"}," +
                     "{\"questNo\":\"9\",\"answer\":\"A,B,C,E\"}," +
                     "{\"questNo\":\"11\",\"answer\":\"A\"}," +
-                    "{\"questNo\":\"14\",\"answer\":\"A\"}]}";
+                    "{\"questNo\":\"14\",\"answer\":\"A\"}]}";*/
             //code="["+code+"]";
-            TestResultInfo testResultInfo = JSON.parseObject(code, TestResultInfo.class);
+            TestResultInfo testResultInfo = JSON.parseObject(decryptCode, TestResultInfo.class);
             if(StringUtils.isEmpty(testResultInfo)){
                 return new Response(400,"参数错误");
             }
@@ -222,9 +221,10 @@ public class SysAPIController {
     @PostMapping("/test/testedinfo")
     public Response testedinfo(String code,Long timestamp){
         try{
+            String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
             log.warn(code+"----testedinfo----"+localDateTime.toString());
-            ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
+            ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             TestedInfo testedInfo = testresultService.gettestedInfoByEmpID(paramsVo.getEmpID(), paramsVo.getShowNum(), paramsVo.getPageNum());
             return new Response(200,"数据提取成功",testedInfo);
         }catch (Exception e){
@@ -236,9 +236,10 @@ public class SysAPIController {
     @PostMapping("/emp/resetPwd")
     public Response resetPwd(String code,Long timestamp){
         try{
+            String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
             log.warn(code+"----resetPwd----"+localDateTime.toString());
-            ParamsVo paramsVo = JSON.parseObject(code, ParamsVo.class);
+            ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             String oldPassword=paramsVo.getOldPassword();
             String newPassword=paramsVo.getNewPassword();
             String empID=paramsVo.getEmpID().toString();

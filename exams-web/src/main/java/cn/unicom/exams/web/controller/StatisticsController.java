@@ -1,6 +1,5 @@
 package cn.unicom.exams.web.controller;
 
-import cn.unicom.exams.model.entity.SysTeststatistics;
 import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
