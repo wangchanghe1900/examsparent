@@ -86,11 +86,9 @@ layui.use(['form','layer','table','laytpl'],function(){
                     body.find(".testname").val(edit.testName);
                     body.find("#resId").val(edit.resId);
                     body.find(".resourceName").val(edit.resourceinfo.resourceName);
-                    body.find("#showimg").attr("src",webpath+edit.imgUrl);
-                    /*                    body.find(".testCount").val(edit.testCount);
-                                        body.find("#startDate").val(edit.examsStartTime);
-                                        body.find("#endDate").val('2020-04-01');//testStatus*/
-                    body.find("#testStatus").attr("checked",edit.testStatus==='发布'?true:false);
+                    body.find("#showimg").attr("src",webpath+"/upload"+edit.imgUrl);
+                    console.log(edit.testStatus=='发布'?true:false);
+                    body.find("#testStatus").prop("checked",edit.testStatus=='发布'? true:false);
                     body.find(".remark").val(edit.remark);
                     form.render();
                 }
@@ -222,6 +220,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             window.sessionStorage.setItem("endDate",data.examsEndTime);
             window.sessionStorage.setItem("imgUrl",data.imgUrl);
             window.sessionStorage.setItem("testCount",data.testCount);
+            //window.sessionStorage.setItem("testStatus",data.testStatus);
             editTest(data);
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此试卷？',{icon:3, title:'提示信息'},function(index){

@@ -45,7 +45,7 @@
 				上传限制5M,<span style="color:red">一定要选择上传图片</span>
 			</div>
 			<div class="layui-upload-list">
-				<img class="layui-upload-img " name="imgUrl" id="showimg" width="120px" style="margin-left: 100px" >
+				<img class="layui-upload-img " name="imgUrl" id="showimg" width="120px" style="margin-left: 100px;width:120px;height:120px" >
 			</div>
 		</div>
 	</div>
@@ -80,10 +80,11 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">试卷状态:</label>
 		<div class="layui-input-block">
-			<input type="checkbox" name="testStatus" id="testStatus" lay-filter="testStatus" lay-skin="switch"   lay-text="发布|未发布" >
+			<input type="checkbox" name="testStatus" id="testStatus" lay-filter="testStatus" lay-skin="switch"   lay-text="发布|未发布" checked>
 		</div>
 	</div>
 
@@ -95,13 +96,13 @@
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<div class="layui-input-block">
-			<button class="layui-btn" type="button" id="btnupload" lay-submit>试卷保存</button>
+			<button class="layui-btn" type="button" lay-submit lay-filter="saveTest">试卷保存</button>
 			<button type="button" class="layui-btn layui-btn-sm layui-btn-primary" id="btns">取消</button>
 		</div>
 	</div>
 </form>
 <script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
-<script type="text/javascript" src="${request.contextPath}/js/testAdd.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/testAdd1.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/treeSelect.js"  charset="utf-8"></script>
 </body>
 

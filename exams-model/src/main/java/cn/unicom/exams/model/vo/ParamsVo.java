@@ -14,6 +14,7 @@ public class ParamsVo {
     private Long examID;
     private Long resourceID;
     private Integer studyDuration;
+    private Long materalID;
     private String oldPassword;
     private String newPassword;
 }

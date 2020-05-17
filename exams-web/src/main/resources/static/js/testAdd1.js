@@ -172,28 +172,14 @@ layui.use(['form','layer','treeSelect','upload','laydate'],function(){
         $("#testStatus").prop("checked",true);
         window.sessionStorage.removeItem("testStatus");
     }*/
-    var uploadInst=upload.render({
+    upload.render({
         elem: '#imgupload'
-        ,url: 'testInfoSave' //改成您自己的上传接口
-        ,auto: false
+        ,url: 'testimgupload' //改成您自己的上传接口
+        ,auto: true
         ,accept:'images'
         ,acceptMime: 'image/*'
         ,field:'imginfo'
         ,size: 1024*5
-        ,data: {
-              testInfo: function(){
-                  var data = form.val('example');
-                  var imgUrl=window.sessionStorage.getItem("imgUrl");
-                  if(imgUrl!=null){
-                      window.sessionStorage.removeItem("imgUrl");
-                  }
-                  data.imgUrl=imgUrl;
-                  data.deptId=deptId;
-                  return JSON.stringify(data);
-              }
-
-        }
-        ,bindAction: '#btnupload'
         ,choose: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
             //layer.load(); //上传loading
             obj.preview(function(index, file, result){
@@ -206,31 +192,49 @@ layui.use(['form','layer','treeSelect','upload','laydate'],function(){
             layer.load(); //上传loading
         }
         ,done: function(res, index, upload){
-            if(res.code==0){
-                layer.closeAll('loading'); //关闭loading
+            layer.closeAll('loading');
+            if(res.code == 0){
+                layer.msg("上传图片成功");
+                var url=res.data.src;
+                window.sessionStorage.setItem("imgUrl",url);
+                $('#showimg').attr('src', '/examsweb/upload'+url);
+            }
+        }
+        ,error: function(index, upload){
+            layer.closeAll('loading');
+            layer.msg("上传图片失败",{icon:5})
+
+        }
+    });
+
+    form.on("submit(saveTest)",function(data){
+        var data1 = form.val('example');
+        var imgUrl=window.sessionStorage.getItem("imgUrl");
+        if(imgUrl!=null){
+            window.sessionStorage.removeItem("imgUrl");
+        }
+        data1.imgUrl=imgUrl;
+        data1.deptId=deptId;
+        //弹出loading
+        var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+        // 实际使用时的提交信息
+        $.post("testInfoSave",{
+            testInfo: JSON.stringify(data1)
+        },function(res){
+            if(res.code!=0){
+                top.layer.close(index);
+                layer.msg(res.msg);
+            }else{
                 setTimeout(function(){
+                    top.layer.close(index);
                     top.layer.msg(res.msg);
                     layer.closeAll("iframe");
                     //刷新父页面
                     parent.location.reload();
                 },1000);
-            }else{
-                layer.closeAll('loading');
-                layer.msg(res.msg);
+            }
+        });
 
-            };
-
-        }
-        ,error: function(index, upload){
-            layer.closeAll('loading');
-            console.error("试卷图片上传错误！");
-            //layer.msg("上传图片失败",{icon:5})
-/*            var demoText = $('#demoText');
-            demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-            demoText.find('.demo-reload').on('click', function(){
-                uploadInst.upload();
-            });*/
-        }
+        return false;
     });
-
 })

@@ -48,7 +48,7 @@ layui.use(['form','layer','upload'],function(){
         /*        ,exts: 'PDF|pdf'*/
         ,acceptMime:'video/*'
         ,field:'fileinfo'
-        ,size: 1024*100
+        ,size: 1024*200
         ,data: {
             id:function(){
                 return $(".id").val();

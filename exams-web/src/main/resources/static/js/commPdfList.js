@@ -10,7 +10,7 @@ layui.use(['form','layer','upload'],function(){
     var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
     var webpath=localhostPaht + projectName;
     var url=window.sessionStorage.getItem("pdfUrl");
-    PDFObject.embed(webpath+"/"+url, "#dpflist",{height: "450px"});
+    PDFObject.embed(webpath+"/upload"+url, "#dpflist",{height: "450px"});
 
 
 

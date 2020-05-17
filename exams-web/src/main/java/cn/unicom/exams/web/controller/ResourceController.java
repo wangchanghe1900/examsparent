@@ -3,8 +3,6 @@ package cn.unicom.exams.web.controller;
 import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
-import cn.unicom.exams.service.service.ISysEmployeeService;
-import cn.unicom.exams.service.service.ISysLearndurationService;
 import cn.unicom.exams.service.service.ISysResourceinfoService;
 import cn.unicom.exams.web.utils.ButtonAuthorUtils;
 import cn.unicom.exams.web.utils.ShiroUtils;
@@ -13,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,17 +37,16 @@ import java.util.stream.Collectors;
 @RequestMapping("/resource")
 @Slf4j
 public class ResourceController {
+    @Value("${exams.uploadPath}")
+    private String uploadPath;
+
     @Autowired
     private ISysResourceinfoService resourceinfoService;
 
     @Autowired
     private ButtonAuthorUtils buttonAuthorUtils;
 
-    @Autowired
-    private ISysEmployeeService employeeService;
 
-    @Autowired
-    private ISysLearndurationService learndurationService;
 
     @GetMapping("/commResourceList")//commResource:list
     @RequiresPermissions("commResource:list")
@@ -87,7 +85,7 @@ public class ResourceController {
 
     @PostMapping("/commResourceFileUpload")
     @ResponseBody
-    public Response commResourceFileUpload(ResourceVo resourceVo, MultipartFile fileinfo, HttpServletRequest request){
+    public Response commResourceFileUpload(ResourceVo resourceVo, MultipartFile fileinfo){
         if(resourceVo!=null){
             if("".equals(resourceVo.getResourceName())||"".equals(resourceVo.getRemark()==null)){
                 return  new Response(500,"资源名称或备注为空");
@@ -99,7 +97,7 @@ public class ResourceController {
             return  new Response(500,"资源不符合上传类型");
         }
         try{
-            saveUploadFile("/upload/commFile/",0,resourceVo,fileinfo,request);
+            saveUploadFile("/commFile/",0,resourceVo,fileinfo);
 
 
         }catch(Exception e){
@@ -118,11 +116,35 @@ public class ResourceController {
 
     @PostMapping("/saveCommResource")
     @ResponseBody
-    public Response saveCommResource(ResourceVo resourceVo){
+    public Response saveCommResource(String filePath,ResourceVo resourceVo,MultipartFile fileinfo){
         try {
+            if(resourceVo!=null){
+                if("".equals(resourceVo.getResourceName())||"".equals(resourceVo.getRemark()==null)){
+                    return  new Response(500,"资源名称或备注为空");
+                }
+            }
+            String contentType = fileinfo.getContentType();		//判断上传文件是否为图片		if (contentType==null||!contentType.startsWith("image/")) {			System.out.println("===不属于图片类型...===");			return;		}
+            if (contentType==null||!contentType.startsWith("application/pdf")) {
+                System.out.println("===不符合上传类型...===");
+                return  new Response(500,"资源不符合上传类型");
+            }
+            if (filePath != null && !"".equals(filePath)) {
+                String path = filePath.substring(0, filePath.lastIndexOf("/"));
+                //System.out.println(path);
+                //String realPath = request.getServletContext().getRealPath(path);
+                String realPath =uploadPath+path;
+                String filename = fileinfo.getOriginalFilename();
+                filename = UUID.randomUUID().toString()+ filename.substring(filename.lastIndexOf("."));
+                File f= new File(realPath, filename);
+                fileinfo.transferTo(f);
+                resourceVo.setUrl(path+"/"+filename);
+                String oldFilePath=uploadPath+filePath;//request.getServletContext().getRealPath(filePath);
+                File oldFile=new File(oldFilePath);
+                oldFile.delete();
+            }
             resourceVo.setUpdateTime(LocalDateTime.now());
             resourceinfoService.updateById(resourceVo);
-            return new Response(200, "资源信息更新成功");
+            return new Response(0, "资源信息更新成功");
         }catch(Exception e){
             log.error(e.getMessage());
             return new Response(500, "系统错误");
@@ -131,7 +153,7 @@ public class ResourceController {
     }
     @PostMapping("/delResourceByIds")
     @ResponseBody
-    public Response delResourceByIds(String ids,String filesPath,HttpServletRequest request){
+    public Response delResourceByIds(String ids,String filesPath){
         try{
             String[] arr=ids.split(",");
             List<Integer> resids=new ArrayList<>();
@@ -140,7 +162,7 @@ public class ResourceController {
             }
             String[] fileArr=filesPath.split(",");
             for(String filePath:fileArr){
-                String realPath = request.getServletContext().getRealPath(filePath);
+                String realPath = uploadPath+filePath;//request.getServletContext().getRealPath(filePath);
                 File file=new File(realPath);
                 file.delete();
             }
@@ -154,9 +176,9 @@ public class ResourceController {
 
     @GetMapping("/delResourceById")//commres:batchdel
     @ResponseBody
-    public Response delResourceById(Long id,String url,HttpServletRequest request){
+    public Response delResourceById(Long id,String url){
         try{
-            String realPath = request.getServletContext().getRealPath(url);
+            String realPath = uploadPath+url;//request.getServletContext().getRealPath(url);
             File file=new File(realPath);
             file.delete();
             resourceinfoService.removeById(id);
@@ -168,12 +190,12 @@ public class ResourceController {
     }
 
     @PostMapping("/downloadResource")
-    public String  downloadResource(String resourceName,String filePath,HttpServletRequest request, HttpServletResponse response){
+    public String  downloadResource(String resourceName,String filePath, HttpServletResponse response){
         byte[] buffer = new byte[1024];
         FileInputStream fis = null;
         BufferedInputStream bis = null;
         try{
-            String realPath = request.getServletContext().getRealPath(filePath);
+            String realPath = uploadPath+filePath;//request.getServletContext().getRealPath(filePath);
             File file = new File(realPath);
             response.setContentType("application/pdf");
             String fileName=URLEncoder.encode(resourceName+".pdf", "UTF-8");
@@ -220,13 +242,13 @@ public class ResourceController {
 
     @GetMapping("/videoResourceAdd")
     @RequiresPermissions("video:add")
-    public String  videoResourceAdd(ResourceVo resourceVo){
+    public String  videoResourceAdd(){
         return "resource/videoAdd";
     }
 
     @PostMapping("/videoResourceFileUpload")
     @ResponseBody
-    public Response videoResourceFileUpload(ResourceVo resourceVo, MultipartFile fileinfo, HttpServletRequest request){
+    public Response videoResourceFileUpload(ResourceVo resourceVo, MultipartFile fileinfo){
         if(resourceVo!=null){
             if("".equals(resourceVo.getResourceName())||"".equals(resourceVo.getRemark()==null)){
                 return  new Response(500,"资源名称或备注为空");
@@ -238,7 +260,7 @@ public class ResourceController {
             return  new Response(500,"资源不符合上传类型");
         }
         try{
-            saveUploadFile("/upload/videoFile/",1,resourceVo,fileinfo,request);
+            saveUploadFile("/videoFile/",1,resourceVo,fileinfo);
 
         }catch (Exception e){
             log.error(e.getMessage());
@@ -247,11 +269,12 @@ public class ResourceController {
         return  new Response(0,"资源上传成功");
     }
 
-    private void saveUploadFile(String savePath, Integer resourceType, ResourceVo resourceVo, MultipartFile fileinfo,  HttpServletRequest request) throws Exception{
+    private void saveUploadFile(String savePath, Integer resourceType, ResourceVo resourceVo, MultipartFile fileinfo) throws Exception{
         DateTimeFormatter df=DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate now=LocalDate.now();
-        String path=savePath+now.format(df);
-        String realPath = request.getServletContext().getRealPath(path);//context.getRealPath("c:/upload/commFile");
+        String path=uploadPath+savePath+now.format(df);
+        String urlPath=savePath + now.format(df);
+        String realPath =path; //request.getServletContext().getRealPath(path);//context.getRealPath("c:/upload/commFile");
         File dir=new File(realPath);
         if(!dir.exists()){
             dir.mkdirs();
@@ -267,7 +290,8 @@ public class ResourceController {
         resourceVo.setResourceType(resourceType.toString());
         resourceVo.setCreateTime(LocalDateTime.now());
         resourceVo.setUpdateTime(LocalDateTime.now());
-        resourceVo.setUrl(path+"/"+filename);
+        //resourceVo.setUrl(savePath+"/"+filename);
+        resourceVo.setUrl(urlPath+"/"+filename);
         resourceinfoService.save(resourceVo);
 
     }
@@ -280,7 +304,7 @@ public class ResourceController {
 
     @PostMapping("/videoEditUpload")
     @ResponseBody
-    public Response videoEditUpload(String filePath,ResourceVo resourceVo, MultipartFile fileinfo, HttpServletRequest request){
+    public Response videoEditUpload(String filePath,ResourceVo resourceVo, MultipartFile fileinfo){
         try{
             if(fileinfo==null){
                 resourceVo.setUpdateTime(LocalDateTime.now());
@@ -289,7 +313,8 @@ public class ResourceController {
                 if (filePath != null && !"".equals(filePath)) {
                     String path = filePath.substring(0, filePath.lastIndexOf("/"));
                     //System.out.println(path);
-                    String realPath = request.getServletContext().getRealPath(path);
+                    //String realPath = request.getServletContext().getRealPath(path);
+                    String realPath =uploadPath+path;
                     String filename = fileinfo.getOriginalFilename();
                     filename = UUID.randomUUID().toString()+ filename.substring(filename.lastIndexOf("."));
                     File f= new File(realPath, filename);
@@ -297,7 +322,7 @@ public class ResourceController {
                     resourceVo.setUrl(path+"/"+filename);
                     resourceVo.setUpdateTime(LocalDateTime.now());
                     resourceinfoService.updateById(resourceVo);
-                    String oldFilePath=request.getServletContext().getRealPath(filePath);
+                    String oldFilePath=uploadPath+filePath;//request.getServletContext().getRealPath(filePath);
                     File oldFile=new File(oldFilePath);
                     oldFile.delete();
                 }
@@ -352,7 +377,7 @@ public class ResourceController {
             return  new Response(500,"资源不符合上传类型");
         }
         try{
-            saveUploadFile("/upload/audioFile/",2,resourceVo,fileinfo,request);
+            saveUploadFile("/audioFile/",2,resourceVo,fileinfo);
 
         }catch (Exception e){
             log.error(e.getMessage());
@@ -363,7 +388,7 @@ public class ResourceController {
 
     @PostMapping("/audioEditUpload")
     @ResponseBody
-    public Response audioEditUpload(String filePath,ResourceVo resourceVo, MultipartFile fileinfo, HttpServletRequest request){
+    public Response audioEditUpload(String filePath,ResourceVo resourceVo, MultipartFile fileinfo){
         try{
             if(fileinfo==null){
                 resourceVo.setUpdateTime(LocalDateTime.now());
@@ -371,8 +396,8 @@ public class ResourceController {
             }else {
                 if (filePath != null && !"".equals(filePath)) {
                     String path = filePath.substring(0, filePath.lastIndexOf("/"));
-                    System.out.println(path);
-                    String realPath = request.getServletContext().getRealPath(path);
+                    //System.out.println(path);
+                    String realPath = uploadPath+path;//request.getServletContext().getRealPath(path);
                     String filename = fileinfo.getOriginalFilename();
                     filename = UUID.randomUUID().toString()+ filename.substring(filename.lastIndexOf("."));
                     File f= new File(realPath, filename);
@@ -380,7 +405,7 @@ public class ResourceController {
                     resourceVo.setUrl(path+"/"+filename);
                     resourceVo.setUpdateTime(LocalDateTime.now());
                     resourceinfoService.updateById(resourceVo);
-                    String oldFilePath=request.getServletContext().getRealPath(filePath);
+                    String oldFilePath=uploadPath+filePath;//request.getServletContext().getRealPath(filePath);
                     File oldFile=new File(oldFilePath);
                     oldFile.delete();
                 }
@@ -413,7 +438,7 @@ public class ResourceController {
         List<CheckResourceInfo> parentList=new ArrayList<>();
         for(int i=0;i<deptIdList.size();i++){
             Long deptId=deptIdList.get(i);
-            List<DeptResourceInfo> resourceList = resourceInfos.stream().filter(r -> r.getId() == deptId).collect(Collectors.toList());
+            List<DeptResourceInfo> resourceList = resourceInfos.stream().filter(r -> r.getId().intValue() == deptId.intValue()).collect(Collectors.toList());
             if(resourceList.get(0).getRid()==null){
                 continue;
             }

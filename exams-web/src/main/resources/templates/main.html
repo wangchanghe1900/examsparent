@@ -116,6 +116,7 @@
 		studyData=JSON.parse(sessstudyData);
 	}else{
 		$.get('statis/getSevenLearnCount',function (data) {
+
 			sessionStorage.setItem("studyData",JSON.stringify(data));
 			studyData=data;
 			//console.log(dataArr);

@@ -6,9 +6,10 @@ var myInfo={};
 $(function(){
 	//来源检查
 	var referrer = document.referrer;
+	/*
 	 if (referrer==null||referrer==""||(referrer.indexOf("http://localhost:10086/examsweb/")<0 && referrer.indexOf("http://20.1.139.26:10086/examsweb/")<0)) {
     	window.location.href='/examsweb/portal/login.html';
-    }
+    }*/
 
 	myInfo=getMyInfo();
 	if(myInfo.userid==null||myInfo.userid==""){

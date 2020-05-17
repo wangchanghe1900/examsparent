@@ -71,6 +71,7 @@ public class SysTestpaperServiceImpl extends ServiceImpl<SysTestpaperMapper, Sys
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void publishTest(Long testId,String status) throws Exception {
+
         SysTestpaper sysTestpaper = testpaperMapper.selectById(testId);
         //1、查询考试部门及下属部门ID
         QueryWrapper<SysDept> deptqw=new QueryWrapper<>();
@@ -83,6 +84,13 @@ public class SysTestpaperServiceImpl extends ServiceImpl<SysTestpaperMapper, Sys
         employeeQueryWrapper.in("dept_id",deptIDList);
         List<SysEmployee> sysEmployees = employeeMapper.selectList(employeeQueryWrapper);
         if("发布".equals(status)){
+            QueryWrapper<SysTestquestions> qWrapper=new QueryWrapper<>();
+            qWrapper.eq("t_id",testId)
+                    .eq("status","未答");
+            testquestionsMapper.delete(qWrapper);
+            QueryWrapper<SysUnlearnduration> qw=new QueryWrapper<>();
+            qw.eq("t_id",testId);
+            unlearndurationMapper.delete(qw);
             QueryWrapper<SysQuestions> questionsQueryWrapper=new QueryWrapper<>();
             questionsQueryWrapper.eq("res_id",sysTestpaper.getResId()).eq("questionStatus","启用");
             List<SysQuestions> questions = questionsMapper.selectList(questionsQueryWrapper);

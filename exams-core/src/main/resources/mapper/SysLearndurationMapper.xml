@@ -47,13 +47,13 @@
     </select>
 
     <select id="getSenvenLearnResourceCount" resultType="java.lang.Integer">
-        select sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -7 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -6 day) then 1 else 0 end) learnCount  from sys_learnduration union all
-        select sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -6 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -5 day) then 1 else 0 end) 6day from sys_learnduration union all
-        select sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -5 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -4 day) then 1 else 0 end) 5day from sys_learnduration union all
-        select sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -4 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -3 day) then 1 else 0 end) 4day from sys_learnduration union all
-        select sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -3 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -2 day) then 1 else 0 end) 3day from sys_learnduration union all
-        select sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -2 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -1 day) then 1 else 0 end) 2day from sys_learnduration union all
-        select sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -1 day)  then 1 else 0 end) 1day  from sys_learnduration
+        select ifnull(sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -7 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -6 day) then 1 else 0 end),0) learnCount  from sys_learnduration union all
+        select ifnull(sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -6 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -5 day) then 1 else 0 end),0) 6day from sys_learnduration union all
+        select ifnull(sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -5 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -4 day) then 1 else 0 end),0) 5day from sys_learnduration union all
+        select ifnull(sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -4 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -3 day) then 1 else 0 end),0) 4day from sys_learnduration union all
+        select ifnull(sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -3 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -2 day) then 1 else 0 end),0) 3day from sys_learnduration union all
+        select ifnull(sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -2 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -1 day) then 1 else 0 end),0) 2day from sys_learnduration union all
+        select ifnull(sum(case when learnTime>=date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -1 day) and learnTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval 0 day) then 1 else 0 end),0) 1day  from sys_learnduration
     </select>
 
 </mapper>

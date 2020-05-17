@@ -50,5 +50,5 @@ public class EmpInfo {
     /**
      * 用户姓名
      */
-    private String realName;
+    private String empName;
 }

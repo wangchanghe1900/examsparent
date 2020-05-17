@@ -6,9 +6,11 @@ var examST=null;
 $(function(){
 	//来源检查
 	var referrer = document.referrer;
-    if (referrer==null||referrer==""||(referrer.indexOf("http://localhost:10086/examsweb/")<0 && referrer.indexOf("http://20.1.139.26:10086/examsweb/")<0)) {
+    /*
+	if (referrer==null||referrer==""||(referrer.indexOf("http://127.0.0.1:10086/examsweb/")<0&& referrer.indexOf("http://localhost:10086/examsweb/")<0 && referrer.indexOf("http://20.1.139.26:10086/examsweb/")<0)) {
     	window.location.href='/examsweb/portal/login.html';
     }
+    */
 	$("#content_view").width(document.documentElement.clientWidth);
 	
 	myInfo=getMyInfo();

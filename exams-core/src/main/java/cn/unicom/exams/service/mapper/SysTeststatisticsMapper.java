@@ -39,4 +39,12 @@ public interface SysTeststatisticsMapper extends BaseMapper<SysTeststatistics> {
      */
     public IPage<UnTestInfo> getUntestInfoByPage(Page<UntestVo> page,@Param(Constants.WRAPPER) Wrapper<UntestVo> wrapper) throws Exception;
 
+    /**
+     * 根据员工ID提取全部学习资源（含已学和未学）
+     * @param wrapper
+     * @return
+     * @throws Exception
+     */
+    public Integer getEmpResourceCountByEmpCode(@Param(Constants.WRAPPER) Wrapper<TestStatisticsVo> wrapper) throws Exception;
+
 }

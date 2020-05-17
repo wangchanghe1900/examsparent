@@ -36,9 +36,6 @@ public class SysEmployeeServiceImpl extends ServiceImpl<SysEmployeeMapper, SysEm
     private SysEmployeeMapper employeeMapper;
 
     @Resource
-    private SysTestpaperMapper testpaperMapper;
-
-    @Resource
     private SysLearndurationMapper learndurationMapper;
 
     @Resource
@@ -49,8 +46,13 @@ public class SysEmployeeServiceImpl extends ServiceImpl<SysEmployeeMapper, SysEm
 
     @Resource
     private SysUnlearndurationMapper unlearndurationMapper;
+
     @Resource
     private SysDeptMapper deptMapper;
+
+    @Resource
+    private SysTeststatisticsMapper teststatisticsMapper;
+
     @Override
     public IPage<EmployeeInfo> getEmployeeInfoByPage(int page, int limit, EmployeeVo employeeVo) throws Exception {
         Page<EmployeeVo> ipage=new Page<>(page,limit);
@@ -76,9 +78,9 @@ public class SysEmployeeServiceImpl extends ServiceImpl<SysEmployeeMapper, SysEm
     @Override
     public EmpTestInfo getEmpTestInfoByEmpCode(Long empCode) throws Exception {
         EmpTestInfo empTestInfo=new EmpTestInfo();
-        QueryWrapper<TestPaperVo> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("e.employeeCode",empCode);
-        Integer materialtotalnum=testpaperMapper.getEmpTestCountByEmpCode(queryWrapper);
+        QueryWrapper<TestStatisticsVo> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("s.emp_code",empCode);
+        Integer materialtotalnum=teststatisticsMapper.getEmpResourceCountByEmpCode(queryWrapper);//testpaperMapper.getEmpTestCountByEmpCode(queryWrapper);
         empTestInfo.setMaterialTotalNum(materialtotalnum);
         empTestInfo.setExamTotalNum(materialtotalnum);
         QueryWrapper<SysLearnduration> lqw=new QueryWrapper<>();

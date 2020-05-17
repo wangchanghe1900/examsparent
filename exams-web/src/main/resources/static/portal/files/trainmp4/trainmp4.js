@@ -5,9 +5,10 @@ var outExamTimes=0,orderNum=0;
 $(function(){
 	//来源检查
 	var referrer = document.referrer;
+	/*
 	 if (referrer==null||referrer==""||(referrer.indexOf("http://localhost:10086/examsweb/")<0 && referrer.indexOf("http://20.1.139.26:10086/examsweb/")<0)) {
     	window.location.href='/examsweb/portal/login.html';
-    }
+    }*/
 	//var viewheight= $("#mybody").height() - $("#btn-bottom").height();
 	//调整屏幕高度
 	var viewheight= document.documentElement.clientHeight - $("#btn-bottom").height();

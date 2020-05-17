@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -59,6 +60,10 @@ public class SysAPIController {
     @Value("${exams.key}")
     private String key;
 
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
+
+
     @PostMapping("/test/testpaper")
     public Response testpaper(String code, Long timestamp){
         try {
@@ -92,6 +97,9 @@ public class SysAPIController {
                 if(employee == null ){
                     return new Response(400,"用户不存在");
                 }
+                if(!"正常".equals(employee.getEmployeeStatus())){
+                    return new Response(410,"用户已禁用，请联系系统管理员");
+                }
                 String pwd= MD5Utils.getAuthenticationInfo(empInfo.getPassword(), employee.getSalt());
                 if(!pwd.equals(employee.getPassword())){
                     employee.setLoginFailureTimes(employee.getLoginFailureTimes()+1);
@@ -100,7 +108,7 @@ public class SysAPIController {
                 }
                 empInfo.setEmpID(Long.parseLong(employee.getEmployeeCode()));
                 empInfo.setUserName(employee.getEmployeeCode());
-                empInfo.setRealName(employee.getEmployeeName());
+                empInfo.setEmpName(employee.getEmployeeName());
                 empInfo.setDeptID(employee.getDeptId());
                 empInfo.setEmpCode(employee.getEmployeeCode());
                 SysDept dept = deptService.getById(employee.getDeptId());
@@ -128,7 +136,7 @@ public class SysAPIController {
 
     }
 
-    @PostMapping("/emp/empTestInfo")
+    @PostMapping("/emp/emptestinfo")
     public Response empTestInfo(String code,Long timestamp){
         try{
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
@@ -144,7 +152,7 @@ public class SysAPIController {
 
     }
 
-    @PostMapping("resource/unlearnedResource")
+    @PostMapping("/resource/unlearnedresource")
     public Response unlearnedResource(String code,Long  timestamp){
         try{
             //EncryptUtils解密 {"empID"："","showNum":10,"pageNum":1}
@@ -153,6 +161,12 @@ public class SysAPIController {
             log.warn(code+"----unlearnedResource----"+localDateTime.toString());
             ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             UnLearnResource unLearnResource = employeeService.getUnLearnResourceByPage(paramsVo.getPageNum(), paramsVo.getShowNum(), paramsVo.getEmpID());
+            List<Material> materialList = unLearnResource.getMaterialList();
+            for(Material material:materialList){
+                material.setMaterialURL(contextPath+"/upload"+material.getMaterialURL());
+                material.setMaterialImg(contextPath+"/upload"+material.getMaterialImg());
+            }
+            unLearnResource.setMaterialList(materialList);
             return new Response(200, "提取数据成功",unLearnResource);
         }catch (Exception e){
             log.error("未学资源数据提取错误："+e.getMessage());
@@ -160,7 +174,7 @@ public class SysAPIController {
         }
     }
 
-    @PostMapping("resource/learnedResource")
+    @PostMapping("/resource/learnedResource")
     public Response learnedResource(String code,Long  timestamp){
         try{
             //EncryptUtils解密 {"empID"："","showNum":10,"pageNum":1}
@@ -176,14 +190,14 @@ public class SysAPIController {
         }
     }
 
-    @PostMapping("resource/learnedResult")
+    @PostMapping("/resource/learnedResult")
     public Response learnedResult(String code,Long timestamp){
         try {
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
             log.warn(decryptCode+"----learnedResult----"+localDateTime.toString());
             ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
-            learndurationService.saveLearnInfo(paramsVo.getEmpID(),paramsVo.getExamID(),paramsVo.getResourceID(),paramsVo.getStudyDuration());
+            learndurationService.saveLearnInfo(paramsVo.getEmpID(),paramsVo.getExamID(),paramsVo.getMateralID(),paramsVo.getStudyDuration());
             return new Response(200,"数据提交成功");
         } catch (Exception e) {
             log.error("学习资源数据提交错误："+e.getMessage());
@@ -192,7 +206,7 @@ public class SysAPIController {
 
     }
 
-    @PostMapping("/test/testResult")
+    @PostMapping("/test/testresult")
     public Response testResult(String code,Long timestamp){
         try {
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);

@@ -6,9 +6,10 @@ var myInfo={};
 $(function(){
 	//来源检查
 	var referrer = document.referrer;
+	/*
 	 if (referrer==null||referrer==""||(referrer.indexOf("http://localhost:10086/examsweb/")<0 && referrer.indexOf("http://20.1.139.26:10086/examsweb/")<0)) {
     	window.location.href='/examsweb/portal/login.html';
-    }
+    }*/
 	
 	var curdt=new Date();
 	var curmd=(curdt.getMonth()+1)+"月"+curdt.getDate()+"日";

@@ -14,7 +14,7 @@ server:
       buffered: true
       pattern: "%h %l %T %t %r %s %b %{Referer}i %{User-Agent}i (%D ms)"
       suffix: .log
-      directory: /usr/local/examsweb/logs/logs/
+      directory: /usr/local/examsweb/logs/accesslogs/
 spring:
   servlet:
     multipart:
@@ -84,3 +84,4 @@ mybatis-plus:
 exams:
   passNum: 60
   key: 1234567890abcdef
+  uploadPath: d://opt/examsweb/

@@ -98,7 +98,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     body.find(".resourcename").val(edit.resourceName);
                     body.find(".filepath").html(edit.url);
                     body.find(".url").val(edit.url);
-                    body.find("#videotmp").attr("src",webpath+"/"+edit.url);
+                    body.find("#videotmp").attr("src",webpath+"/upload"+edit.url);
                     //body.find(".userSex input[value="+edit.userSex+"]").prop("checked","checked");  //性别
                     body.find(".remark").val(edit.remark);
                     form.render();
@@ -194,7 +194,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             success : function(layero, index){
                 var body = layer.getChildFrame('body', index);
                 if(data){
-                    body.find("#videotmp").attr("src",webpath+"/"+data.url);
+                    body.find("#videotmp").attr("src",webpath+"/upload"+data.url);
                     form.render();
                 }
             }

@@ -84,3 +84,4 @@ mybatis-plus:
 exams:
   passNum: 60
   key: 1234567890abcdef
+  uploadPath: d://opt/examsweb/

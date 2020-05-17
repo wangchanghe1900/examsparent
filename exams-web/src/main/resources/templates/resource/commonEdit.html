@@ -26,31 +26,37 @@
 		<div class="layui-input-block">
 			<select name="transaType" class="transaType" lay-verify="required">
 				<option value="pdf">PDF</option>
-				<option value="word">Word</option>
-				<option value="txt">TXT</option>
 			</select>
 		</div>
 	</div>
-	<div class="layui-row">
-		<div class="layui-form-item layui-row layui-col-xs12">
-			<label class="layui-form-label">操作文件:</label>
-			<div class="layui-input-block">
-				<span class="layui-form-label filepath" style="width:500px"></span>
-				<input type="hidden" name="filePath" class="url"/>
-				<!--<a class="layui-btn layui-btn-normal layui-btn-sm download"  style="float:right;margin-left: 10px">下载文件</a>-->
-				<input type="submit" class="layui-btn layui-btn-normal layui-btn-sm" value="下载" />
-			</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">操作文件:</label>
+		<div class="layui-input-block " style="width:500px">
+			<input type="hidden" name="filePath" class="url"/>
+			<span class="layui-form-label filepath"></span>
 		</div>
-		<div class="layui-form-item layui-row layui-col-xs12">
-			<label class="layui-form-label">备注:</label>
-			<div class="layui-input-block">
-				<textarea placeholder="备注" name="remark" class="layui-textarea remark" lay-verify="required"></textarea>
+	</div>
+<!--				<input type="hidden" name="filePath" class="url"/>-->
+			<!--<a class="layui-btn layui-btn-normal layui-btn-sm download"  style="float:right;margin-left: 10px">下载文件</a>-->
+			<!--<input type="submit" class="layui-btn layui-btn-normal layui-btn-sm" value="下载" />-->
+	<div class="layui-form-item layui-row layui-col-xs12">
+			<div class="layui-input-block layui-upload">
+				<button class="layui-btn layui-btn-normal" id="fileupload" type="button">选择文件</button>
+				<div class="layui-inline layui-word-aux">
+					上传限制100M
+				</div>
 			</div>
+	</div>
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">备注:</label>
+		<div class="layui-input-block">
+			<textarea placeholder="备注" name="remark" class="layui-textarea remark" lay-verify="required"></textarea>
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<div class="layui-input-block">
-			<button class="layui-btn" id="btnupdate"  lay-filter="updateResource" lay-submit>修改信息</button>
+			<button class="layui-btn" type="button" id="btnupdate"   lay-submit>修改信息</button>
 			<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
 		</div>
 	</div>

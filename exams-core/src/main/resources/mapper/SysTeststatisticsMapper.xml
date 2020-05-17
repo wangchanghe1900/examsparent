@@ -28,4 +28,11 @@
         INNER JOIN sys_dept e on e.id=d.dept_id
         ${ew.customSqlSegment}
     </select>
+
+    <select id="getEmpResourceCountByEmpCode" resultType="java.lang.Integer">
+        select count(distinct res_id)  from (
+        select t_id,emp_code,res_id from sys_unlearnduration union all
+        select t_id,emp_code,res_id from sys_learnduration) as s
+        ${ew.customSqlSegment}
+    </select>
 </mapper>

@@ -30,9 +30,9 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 	    $.ajaxSettings.async = true;
 	$.post("getUserInfo/"+username,function(data,status){
 		if(status=='success'){
-			 var info="<a href='javascript:;'><img src='images/xm.jpg' class='layui-nav-img userAvatar' width='35' height='35'><cite class='adminName'>"+data.realname+"</cite></a>";
+			 var info="<a href='javascript:;'><img src='images/xx.jpg' class='layui-nav-img userAvatar' width='35' height='35'><cite class='adminName'>"+data.realname+"</cite></a>";
 			 $("#userInfo").append(info);
-			 var p="<a class='img' title='我的头像' ><img src='images/xm.jpg' class='userAvatar'></a>";
+			 var p="<a class='img' title='我的头像' ><img src='images/xx.jpg' class='userAvatar'></a>";
 			$(".user-photo").append(p);
 			 var u="<p>所属部门:<span class='deptName'>"+data.deptname+"</span></p>";
              $(".user-photo").append(u);
