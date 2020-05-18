@@ -57,12 +57,12 @@ public class SysTestresultServiceImpl extends ServiceImpl<SysTestresultMapper, S
                 SysTestquestions questions=new SysTestquestions();
                 questions.setTId(testResultInfo.getExamID());
                 questions.setEmpCode(testResultInfo.getEmpID());
-                questions.setQId(Long.parseLong(answerInfo.getQuestNo().toString()));
+                questions.setQId(Long.parseLong(answerInfo.getQuestionID().toString()));
                 questions.setStatus("未答");
                 questions.setAnswer(answerInfo.getAnswer());
                 testquestionsMapper.insert(questions);
             }else{
-                Optional<SysTestquestions> q = testquestions.stream().filter(t -> t.getQId().intValue() == answerInfo.getQuestNo()).findFirst();
+                Optional<SysTestquestions> q = testquestions.stream().filter(t -> t.getQId().intValue() == answerInfo.getQuestionID()).findFirst();
                 if(q.isPresent()){
                     SysTestquestions testquestion = q.get();
                     testquestion.setAnswer(answerInfo.getAnswer());
@@ -124,7 +124,7 @@ public class SysTestresultServiceImpl extends ServiceImpl<SysTestresultMapper, S
 
     private Integer judgementScore(Long empID, Long examID, Integer totalQuestions, List<AnswerInfo> answerInfoList){
         QueryWrapper<SysTestquestions> queryWrapper=new QueryWrapper<>();
-        List<Integer> ids=answerInfoList.stream().map(AnswerInfo::getQuestNo).collect(Collectors.toList());
+        List<Integer> ids=answerInfoList.stream().map(AnswerInfo::getQuestionID).collect(Collectors.toList());
         queryWrapper.eq("t_id",examID).eq("emp_code",empID).eq("status","未答").in("q_id",ids);
         List<SysTestquestions> sysTestquestions = testquestionsMapper.selectList(queryWrapper);
         List<Long> idList = sysTestquestions.stream().map(SysTestquestions::getId).collect(Collectors.toList());
@@ -135,7 +135,7 @@ public class SysTestresultServiceImpl extends ServiceImpl<SysTestresultMapper, S
         List<SysQuestions> questionsList = questionsMapper.selectList(qe);
         for(AnswerInfo info : answerInfoList){
             String answers = info.getAnswer();
-            Optional<SysQuestions> first = questionsList.stream().filter(q -> q.getId().intValue() == info.getQuestNo() && q.getQAnswer().equals(info.getAnswer())).findFirst();
+            Optional<SysQuestions> first = questionsList.stream().filter(q -> q.getId().intValue() == info.getQuestionID() && q.getQAnswer().equals(info.getAnswer())).findFirst();
             if(first.isPresent()){
                 Long id = first.get().getId();
                 Optional<SysTestquestions> stq = sysTestquestions.stream().filter(t -> t.getQId() == id).findFirst();

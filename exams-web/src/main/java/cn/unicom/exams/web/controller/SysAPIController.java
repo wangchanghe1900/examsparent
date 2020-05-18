@@ -183,6 +183,11 @@ public class SysAPIController {
             log.warn(code+"----learnedResource----"+localDateTime.toString());
             ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             LearnedResource learnedResource = employeeService.getLearnedResourceByPage(paramsVo.getPageNum(), paramsVo.getShowNum(), paramsVo.getEmpID());
+            List<LearnedMaterial> learnedMaterialList = learnedResource.getLearnedMaterialList();
+            for(LearnedMaterial material:learnedMaterialList){
+                material.setMaterialURL(contextPath+"/upload"+material.getMaterialURL());
+                material.setMaterialImg(contextPath+"/upload"+material.getMaterialImg());
+            }
             return new Response(200, "提取数据成功",learnedResource);
         }catch (Exception e){
             log.error("已学资源数据提取错误："+e.getMessage());
@@ -211,14 +216,8 @@ public class SysAPIController {
         try {
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
-            log.warn(code+"----testResult----"+localDateTime.toString());
-/*            code="{\"empID\":\"18610810006\",\"examID\":\"21\",\"totalNum\":5,\"answerNum\":5," +
-                    "\"quitTimes\":3,\"duration\":20,\"optionList\":[{\"questNo\":\"2\",\"answer\":\"A\"}," +
-                    "{\"questNo\":\"7\",\"answer\":\"A,B,C\"}," +
-                    "{\"questNo\":\"9\",\"answer\":\"A,B,C,E\"}," +
-                    "{\"questNo\":\"11\",\"answer\":\"A\"}," +
-                    "{\"questNo\":\"14\",\"answer\":\"A\"}]}";*/
-            //code="["+code+"]";
+            log.warn(decryptCode+"----testResult----"+localDateTime.toString());
+            //String decryptCode="{\"empID\":\"12345\",\"examID\":\"1\",\"totalNum\":5,\"answerNum\":4,\"quitTimes\":2,\"duration\":0,\"optionList\":[{\"questionID\":\"2\",\"answer\":\"E\"},{\"questionID\":\"19\",\"answer\":\"C\"},{\"questionID\":\"7\",\"answer\":\"C\"},{\"questionID\":\"10\",\"answer\":\"C\"},{\"questionID\":\"14\",\"answer\":\"\"}]}";
             TestResultInfo testResultInfo = JSON.parseObject(decryptCode, TestResultInfo.class);
             if(StringUtils.isEmpty(testResultInfo)){
                 return new Response(400,"参数错误");

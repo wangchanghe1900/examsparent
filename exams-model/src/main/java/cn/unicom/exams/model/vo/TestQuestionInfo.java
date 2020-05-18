@@ -10,8 +10,9 @@ import java.util.List;
  */
 @Data
 public class TestQuestionInfo {
+    private Integer orderNum;
     private Long questionID;
     private String questionType;
     private String question;
-    private List<OptionsInfo> options;
+    private List<OptionsInfo> option;
 }

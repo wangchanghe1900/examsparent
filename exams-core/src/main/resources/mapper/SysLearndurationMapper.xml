@@ -25,15 +25,15 @@
     <select id="getEmpLearnedResourceByPage" resultType="cn.unicom.exams.model.vo.LearnedMaterial">
         select r.id materialID,r.resourceType materialType,r.resourceName materialName,r.url materialURL,t.id examID,t.testName examName,t.testCount examNum,t.imgUrl materialImg,t.updateTime publishDate,
         studyTimes,studyDuration ,examTimes,maxScores
-        ,last.score lastScores
+        /*,last.score lastScores*/
         from (select * from sys_testpaper where examsStartTime>=date_add(curdate(),INTERVAL -1 year) and testStatus='发布') t inner join
         sys_resourceinfo r on t.res_id=r.id
         inner join
         (select t_id,emp_code,res_id,count(res_id) studyTimes,sum(learnLong) studyDuration from sys_learnduration group by t_id,emp_code,res_id) u on r.id=u.res_id
         inner join
         (select t_id,emp_code, count(t_id) examTimes,max(score) maxScores from sys_testresult group by t_id,emp_code) tr on tr.t_id=t.id
-        inner join
-        (select * from sys_testresult order by testTime desc limit 1) last on last.t_id=t.id
+        /*inner join
+        (select * from sys_testresult order by testTime desc limit 1) last on last.t_id=t.id*/
         ${ew.customSqlSegment}
     </select>
 

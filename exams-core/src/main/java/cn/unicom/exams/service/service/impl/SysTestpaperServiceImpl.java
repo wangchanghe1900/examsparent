@@ -33,8 +33,6 @@ import java.util.stream.Stream;
 public class SysTestpaperServiceImpl extends ServiceImpl<SysTestpaperMapper, SysTestpaper> implements ISysTestpaperService {
     @Resource
     private SysTestpaperMapper testpaperMapper;
-    @Resource
-    private SysResourceinfoMapper resourceinfoMapper;
 
     @Resource
     private SysEmployeeMapper employeeMapper;
@@ -162,6 +160,9 @@ public class SysTestpaperServiceImpl extends ServiceImpl<SysTestpaperMapper, Sys
                 testquestions.setStatus("未答");
                 testquestionsMapper.insert(testquestions);
             }
+            queryWrapper.eq("t_id",examID).eq("emp_code",empID)
+                    .eq("status","未答");
+           sysTestquestions = testquestionsMapper.selectList(queryWrapper);
         }
         //4、如果有数据查询testquestions表及questions表查询出关联试题及资源名称
         List<Long> questionIds = sysTestquestions.stream().map(SysTestquestions::getQId).collect(Collectors.toList());
@@ -176,8 +177,11 @@ public class SysTestpaperServiceImpl extends ServiceImpl<SysTestpaperMapper, Sys
         examInfo.setTotalNum(totalNum.intValue());
         List<QuestionInfo> questionInfos = questionInfoByPage.getRecords();
         List<TestQuestionInfo> testQuestionInfos = new ArrayList<>();
+        int orderNum=(pageNum-1) * showNum;
+        //System.out.println("orderNum = " + orderNum);
         for(QuestionInfo questionInfo: questionInfos){
             TestQuestionInfo testQuestionInfo=new TestQuestionInfo();
+            testQuestionInfo.setOrderNum(++orderNum);
             testQuestionInfo.setQuestionID(questionInfo.getId());
             testQuestionInfo.setQuestionType(questionInfo.getQuestionType());
             testQuestionInfo.setQuestion(questionInfo.getQuestionName());
@@ -189,7 +193,7 @@ public class SysTestpaperServiceImpl extends ServiceImpl<SysTestpaperMapper, Sys
                 info.setDesc(op.getOptionContent());
                 optionsInfos.add(info);
             }
-            testQuestionInfo.setOptions(optionsInfos);
+            testQuestionInfo.setOption(optionsInfos);
             examInfo.setMaterialID(questionInfo.getResourceinfo().getId());
             examInfo.setMaterialType(Integer.valueOf(questionInfo.getResourceinfo().getResourceType()));
             examInfo.setMaterialURL(questionInfo.getResourceinfo().getUrl());

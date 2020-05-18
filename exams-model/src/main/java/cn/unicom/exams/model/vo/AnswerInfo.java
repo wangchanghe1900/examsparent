@@ -8,6 +8,6 @@ import lombok.Data;
  */
 @Data
 public class AnswerInfo {
-    private Integer questNo; //考题ID
+    private Integer questionID; //考题ID
     private String answer;  //答题选项
 }
