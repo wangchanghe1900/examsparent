@@ -64,6 +64,7 @@ public class SysQuestionsServiceImpl extends ServiceImpl<SysQuestionsMapper, Sys
             questions.setResId(questionInfo.getResId());
             questions.setQuestionStatus(questionInfo.getQuestionStatus());
             questions.setQAnswer(questionInfo.getQAnswer());
+            questions.setSortId(questionInfo.getSortId());
             questions.setCreateTime(LocalDateTime.now());
             questions.setUpdateTime(LocalDateTime.now());
             questionsMapper.insert(questions);

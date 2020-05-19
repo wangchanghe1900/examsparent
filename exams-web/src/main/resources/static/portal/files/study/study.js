@@ -183,8 +183,10 @@ function btonclick(me){
 	    	window.location.href='/examsweb/portal/trainppt.html?file='+$(me).next().val();
 	        break;
 	     case "1":
-	     case "2":
 	    	window.location.href='/examsweb/portal/trainvideo.html?file='+$(me).next().val();
+		    break;
+	     case "2":
+	    	window.location.href='/examsweb/portal/trainaudio.html?file='+$(me).next().val();
 	        break;
 	     default:
 	    	alert("material type is not ppt or mp4!");

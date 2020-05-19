@@ -1,4 +1,4 @@
-var curnum=0,totalNum=0,curPagenum=0,outExamTimes=0,showNum=7,examDuration=0 , answerNum=0; 
+﻿var curnum=0,totalNum=0,curPagenum=0,outExamTimes=0,showNum=7,examDuration=0 , answerNum=0; 
 var myInfo={};
 var examId="",materialID="",materialimg="",materialURL="",materialType="",examName="";
 var answerlist={};
@@ -288,23 +288,23 @@ function getquestion(datanum){
 	//动态显示内容
  	$("#subject-content").empty();
  	
-	if(data["sj-type"]==0){
+	if(data["sj-type"]=="单选题"||data["sj-type"]=="判断题"){
 		//单选
 		var listr = '<li data-type='+data["sj-type"]+' data-id='+data["sj-id"]+' data-ordernum='+data["sj-num"]+'>'+
-			'<p class="subject">'+data["sj-num"]+'. [单选] '+data["subject"]+'</p>'+
+			'<p class="subject">'+data["sj-num"]+'. ['+data["sj-type"]+'] '+data["subject"]+'</p>'+
 			'<div class="d-block my-3">'
 		for(var i=0;i<data["solution"].length;i++){
 			if(data["answer"]!=null && data["answer"].indexOf(data["solution"][i].order)!= -1){
 				listr=listr +
 				'<div class="custom-control custom-radio">'+
 				'<input id ="'+data["solution"][i].order+'"  name="Method" type="radio" class="custom-control-input" checked required >'+
-				'<label class="custom-control-label" for="'+data["solution"][i].order+'">'+data["solution"][i].order+data["solution"][i].desc+'</label>'+
+				'<label class="custom-control-label" for="'+data["solution"][i].order+'">'+data["solution"][i].order+"&nbsp;&nbsp;"+data["solution"][i].desc+'</label>'+
 				'</div>'
 			}else{
 				listr=listr +
 				'<div class="custom-control custom-radio">'+
 				'<input id ="'+data["solution"][i].order+'"  name="Method" type="radio" class="custom-control-input" required >'+
-				'<label class="custom-control-label" for="'+data["solution"][i].order+'">'+data["solution"][i].order+data["solution"][i].desc+'</label>'+
+				'<label class="custom-control-label" for="'+data["solution"][i].order+'">'+data["solution"][i].order+"&nbsp;&nbsp;"+data["solution"][i].desc+'</label>'+
 				'</div>'
 			}
 			
@@ -314,20 +314,20 @@ function getquestion(datanum){
 	}else{
 		//多选
 		var listr = '<li data-type='+data["sj-type"]+' data-id='+data["sj-id"]+' data-ordernum='+data["sj-num"]+'>'+
-			'<p class="subject">'+data["sj-num"]+'. [多选] '+data["subject"]+'</p>'+
+			'<p class="subject">'+data["sj-num"]+'. ['+data["sj-type"]+'] '+data["subject"]+'</p>'+
 			'<div class="d-block my-3">'
 		for(var i=0;i<data["solution"].length;i++){
 			if(data["answer"]!=null && data["answer"].indexOf(data["solution"][i].order)!= -1){
 				listr=listr +
 				'<div class="custom-control custom-checkbox">'+
 				'<input type="checkbox" class="custom-control-input" id="'+data["solution"][i].order+'" checked>'+
-				'<label class="custom-control-label" for="'+data["solution"][i].order+'" >'+data["solution"][i].order+data["solution"][i].desc+'</label>'+
+				'<label class="custom-control-label" for="'+data["solution"][i].order+'" >'+data["solution"][i].order+"&nbsp;&nbsp;"+data["solution"][i].desc+'</label>'+
 				'</div>'
 			}else{
 				listr=listr +
 				'<div class="custom-control custom-checkbox">'+
 				'<input type="checkbox" class="custom-control-input"  id="'+data["solution"][i].order+'" >'+
-				'<label class="custom-control-label" for="'+data["solution"][i].order+'" >'+data["solution"][i].order+data["solution"][i].desc+'</label>'+
+				'<label class="custom-control-label" for="'+data["solution"][i].order+'" >'+data["solution"][i].order+"&nbsp;&nbsp;"+data["solution"][i].desc+'</label>'+
 				'</div>'
 			}
 				
@@ -379,7 +379,12 @@ function saveAnswer(){
 	//console.log(checkedinput);
 	for (var i = 0; i < checkedinput.length; i++) {
 		if (checkedinput[i].checked) {
-			myanswer=myanswer+(checkedinput[i].id);
+			if(myanswer==""){
+				myanswer=myanswer+(checkedinput[i].id);
+			}else{
+				myanswer=myanswer+","+(checkedinput[i].id);
+			}
+			
 		}
 	}
 	//alert(myanswer);
@@ -453,7 +458,8 @@ function submitAnswer(pmyInfo,pexamId,ptotalNum){
 
 function calculationDuration(pST,pET){
 	//计算时长(分钟)，
-	return Math.floor(duration(pST,pET,"minus"));
+	//return Math.floor(duration(pST,pET,"minus"));
+	return Math.ceil(duration(pST,pET,"minus"));
 	
 }
 

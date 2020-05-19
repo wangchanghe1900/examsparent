@@ -80,7 +80,7 @@ public class SysTestpaperServiceImpl extends ServiceImpl<SysTestpaperMapper, Sys
         deptIDList.add(sysTestpaper.getDeptId());
         //2、根据部门ID查询员工信息
         QueryWrapper<SysEmployee> employeeQueryWrapper=new QueryWrapper<>();
-        employeeQueryWrapper.in("dept_id",deptIDList);
+        employeeQueryWrapper.eq("employeeStatus","正常").in("dept_id",deptIDList);
         List<SysEmployee> sysEmployees = employeeMapper.selectList(employeeQueryWrapper);
         if("发布".equals(status)){
             QueryWrapper<SysTestquestions> qWrapper=new QueryWrapper<>();

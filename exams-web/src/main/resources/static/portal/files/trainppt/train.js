@@ -1,5 +1,5 @@
-var myInfo={};
-var materialID="";
+﻿var myInfo={};
+var materialID="",examID="";
 var materialst=null;
 var outExamTimes=0,orderNum=0;
 $(function(){
@@ -22,6 +22,7 @@ $(function(){
 	startLoading();
 	materialID = getCookie("materialID");
 	materialst = getCookie("materialst");
+	examID = getCookie("examID");
 	
 	//记录考试次数
 	outExamTimes= parseInt(getCookie("outExamTimes"));
@@ -49,10 +50,11 @@ $(function(){
 			//window.history.back(-1);
 			if(outExamTimes==null||outExamTimes==0||isNaN(outExamTimes)){
 				studyresult("/examsweb/portal/unStudy.html");
+				return false;
 			}else{
+				//window.location.href="unStudy.html";
 				//考试跳出的学习，不上报学习时长
 				$("#exitModal").show();
-				//window.location.href="unStudy.html";
 			}
 		 }
 	);
@@ -76,7 +78,6 @@ $(function(){
 				studyresult(url);
 			}else{
 				//考试跳出的学习，不上报学习时长
-				
 				window.location.href=url;
 			}
 		}
@@ -97,12 +98,12 @@ function GetQueryString(name) {
 //提交学习结果反馈
 function studyresult(url){
 	//计算时长(分钟)，提交
-	var studyduration=Math.floor(duration(materialst,new Date().toUTCString(),"minus"));
-	//alert("materialst:"+materialst+";materialet:"+new Date().toUTCString()+" ;duration:"+studyduration);
+	//var studyduration=Math.floor(duration(materialst,new Date().toUTCString(),"minus"));
+	var studyduration=Math.ceil(duration(materialst,new Date().toUTCString(),"minus"));
 	//参数
 	var code="";
-	//dec({"empID"："","materalID":"","studyDuration":""})
-	code="{\"empID\":\""+myInfo.userid+"\",\"materalID\":\""+materialID+"\",\"studyDuration\":\""+studyduration+"\"}";
+	//dec({"empID"："","examID":"","materalID":"","studyDuration":""})
+	code="{\"empID\":\""+myInfo.userid+"\",\"examID\":\""+examID+"\",\"materalID\":\""+materialID+"\",\"studyDuration\":\""+studyduration+"\"}";
 	//alert(code);
 	//加密
 	encode=aesEncryptJava(code,abc,abc);
@@ -136,8 +137,8 @@ function studyresult(url){
          
          "error":function(error){
         	console.log(error);
-			
-			return false;
+			alert("提交学习结果失败!");
+			window.location.href=url;
 		}
     });
 	

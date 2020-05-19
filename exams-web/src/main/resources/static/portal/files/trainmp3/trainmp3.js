@@ -10,7 +10,6 @@ $(function(){
     	window.location.href='/examsweb/portal/login.html';
     }*/
 	//var viewheight= $("#mybody").height() - $("#btn-bottom").height();
-	
 	//动态生成video
 	//调整屏幕高度
 	var viewheight= document.documentElement.clientHeight - $("#btn-bottom").height();
@@ -18,7 +17,7 @@ $(function(){
 	var windowHeiht = document.documentElement.clientHeight * 0.85; 
 	var src=GetQueryString("file");
 	var materialimg = getCookie("materialimg");
-	loadVideo(src,windowHeiht,windowWidth,materialimg);
+	loadAudio(src,windowHeiht,windowWidth,materialimg);
 	
 	myInfo = getMyInfo();
 	if(myInfo.userid==null||myInfo.userid==""){
@@ -146,17 +145,15 @@ function studyresult(url){
     });
 	
 }
-
-function loadVideo(src,heidht,width,imgUrl){
+function loadAudio(src,heidht,width,imgUrl){
 	var divstr=	'<div id="container1" style="height: '+heidht+'px; padding-top: '+(50/ 1334 * heidht)+'px;" > '+
-			'<video id="myVideo" class="video-imgbg" preload="none"  loop="-1" controls="controls"'+
+			'<audio id="myAudio" class="video-imgbg" preload="none"  loop="-1" controls="controls"'+
 			' style="width: '+width+'px; height: '+heidht+'px; background:transparent url(\''+imgUrl+'\') 50% 50% no-repeat" > '+ 
-			' <source src="'+src+'" type="video/mp4" >您的浏览器不支持播放  '+
-			'</video></div>'
+			' <source src="'+src+'" type="audio/mpeg" >您的浏览器不支持播放  '+
+			'</audio></div>'
 
 	$("#videoContainer").append(divstr);
-	//$("#container1 video").css("background","transparent url('"+imgUrl+"') 50% 50% no-repeat");
-}
-	 
+	//$("#container1 audio").css("background","transparent url('"+imgUrl+"') 50% 50% no-repeat");
+}	 
 
 
