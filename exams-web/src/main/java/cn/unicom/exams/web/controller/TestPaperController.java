@@ -165,16 +165,19 @@ public class TestPaperController {
         try{
             String[] idArr=ids.split(",");
             String[] filepaths=files.split(",");
-            for(String filePath:filepaths){
-                String realPath = uploadPath+filePath;//request.getServletContext().getRealPath(filePath);
-                File file=new File(realPath);
-                file.delete();
+            int j=0;
+            for(int i=0;i<idArr.length;i++){
+                Long id=Long.parseLong(idArr[i]);
+                String url="";
+                if(filepaths.length==idArr.length){
+                   url=uploadPath+filepaths[i];
+                }else{
+                    if(j >= filepaths.length) j=0;
+                    url=uploadPath+filepaths[j++];
+                }
+                testpaperService.deleteTestInfoById(id,url);
             }
-            List<Integer> idList=new ArrayList<>();
-            for(String s: idArr){
-                idList.add(Integer.valueOf(s));
-            }
-            testpaperService.removeByIds(idList);
+
             return new Response(200,"批量删除成功");
         }catch (Exception e){
             log.error(e.getMessage());
@@ -185,12 +188,10 @@ public class TestPaperController {
     @GetMapping("/delTestInfoById")
     @RequiresPermissions("test:delete")
     @ResponseBody
-    public Response delTestInfoById(Integer id,String url){
+    public Response delTestInfoById(Long id,String url){
         try{
             String realPath = uploadPath+url;//request.getServletContext().getRealPath(url);
-            File file=new File(realPath);
-            file.delete();
-            testpaperService.removeById(id);
+            testpaperService.deleteTestInfoById(id,realPath);
             return new Response(200,"考试信息删除成功");
         }catch (Exception e){
             log.error(e.getMessage());

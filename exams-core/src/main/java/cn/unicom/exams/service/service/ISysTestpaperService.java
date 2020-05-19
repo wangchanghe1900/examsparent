@@ -43,4 +43,11 @@ public interface ISysTestpaperService extends IService<SysTestpaper> {
      */
     public ExamInfo getExamInfoByEmpCode(Long empID,Long examID,Integer showNum,Integer pageNum) throws Exception;
 
+    /**
+     * 根据试卷ID删除试卷及未学资源等。
+     * @param examsID
+     * @throws Exception
+     */
+    public void deleteTestInfoById(Long examsID,String url) throws Exception;
+
 }

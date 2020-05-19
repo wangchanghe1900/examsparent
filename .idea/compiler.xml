@@ -7,10 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="exams-core" />
         <module name="exams-web" />
         <module name="exams-model" />
         <module name="axams-web" />
+        <module name="exams-core" />
       </profile>
     </annotationProcessing>
   </component>

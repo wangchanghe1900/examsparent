@@ -69,7 +69,7 @@ public class SysAPIController {
         try {
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
-            log.warn(code+"----testpaper----"+localDateTime.toString());
+            log.warn("----testpaper----"+decryptCode);
             ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             ExamInfo examInfo = testpaperService.getExamInfoByEmpCode(paramsVo.getEmpID(), paramsVo.getExamID(), paramsVo.getShowNum(), paramsVo.getPageNum());
             return new Response(200,"考题提取成功",examInfo);
@@ -141,7 +141,7 @@ public class SysAPIController {
         try{
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
-            log.warn(code+"----empTestInfo----"+localDateTime.toString());
+            log.warn("----empTestInfo----"+decryptCode);
             ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             EmpTestInfo testInfo = employeeService.getEmpTestInfoByEmpCode(paramsVo.getEmpID());
             return new Response(200, "个人信息反馈成功",testInfo);
@@ -158,7 +158,7 @@ public class SysAPIController {
             //EncryptUtils解密 {"empID"："","showNum":10,"pageNum":1}
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
-            log.warn(code+"----unlearnedResource----"+localDateTime.toString());
+            log.warn("----unlearnedResource----"+decryptCode);
             ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             UnLearnResource unLearnResource = employeeService.getUnLearnResourceByPage(paramsVo.getPageNum(), paramsVo.getShowNum(), paramsVo.getEmpID());
             List<Material> materialList = unLearnResource.getMaterialList();
@@ -180,7 +180,7 @@ public class SysAPIController {
             //EncryptUtils解密 {"empID"："","showNum":10,"pageNum":1}
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
-            log.warn(code+"----learnedResource----"+localDateTime.toString());
+            log.warn("----learnedResource----"+decryptCode);
             ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             LearnedResource learnedResource = employeeService.getLearnedResourceByPage(paramsVo.getPageNum(), paramsVo.getShowNum(), paramsVo.getEmpID());
             List<LearnedMaterial> learnedMaterialList = learnedResource.getLearnedMaterialList();
@@ -200,7 +200,7 @@ public class SysAPIController {
         try {
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
-            log.warn(decryptCode+"----learnedResult----"+localDateTime.toString());
+            log.warn("----learnedResult----"+decryptCode);
             ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             learndurationService.saveLearnInfo(paramsVo.getEmpID(),paramsVo.getExamID(),paramsVo.getMateralID(),paramsVo.getStudyDuration());
             return new Response(200,"数据提交成功");
@@ -216,7 +216,7 @@ public class SysAPIController {
         try {
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
-            log.warn(decryptCode+"----testResult----"+localDateTime.toString());
+            log.warn("----testResult----"+decryptCode);
             //String decryptCode="{\"empID\":\"12345\",\"examID\":\"1\",\"totalNum\":5,\"answerNum\":4,\"quitTimes\":2,\"duration\":0,\"optionList\":[{\"questionID\":\"2\",\"answer\":\"E\"},{\"questionID\":\"19\",\"answer\":\"C\"},{\"questionID\":\"7\",\"answer\":\"C\"},{\"questionID\":\"10\",\"answer\":\"C\"},{\"questionID\":\"14\",\"answer\":\"\"}]}";
             TestResultInfo testResultInfo = JSON.parseObject(decryptCode, TestResultInfo.class);
             if(StringUtils.isEmpty(testResultInfo)){
@@ -236,7 +236,7 @@ public class SysAPIController {
         try{
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
             LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
-            log.warn(code+"----testedinfo----"+localDateTime.toString());
+            log.warn("----testedinfo----"+decryptCode);
             ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             TestedInfo testedInfo = testresultService.gettestedInfoByEmpID(paramsVo.getEmpID(), paramsVo.getShowNum(), paramsVo.getPageNum());
             return new Response(200,"数据提取成功",testedInfo);
@@ -250,8 +250,6 @@ public class SysAPIController {
     public Response resetPwd(String code,Long timestamp){
         try{
             String decryptCode = EncryptUtils.aesDecrypt(code, key, false, key);
-            LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
-            log.warn(code+"----resetPwd----"+localDateTime.toString());
             ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             String oldPassword=paramsVo.getOldPassword();
             String newPassword=paramsVo.getNewPassword();

@@ -134,7 +134,9 @@ public class SysEmployeeServiceImpl extends ServiceImpl<SysEmployeeMapper, SysEm
     public LearnedResource getLearnedResourceByPage(int page, int limit, Long empCode) throws Exception {
         Page<SysLearnduration> ipage=new Page<>(page,limit);
         QueryWrapper<SysLearnduration> qw=new QueryWrapper<>();
-        qw.eq("u.emp_code",empCode).orderByDesc("t.updateTime");
+        qw.eq("u.emp_code",empCode)
+                .eq("tr.emp_code",empCode)
+                .orderByDesc("t.updateTime");
         IPage<LearnedMaterial> empLearnedResourceByPage = learndurationMapper.getEmpLearnedResourceByPage(ipage, qw);
         LearnedResource learnedResource=new LearnedResource();
         learnedResource.setPageNum(page);

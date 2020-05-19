@@ -31,8 +31,8 @@
 
     <select id="getEmpResourceCountByEmpCode" resultType="java.lang.Integer">
         select count(distinct res_id)  from (
-        select t_id,emp_code,res_id from sys_unlearnduration union all
-        select t_id,emp_code,res_id from sys_learnduration) as s
+        (select t_id,emp_code,u.res_id from sys_unlearnduration u , sys_testpaper t where u.t_id=t.id and t.testStatus ='发布') union all
+        (select t_id,emp_code,l.res_id from sys_learnduration l ,sys_testpaper t where l.t_id=t.id and t.testStatus ='发布')) as s
         ${ew.customSqlSegment}
     </select>
 </mapper>

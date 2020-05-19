@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -201,6 +202,22 @@ public class SysTestpaperServiceImpl extends ServiceImpl<SysTestpaperMapper, Sys
         }
         examInfo.setQuestionsList(testQuestionInfos);
         return examInfo;
+
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteTestInfoById(Long examsID,String url) throws Exception {
+        QueryWrapper<SysUnlearnduration> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("t_id",examsID);
+        unlearndurationMapper.delete(queryWrapper);
+        QueryWrapper<SysTestquestions> qw=new QueryWrapper<>();
+        qw.eq("t_id",examsID).eq("status","未答");
+        testquestionsMapper.delete(qw);
+        File file=new File(url);
+        file.delete();
+        testpaperMapper.deleteById(examsID);
+
 
     }
 
