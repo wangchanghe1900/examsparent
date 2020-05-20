@@ -48,7 +48,14 @@ layui.use(['form','layer','treeSelect', 'util','laydate','table'],function(){
             {field: 'createTime', title: '发布日期', minWidth:150, align:"center",sort: true},
             {field: 'createUser', title: '创建人', minWidth:100, align:"center"},
             {field: 'status', title: '公告状态', minWidth:180, align:'center',templet:'#noticeStatus'},
-            {field: 'deptName', title: '接收部门', align:'center',minWidth:200},
+            {field: 'deptList', title: '接收部门', align:'center',minWidth:200,templet:function(d){
+                    var deptnames="";
+                    for(var i=0;i<d.deptList.length;i++){
+                        deptnames+=d.deptList[i]+",";
+                    }
+                    deptnames=deptnames.substring(0,deptnames.length-1);
+                    return deptnames;
+                }},
             {field: 'readerCount', title: '已读数量', align:'center',minWidth:100},
             {field: 'receiveCount', title: '接收数量', align:'center',minWidth:100},
             {title: '操作', minWidth:220, templet:'#noticeListBar',fixed:"right",align:"center"}

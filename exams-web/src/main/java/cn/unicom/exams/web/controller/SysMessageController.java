@@ -6,6 +6,7 @@ import cn.unicom.exams.model.vo.UserMessageInfo;
 import cn.unicom.exams.model.vo.UserMessageVo;
 import cn.unicom.exams.model.web.Response;
 import cn.unicom.exams.model.web.WebResponse;
+import cn.unicom.exams.service.service.ISysNoticeService;
 import cn.unicom.exams.service.service.ISysUsermessagesService;
 import cn.unicom.exams.web.utils.ShiroUtils;
 import com.alibaba.fastjson.JSON;
@@ -31,6 +32,9 @@ import java.util.List;
 public class SysMessageController {
     @Autowired
     private ISysUsermessagesService usermessagesService;
+
+    @Autowired
+    private ISysNoticeService noticeService;
 
     @GetMapping("/messageList")
     @RequiresPermissions("message:list")
@@ -76,10 +80,7 @@ public class SysMessageController {
     @ResponseBody
     public Response updateMessageStatus(Long id,String isRead){
         try{
-            SysUsermessages usermessages=new SysUsermessages();
-            usermessages.setId(id);
-            usermessages.setIsRead(isRead);
-            usermessagesService.updateById(usermessages);
+            usermessagesService.updateMessage(id,isRead);
             return new Response(200,"更新数据成功!");
         }catch (Exception e){
             return new Response(500,"更新数据失败!");

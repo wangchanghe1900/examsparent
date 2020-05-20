@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,17 +35,18 @@ import java.util.*;
 @RequestMapping("/notice")
 @Slf4j
 public class NoticeController {
+    @Value("${exams.uploadPath}")
+    private String uploadPath;
+
+    @Value("${server.servlet.context-path}")
+    private String webPath;
+
     @Autowired
     private ISysNoticeService noticeService;
 
     @Autowired
     private ButtonAuthorUtils buttonAuthorUtils;
 
-    @Autowired
-    private ISysUserService userService;
-
-    @Autowired
-    private ISysEmployeeService employeeService;
 
     @Autowired
     private ISysUsermessagesService usermessagesService;
@@ -73,14 +75,17 @@ public class NoticeController {
                 NoticeInfo info=new NoticeInfo();
                 String depts=notice.getDeptName();
                 String[] deptArr=depts.split(",");
-                List<Long> ids=new ArrayList<>();
-                for(String dept:deptArr){
+                List<String> deptList=new ArrayList<>();
+                List<Long> idList=new ArrayList<>();
+                for(String id:deptArr){
                     QueryWrapper<SysDept> queryWrapper=new QueryWrapper<>();
-                    queryWrapper.eq("deptname",dept);
+                    queryWrapper.eq("id",Long.parseLong(id));
                     SysDept sysDept = deptService.getOne(queryWrapper);
-                    ids.add(sysDept.getId());
+                    deptList.add(sysDept.getDeptname());
+                    idList.add(Long.parseLong(id));
                 }
-                info.setDeptIds(ids);
+                info.setDeptList(deptList);
+                info.setDeptIds(idList);
                 BeanUtil.copyProperties(notice,info);
                 info.setIsEdit(notictButtons.getIsEdit());
                 info.setIsDel(notictButtons.getIsDel());
@@ -104,73 +109,10 @@ public class NoticeController {
     @PostMapping("/saveNotice")
     @ResponseBody
     public Response saveNotice(String infos){
-        Subject subject = ShiroUtils.getSubject();
-        UserInfo user = (UserInfo) subject.getPrincipal();
         try {
-            infos="["+infos+"]";
-            List<NoticeVo> noticeVoList = JSON.parseArray(infos, NoticeVo.class);
-            if(noticeVoList!=null && noticeVoList.size()>0){
-                NoticeVo noticeVo = noticeVoList.get(0);
-                List<DeptInfo> deptInfoList = JSON.parseArray(noticeVo.getDeptName(), DeptInfo.class);
-                List<DeptInfo> childrenInfos=null;
-                Integer receviceCount=0;
-                for(DeptInfo dept:deptInfoList){
-                    childrenInfos= getChildrenDeptInfo(dept.getChildren());
-                    String deptName="";
-                    for(DeptInfo info:childrenInfos){
-                        deptName+=info.getTitle()+",";
-                    }
-                    deptName=deptName.substring(0,deptName.length()-1);
-                    noticeVo.setDeptName(deptName);
-                }
-                if(noticeVo.getIsSendSysUser()!=null){
-                    Integer userCount=0;
-                    for(DeptInfo info:childrenInfos){
-                        QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
-                        queryWrapper.eq("status",1).eq("dept_id",info.getId());
-                        userCount+=userService.count(queryWrapper);
-                    }
-                    receviceCount+=userCount;
-                    noticeVo.setIsSendSysUser("是");
-
-                }else{
-                    noticeVo.setIsSendSysUser("否");
-                }
-
-                if(noticeVo.getIsSendEmp()!=null){
-                    Integer empCount=0;
-                    for(DeptInfo info:childrenInfos){
-                        QueryWrapper<SysEmployee> queryWrapper=new QueryWrapper<>();
-                        queryWrapper.eq("employeeStatus","正常").eq("dept_id",info.getId());
-                        empCount+=employeeService.count(queryWrapper);
-                    }
-                    receviceCount+=empCount;
-                    noticeVo.setIsSendEmp("是");
-                }else{
-                    noticeVo.setIsSendEmp("否");
-                }
-
-                noticeVo.setReceiveCount(receviceCount);
-                noticeVo.setReaderCount(0);
-                if(noticeVo.getId()==null){
-                    noticeVo.setCreateTime(LocalDateTime.now());
-                    noticeVo.setCreateUser(user.getRealname());
-                    noticeService.save(noticeVo);
-                    if(("发布").equals(noticeVo.getStatus())){
-                        sendMessages(childrenInfos,noticeVo,user);
-                    }
-
-                }else{
-                    noticeService.updateById(noticeVo);
-                    QueryWrapper<SysUsermessages> queryWrapper=new QueryWrapper<>();
-                    queryWrapper.eq("notice_id",noticeVo.getId());
-                    usermessagesService.remove(queryWrapper);
-                    if(("发布").equals(noticeVo.getStatus())){
-                        sendMessages(childrenInfos,noticeVo,user);
-                    }
-                }
-
-            }
+            Subject subject = ShiroUtils.getSubject();
+            UserInfo user = (UserInfo) subject.getPrincipal();
+            noticeService.saveNoticeInfo(infos,user.getRealname());
             return new Response(200,"保存通知信息成功！");
         }catch (Exception e){
             log.error(e.getMessage());
@@ -178,31 +120,14 @@ public class NoticeController {
         }
     }
 
-    private List<DeptInfo> getChildrenDeptInfo(List<DeptInfo> deptList){
-        List<DeptInfo> deptInfos=new ArrayList<>();
-        for(DeptInfo dept: deptList){
-            if(dept.getChildren().size()>0){
-                List<DeptInfo> childrenDeptInfo = getChildrenDeptInfo(dept.getChildren());
-                if(childrenDeptInfo.size()>0){
-                    deptInfos=childrenDeptInfo;
-                }
-            }else{
-                deptInfos.add(dept);
-            }
 
-        }
-        return deptInfos;
-    }
 
     @GetMapping("/delNoticeById")
     @RequiresPermissions("notice:delete")
     @ResponseBody
     public Response delNoticeById(Long id){
         try{
-            noticeService.removeById(id);
-            QueryWrapper<SysUsermessages> queryWrapper=new QueryWrapper<>();
-            queryWrapper.eq("notice_id",id);
-            usermessagesService.remove(queryWrapper);
+            noticeService.deleteNotice(id);
             return new Response(200,"删除公告信息成功");
         }catch (Exception e){
             log.error(e.getMessage());
@@ -216,15 +141,8 @@ public class NoticeController {
     public Response delNoticeByIds(String ids){
         try{
             String[] idArr = ids.split(",");
-            List<Long> idList=new ArrayList<>();
             for(String id:idArr){
-                idList.add(Long.parseLong(id));
-            }
-            noticeService.removeByIds(idList);
-            for(Long id:idList){
-                QueryWrapper<SysUsermessages> queryWrapper=new QueryWrapper<>();
-                queryWrapper.eq("notice_id",id);
-                usermessagesService.remove(queryWrapper);
+                noticeService.deleteNotice(Long.parseLong(id));
             }
             return new Response(200,"删除公告信息成功！");
         }catch (Exception e){
@@ -239,45 +157,7 @@ public class NoticeController {
         return "notice/noticeAdd";
     }
 
-    private void sendMessages(List<DeptInfo> deptList,NoticeVo noticeVo,SysUser user){
-        List<SysUsermessages> usermessagesList=new ArrayList<>();
 
-        for(DeptInfo deptInfo:deptList){
-            if(("是").equals(noticeVo.getIsSendSysUser())){
-                QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
-                queryWrapper.eq("dept_id",deptInfo.getId());
-                List<SysUser> userList = userService.list(queryWrapper);
-                for(SysUser sysUser:userList){
-                    SysUsermessages usermessages=new SysUsermessages();
-                    usermessages.setReceviceUserCode(sysUser.getId());
-                    usermessages.setNoticeId(noticeVo.getId());
-                    usermessages.setSendUser(user.getRealname());
-                    usermessages.setIsRead("否");
-                    usermessages.setCreateDate(LocalDateTime.now());
-                    usermessagesList.add(usermessages);
-                }
-            }
-            if(("是").equals(noticeVo.getIsSendEmp())){
-                QueryWrapper<SysEmployee> queryWrapper=new QueryWrapper<>();
-                queryWrapper.eq("dept_id",deptInfo.getId());
-                List<SysEmployee> employeeList = employeeService.list(queryWrapper);
-                for(SysEmployee employee:employeeList){
-                    SysUsermessages empmessages=new SysUsermessages();
-                    empmessages.setReceviceUserCode(Long.parseLong(employee.getEmployeeCode()));
-                    empmessages.setNoticeId(noticeVo.getId());
-                    empmessages.setSendUser(user.getRealname());
-                    empmessages.setIsRead("否");
-                    empmessages.setCreateDate(LocalDateTime.now());
-                    usermessagesList.add(empmessages);
-                }
-
-            }
-        }
-        for(SysUsermessages usermessages:usermessagesList){
-            usermessagesService.save(usermessages);
-
-        }
-    }
 
     @GetMapping("/publishNotice")
     @ResponseBody
@@ -286,34 +166,9 @@ public class NoticeController {
         try{
             Subject subject = ShiroUtils.getSubject();
             UserInfo user = (UserInfo) subject.getPrincipal();
-            SysNotice notice=new SysNotice();
-            notice.setId(id);
-            notice.setStatus(status);
-            if("未发布".equals(status)){
-                QueryWrapper<SysUsermessages> queryWrapper=new QueryWrapper<>();
-                queryWrapper.eq("notice_id",id);
-                usermessagesService.remove(queryWrapper);
-            }else{
-                QueryWrapper<SysUsermessages> queryWrapper=new QueryWrapper<>();
-                queryWrapper.eq("notice_id",id);
-                usermessagesService.remove(queryWrapper);
-                SysNotice sysNotice = noticeService.getById(id);
-                String[] deptArr=sysNotice.getDeptName().split(",");
-                List<DeptInfo> deptList=new ArrayList<>();
-                for(String dept:deptArr){
-                    QueryWrapper<SysDept> qw=new QueryWrapper<>();
-                    qw.eq("deptname",dept);
-                    SysDept sysDept = deptService.getOne(qw);
-                    DeptInfo info=new DeptInfo();
-                    info.setId(sysDept.getId());
-                    deptList.add(info);
-                }
-                NoticeVo noticeVo=new NoticeVo();
-                BeanUtil.copyProperties(sysNotice,noticeVo);
-                sendMessages(deptList, noticeVo,user);
-            }
-            noticeService.updateById(notice);
-            return new Response(200,"状态更新成功！");
+            noticeService.publishNotice(id,status,user.getRealname());
+            String msg="发布".equals(status) ? "通知发布成功":"通知取消成功";
+            return new Response(200,msg);
         }catch (Exception e){
             log.error(e.getMessage());
             return new Response(500,"状态更新失败！");
@@ -328,18 +183,18 @@ public class NoticeController {
 
     @PostMapping("/uploadImgFile")
     @ResponseBody
-    public Response uploadImgFile(@RequestParam("file") MultipartFile[] files, HttpServletRequest request){
+    public Response uploadImgFile(@RequestParam("file") MultipartFile[] files){
         try{
             String[] pathArr=new String[files.length];
             int i=0;
             for(MultipartFile file : files){
-                String filePath=saveUploadFile("/upload/noticeFile/",file,request);
+                String filePath=saveUploadFile("/noticeFile/",file);
                 pathArr[i]=filePath;
                 i++;
             }
             String path="";
             for(String p: pathArr){
-               path +="/examsweb"+ p +",";
+               path +=webPath+ p +",";
             }
             path=path.substring(0,path.length()-1);
             Map<String,String> map=new HashMap<>();
@@ -351,11 +206,11 @@ public class NoticeController {
         }
 
     }
-    private String saveUploadFile(String savePath, MultipartFile fileinfo,  HttpServletRequest request) throws Exception{
+    private String saveUploadFile(String savePath, MultipartFile fileinfo) throws Exception{
         DateTimeFormatter df=DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate now=LocalDate.now();
         String path=savePath+now.format(df);
-        String realPath = request.getServletContext().getRealPath(path);//context.getRealPath("c:/upload/commFile");
+        String realPath =uploadPath+path ;//request.getServletContext().getRealPath(path);//context.getRealPath("c:/upload/commFile");
         File dir=new File(realPath);
         if(!dir.exists()){
             dir.mkdirs();
@@ -364,7 +219,7 @@ public class NoticeController {
         filename = UUID.randomUUID().toString()+ filename.substring(filename.lastIndexOf("."));
         File f= new File(realPath, filename);
         fileinfo.transferTo(f);
-        return path+"/"+filename;
+        return "/upload"+path+"/"+filename;
     }
 
 }

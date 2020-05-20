@@ -15,8 +15,14 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class NoticeInfo extends SysNotice {
+    /**
+     * 发送部门名称
+     */
+    private List<String> deptList=new ArrayList<>();
+    /**
+     * 发送部门ID
+     */
     private List<Long> deptIds=new ArrayList<>();
-
     /**
      * 编辑按钮权限
      */

@@ -42,11 +42,11 @@ layui.use(['form','layer','table','laytpl'],function(){
             }},
             {field: 'rolesname', title: '权限名称',  minWidth:150 ,align:'center',templet:function(d){
                 var rolename="";
-                for(var i=0;i<d.roles.length;i++){
-                    rolename+=d.roles[i].name+",";
-                }
-                rolename=rolename.substring(0,rolename.length-1);
-                return rolename;
+                    for(var i=0;i<d.roles.length;i++){
+                        rolename+=d.roles[i].name+",";
+                    }
+                    rolename=rolename.substring(0,rolename.length-1);
+                    return rolename;
             }},
             {field: 'status', title: '用户状态',  align:'center',templet:function(d){
                 return d.status == "1" ? "正常使用" : "禁止使用";

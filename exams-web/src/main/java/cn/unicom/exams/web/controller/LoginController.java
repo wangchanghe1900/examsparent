@@ -49,6 +49,7 @@ public class LoginController {
     public String main(){
             Subject subject = ShiroUtils.getSubject();
             UserInfo user = (UserInfo) subject.getPrincipal();
+            System.out.println(user.getPassword());
             if(user==null){
                 return "redirect:/";
             }else{

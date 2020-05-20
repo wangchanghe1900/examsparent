@@ -64,7 +64,14 @@ public class ResourceController {
             resourceVo.setUserName(user.getUsername());
             IPage<ResourceInfo> resourceInfoByPage = resourceinfoService.getResourceInfoByPage(page, limit, resourceVo);
             Long count=resourceInfoByPage.getTotal();
-            ButtonInfo resourcepower = buttonAuthorUtils.getButtonAuthority("commres");
+            ButtonInfo resourcepower=null;
+            if("0".equals(resourceVo.getResourceType())){
+                resourcepower = buttonAuthorUtils.getButtonAuthority("commres");
+            }else if("1".equals(resourceVo.getResourceType())){
+                resourcepower = buttonAuthorUtils.getButtonAuthority("video");
+            }else{
+                resourcepower = buttonAuthorUtils.getButtonAuthority("audio");
+            }
             for (int i = 0; i < resourceInfoByPage.getRecords().size(); i++) {
                 resourceInfoByPage.getRecords().get(i).setIsDel(resourcepower.getIsDel());
                 resourceInfoByPage.getRecords().get(i).setIsDetail(resourcepower.getIsDetail());

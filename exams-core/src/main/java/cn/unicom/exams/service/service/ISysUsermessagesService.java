@@ -32,4 +32,12 @@ public interface ISysUsermessagesService extends IService<SysUsermessages> {
      */
     public Integer getUserMessageCount(String userName) throws Exception;
 
+    /**
+     * 更新信息状态
+     * @param id
+     * @param status
+     * @throws Exception
+     */
+    public void updateMessage(Long id,String status) throws Exception;
+
 }

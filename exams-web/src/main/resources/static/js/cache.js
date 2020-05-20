@@ -28,7 +28,7 @@ layui.use(['form','element','jquery',"layer"],function() {
                     }else{
                         info=data.data;
                     }
-                    sessionStorage.setItem("messageCount",info);
+                    //sessionStorage.setItem("messageCount",info);
                     $(".showNotice").append("<span class='layui-badge'>"+info+"</span>")
                 }else{
                     layer.msg(data.msg);

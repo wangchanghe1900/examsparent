@@ -169,3 +169,16 @@ function addTab(_this){
 	tab.tabAdd(_this);
 };
 
+function showUserPwd(){
+	layer.open({
+		title : "修改密码",
+		type : 2,
+		anim: 5,
+		area: ['700px', '550px'],
+		content : "changePwd",
+		success : function(layero, index){
+			//var body = layui.layer.getChildFrame('body', index);
+		}
+	})
+}
+showUserPwd();

@@ -73,11 +73,11 @@ public class EmployeeController {
             List<EmployeeVo> employeeVos = JSON.parseArray(data, EmployeeVo.class);
             employeeVo=employeeVos.get(0);
         }
-        Subject subject = ShiroUtils.getSubject();
+/*        Subject subject = ShiroUtils.getSubject();
         UserInfo user = (UserInfo) subject.getPrincipal();
         if(!"admin".equals(user.getUsername())){
             employeeVo.setDeptId(user.getDeptId());
-        }
+        }*/
         try{
             IPage<EmployeeInfo> employeeInfoByPage = employeeService.getEmployeeInfoByPage(page, limit, employeeVo);
             ButtonInfo emppower = buttonAuthorUtils.getButtonAuthority("emp");

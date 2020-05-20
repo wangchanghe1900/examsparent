@@ -22,6 +22,7 @@ layui.use(['form','layer',"jquery",'table'],function(){
             {field: 'createDate', title: '接收日期', minWidth:150, align:"center",sort: true},
             {field: 'sendUser', title: '发送人', minWidth:100, align:"center"},
             {field: 'isRead', title: '状态', minWidth:180, align:'center',templet:'#messageStatus'},
+            {field: 'realName', title: '接收人', minWidth:120, align:'center'},
             {title: '操作', minWidth:120, templet:'#messageListBar',fixed:"right",align:"center"}
         ]]
     });

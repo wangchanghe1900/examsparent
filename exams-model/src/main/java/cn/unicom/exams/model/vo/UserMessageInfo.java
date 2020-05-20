@@ -14,4 +14,9 @@ public class UserMessageInfo extends SysUsermessages {
      * 系统公告信息
      */
     private SysNotice notice;
+
+    /**
+     * 接收人信息
+     */
+    private String realName;
 }

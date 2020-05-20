@@ -46,7 +46,9 @@ public class MyHandleIntercept implements HandlerInterceptor {
                 sysSystemlog.setOperatorType("重置密码");
             }
             Map<String,String[]> map = request.getParameterMap();
-            sysSystemlog.setContent(JSON.toJSONString(map));
+            String content=JSON.toJSONString(map);
+            content=content.length()>2000?content.substring(0,2000):content;
+            sysSystemlog.setContent(content);
             sysSystemlog.setOperatorDateTime(LocalDateTime.now());
             sysSystemlogService.save(sysSystemlog);
         }

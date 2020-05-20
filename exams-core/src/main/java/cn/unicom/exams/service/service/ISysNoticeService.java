@@ -23,4 +23,26 @@ public interface ISysNoticeService extends IService<SysNotice> {
      */
     public IPage<SysNotice> getSysNoticeInfoByCondition(int page, int limit, NoticeVo noticeVo) throws Exception;
 
+    /**
+     * 保存通知信息
+     * @param infos
+     * @throws Exception
+     */
+    public void saveNoticeInfo(String infos,String createUser) throws Exception;
+
+    /**
+     * 消息发布
+     * @param id
+     * @param status
+     * @throws Exception
+     */
+    public void publishNotice(Long id,String status,String userName) throws Exception;
+
+    /**
+     * 删除通知
+     * @param id
+     * @throws Exception
+     */
+    public void deleteNotice(Long id) throws Exception;
+
 }
