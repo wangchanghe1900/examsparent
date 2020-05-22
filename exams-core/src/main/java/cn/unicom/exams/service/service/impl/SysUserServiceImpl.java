@@ -82,7 +82,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     user.setRealname(userVo.getRealname());
                     user.setStatus(userVo.getStatus());
                     user.setDeptId(userVo.getDeptId());
-                    user.setLastmdpasstime(LocalDateTime.now());
+                    /*user.setLastmdpasstime(LocalDateTime.now());*/
                     user.setPassword(userVo.getPassword());
                     user.setSalt(userVo.getSalt());
                     int result = sysUserMapper.insert(user);

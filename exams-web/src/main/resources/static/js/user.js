@@ -15,14 +15,6 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
     //添加验证规则
     form.verify({
         oldPwd : function(value, item){
-/*            $.post("verifyPwd",{
-                    username : $(".userName").val(),  //登录名
-                    password : $("#oldPwd").val()
-          },function (data) {
-              if(data!='success'){
-                return "密码错误，请重新输入！";
-              }
-            });*/
         },
         newPwd : function(value, item){
             if(value.length < 8){
@@ -58,7 +50,7 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
                 setTimeout(function(){
                     top.layer.close(index);
                     top.layer.msg("密码修改成功！");
-
+                    top.layer.closeAll("iframe");
                 },1000);
             }
         });

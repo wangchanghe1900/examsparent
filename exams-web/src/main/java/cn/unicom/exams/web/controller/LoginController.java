@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
@@ -46,16 +48,16 @@ public class LoginController {
     }
 
     @GetMapping("/index")
-    public String main(){
+    public String main(HttpServletResponse response){
             Subject subject = ShiroUtils.getSubject();
             UserInfo user = (UserInfo) subject.getPrincipal();
-            System.out.println(user.getPassword());
             if(user==null){
                 return "redirect:/";
             }else{
                 if(user.getUsername()==null){
                     return "redirect:/";
                 }
+
                 return "index";
             }
 
@@ -90,7 +92,8 @@ public class LoginController {
             Subject subject = ShiroUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             subject.login(token);
-            SysUser user=new SysUser();
+            UserInfo user = (UserInfo) subject.getPrincipal();
+            //SysUser user=new SysUser();
             user.setLastlogintime(LocalDateTime.now());
             QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
             queryWrapper.eq("username",username);
@@ -102,6 +105,17 @@ public class LoginController {
             log.setLoginDateTime(LocalDateTime.now());
             log.setLoginStatus("成功");
             sysLoginlogService.save(log);
+            Boolean isPwd=false;
+            Long days=0L;
+            if(user.getLastmdpasstime()!=null){
+                Duration between = Duration.between(user.getLastmdpasstime(),LocalDateTime.now());
+                days=between.toDays();
+                //System.out.println(days);
+            }
+            if(user.getLastmdpasstime()==null || days > 90){
+                isPwd=true;
+            }
+            return new Response(200,"验证通过",isPwd);
         }catch (UnknownAccountException e) {
             return new Response(500,e.getMessage());
         }catch (IncorrectCredentialsException e) {
@@ -114,7 +128,7 @@ public class LoginController {
             return new Response(500,e.getMessage());
         }
 
-        return new Response(200,"验证通过",username);
+
 
     }
    @GetMapping("/main")
