@@ -73,7 +73,6 @@ layui.use(['form','layer','layedit','treeSelect','tree'],function(){
                 type: "get",
                 async:false,
                 success: function(data){
-                    //data = resut;
                     if(data.code==200){
                         form.val("noticeinfo",{
                             "id":data.data.id
@@ -85,8 +84,8 @@ layui.use(['form','layer','layedit','treeSelect','tree'],function(){
                         });
                         //console.log(noticeInfo.deptIds);
                         tree.setChecked('depttree', data.data.deptIds);
-                        //layedit.sync(editIndex);
                         form.render();
+                        //layedit.sync(editIndex);
                     }
 
                 }
@@ -97,8 +96,8 @@ layui.use(['form','layer','layedit','treeSelect','tree'],function(){
     initValue();
     form.on("submit(EditNotice)",function(data){
         //弹出loading
-/*        var treeNode = tree.getChecked('depttree');
-        data.field.deptName=JSON.stringify(treeNode);*/
+        var treeNode = tree.getChecked('depttree');
+        data.field.deptName=JSON.stringify(treeNode);
         var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
         // 实际使用时的提交信息
         $.post("saveNotice",{

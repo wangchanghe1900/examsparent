@@ -117,9 +117,12 @@ layui.use(['form','layer','treeSelect', 'util','laydate','table'],function(){
             content : "editNoticeList",
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
+                body.find(".content").val(edit.content);
                 if(edit){
-                    body.find(".content").val(edit.content);
-                    form.render();
+                    setTimeout(function(){
+                        form.render();
+                    },2000)
+
                 }
                 setTimeout(function(){
                     layui.layer.tips('点击此处返回员工列表', '.layui-layer-setwin .layui-layer-close', {
