@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>公告编辑</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="${request.contextPath}/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="${request.contextPath}/css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+<form class="layui-form" style="width:80%;" lay-filter="noticeinfo">
+	<input type="hidden" name="id" class="id" />
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">公告标题:</label>
+		<div class="layui-input-block">
+			<input type="text" name="title" class="layui-input title" lay-verify="required" placeholder="请输入公告标题">
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">公告内容:</label>
+		<div class="layui-input-block">
+			<textarea placeholder="请输入公告内容" id="noticeContent" class="layui-textarea layui-hide content"   name="content" lay-verify="content" ></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">选择人员:</label>
+		<div class="layui-input-block">
+			<input name="isSendSysUser" title="系统用户" type="checkbox" checked="" lay-skin="primary">
+			<input name="isSendEmp" title="部门员工" type="checkbox" lay-skin="primary" checked="">
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">接收部门:</label>
+		<div class="layui-input-block">
+			<div id="dept_tree" name="deptName" lay-verify="notNull"></div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">公告状态:</label>
+		<div class="layui-input-block">
+			<input name="status" class="status" title="发布" type="radio"  value="发布">
+			<input name="status" class="status" title="未发布" type="radio" value="未发布" checked="">
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="layui-input-block">
+			<button class="layui-btn" lay-submit="" lay-filter="EditNotice"><i class="layui-icon">&#xe61f;</i>立即保存</button>
+			<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+		</div>
+	</div>
+</form>
+<script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/noticeEdit.js"></script>
+
+</body>
+
+</html>

@@ -154,7 +154,7 @@ public class NoticeController {
     @GetMapping("/editNoticeList")
     @RequiresPermissions("notice:edit")
     public String editNoticeList(){
-        return "notice/noticeAdd";
+        return "notice/noticeEdit";
     }
 
 
@@ -220,6 +220,26 @@ public class NoticeController {
         File f= new File(realPath, filename);
         fileinfo.transferTo(f);
         return "/upload"+path+"/"+filename;
+    }
+
+    @GetMapping("/getNoticeById")
+    @ResponseBody
+    public Response getNoticeById(Long id){
+        try{
+            SysNotice sysNotice = noticeService.getById(id);
+            List<Long> idList=new ArrayList<>();
+            NoticeInfo info=new NoticeInfo();
+            String depts=sysNotice.getDeptName();
+            String[] deptArr=depts.split(",");
+            for(String deptid:deptArr){
+                idList.add(Long.parseLong(deptid));
+            }
+            info.setDeptIds(idList);
+            BeanUtil.copyProperties(sysNotice,info);
+            return new Response(200,"",info);
+        }catch (Exception e){
+            return new Response(500,"通知数据提取错误");
+        }
     }
 
 }

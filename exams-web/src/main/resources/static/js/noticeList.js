@@ -217,7 +217,8 @@ layui.use(['form','layer','treeSelect', 'util','laydate','table'],function(){
             data = obj.data;
 
         if(layEvent === 'edit'){ //编辑
-            sessionStorage.setItem("noticeInfo",JSON.stringify(data));
+            //sessionStorage.setItem("noticeInfo",JSON.stringify(data));
+            sessionStorage.setItem("noticeId",data.id);
             editNotice(data);
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此公告信息？',{icon:3, title:'提示信息'},function(index){
