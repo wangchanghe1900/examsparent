@@ -85,6 +85,8 @@ layui.use(['form','layer','layedit','treeSelect','tree'],function(){
                         });
                         //console.log(noticeInfo.deptIds);
                         tree.setChecked('depttree', data.data.deptIds);
+                        //layedit.sync(editIndex);
+                        form.render();
                     }
 
                 }
