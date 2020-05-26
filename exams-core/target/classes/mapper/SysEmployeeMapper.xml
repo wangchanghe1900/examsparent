@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unicom.exams.service.mapper.SysEmployeeMapper">
+    <resultMap id="BaseResultMap" type="cn.unicom.exams.model.vo.EmployeeInfo" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="employeeCode" property="employeeCode" jdbcType="VARCHAR" />
+        <result column="employeeName" property="employeeName" jdbcType="VARCHAR" />
+        <result column="dept_id" property="deptId" jdbcType="BIGINT" />
+        <result column="capacity" property="capacity" jdbcType="VARCHAR" />
+        <result column="cardId" property="cardId" jdbcType="VARCHAR" />
+        <result column="bankCard" property="bankCard" jdbcType="VARCHAR" />
+        <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+        <result column="nickName" property="nickName" jdbcType="VARCHAR" />
+        <result column="officePhone" property="officePhone" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="BIGINT" />
+        <result column="entryTime" property="entryTime" />
+        <result column="contractSTime" property="contractSTime" />
+        <result column="contractETime" property="contractETime"  />
+        <result column="mainwork" property="mainwork" jdbcType="VARCHAR" />
+        <result column="nation" property="nation" jdbcType="VARCHAR" />
+        <result column="nativePlace" property="nativePlace" jdbcType="VARCHAR" />
+        <result column="political" property="political" jdbcType="VARCHAR" />
+        <result column="education" property="education" jdbcType="VARCHAR" />
+        <result column="graduateSchool" property="graduateSchool" jdbcType="VARCHAR" />
+        <result column="major" property="major" jdbcType="VARCHAR" />
+        <result column="graduateDate" property="graduateDate" />
+        <result column="contacts" property="contacts" jdbcType="VARCHAR" />
+        <result column="linkPhone" property="linkPhone" jdbcType="VARCHAR" />
+        <result column="registeredPlace" property="registeredPlace" jdbcType="VARCHAR" />
+        <result column="sendCompany" property="sendCompany" jdbcType="VARCHAR" />
+        <result column="jobNumber1" property="jobNumber1" jdbcType="VARCHAR" />
+        <result column="jobNumber2" property="jobNumber2" jdbcType="VARCHAR" />
+        <result column="workType" property="workType" jdbcType="VARCHAR" />
+        <result column="trainNum" property="trainNum" jdbcType="VARCHAR" />
+        <result column="identitys" property="identitys" jdbcType="VARCHAR" />
+        <result column="educationNum" property="educationNum" jdbcType="VARCHAR" />
+        <result column="mealCard" property="mealCard" jdbcType="VARCHAR" />
+        <result column="employeeStatus" property="employeeStatus" jdbcType="VARCHAR" />
+        <result column="modfiyPwdTime" property="modfiyPwdTime"  />
+        <result column="lastLoginTime" property="lastLoginTime"  />
+        <result column="createTime" property="createTime" />
+        <result column="loginFailureTimes" property="loginFailureTimes" />
+        <result column="updateTime" property="updateTime" />
+
+        <association property="sysDept" javaType="cn.unicom.exams.model.entity.SysDept" >
+            <id  column="did" property="id"/>
+            <result column="deptname" property="deptname" />
+        </association>
+
+    </resultMap>
+    <select id="getEmployeeInfoByPage" resultMap="BaseResultMap">
+        select e.*,d.id did,d.deptname from sys_employee e LEFT JOIN sys_dept d
+        on e.dept_id=d.id ${ew.customSqlSegment}
+    </select>
+</mapper>

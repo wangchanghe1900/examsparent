@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>培训系统</title>
+	<link href="files/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+	<link href="files/bootstrap/bootstrap-treeview.css" type="text/css" rel="stylesheet">
+	<link href="files/study/study.css" type="text/css" rel="stylesheet"/>
+	<link rel="stylesheet" href="files/comm/dropload.css">
+	<link rel="stylesheet" href="files/comm/comm-styles.css">
+	
+	<script src="files/comm/jquery-3.4.1.min.js"></script>
+	<script src="files/bootstrap/bootstrap.min.js"></script>
+	<!--  <script src="files/bootstrap/bootstrap-treeview.js"></script>-->
+	<script src="files/comm/crypto-js.js"></script>  
+	<script src="files/comm/encrypt.js"></script>
+	<script src="files/comm/comm.js"></script>
+	<script src="files/comm/dropload.js"></script>
+	<script src="files/study/study.js"></script>
+</head>
+<body class="bg-light"  id="mybody">
+	<div id="content_view">
+		
+	     
+	     <!-- 已学习 -->
+	     <div class="container" id="study-content" style="display: none;">
+			<div class="d-flex align-items-center  p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
+				<img class="mr-3" src="images/index/BPO.png" alt="" width="48" height="48">
+				<div class="">
+					<h6 class="mb-0 text-white lh-100" id="usernamelable1">刘玉雯 <small >欢迎学习</small></h6>
+					<small class="my-3" >已学习: </small>
+					<small class="my-3 p-1" id="studyNum">100 </small>
+					<small class="my-3 p-1"> 已考试:</small>
+					<small class="my-3 p-1" id="examNum"> 100</small>
+					<small class="my-3 p-1"> 已通过:</small>
+					<small class="my-3 p-1" id="examPassNum"> 100</small>
+				</div>
+				
+			</div>	
+			
+			<div class="my-3 p-3 bg-white rounded shadow-sm">
+				<!--
+				<h6 class="border-bottom border-gray pb-2 mb-0">
+					<a class="text-muted" href="#" data-toggle="modal" data-target="#popover_class_wrapper" >				
+						分类[全部]
+						<span class="badge badge-pill bg-light align-text-bottom">27</span>
+					</a>
+				</h6>-->
+			
+				<div class="inner" id="studyDropload" data-type="1">
+					 <div class="lists" id="content_study" >
+					 
+					 </div>
+				</div>
+	        </div>
+	     </div>
+	   
+     </div>
+     <!-- 底部导航 -->
+     <footer class="am-menu am-cf" id="footer-menu"  >
+	    <div class="am-menu-column index " id="index">
+	        <span >未学习</span>
+	        
+	    </div>
+	    <div class="am-menu-column explore" id="explore">
+	      <span >已学习</span>
+	      
+	    </div>
+
+	    <div class="am-menu-column my" id="my">
+	        <span >我的</span>
+	    </div>
+	</footer>
+	
+
+</body>
+
+</html>

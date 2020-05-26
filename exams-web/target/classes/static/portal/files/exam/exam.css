@@ -1,0 +1,72 @@
+/* 底部按钮
+*/
+html {
+  height: 100%;
+  width: 100%;
+  /* Font size is needed to make the activity bar the correct size. */
+  font-size: 14px;
+}
+body,
+input,
+button,
+select {
+  font: message-box;
+  outline: none;
+}
+.bottom-btn {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #efefef;
+  text-align: center;
+  height: 54px;
+  overflow: hidden;
+  z-index: 98;
+  border-top: 1px solid #ddd;
+}
+.header-nav{
+	background-color: #000;
+	height:35px;
+	padding-top: 0.5rem;
+}
+.title{
+	font-size: 16px;
+	text-align: center;
+	color: #fff;
+}
+.test-head-tips{
+	font-size: 12px;
+	color: #808080;
+	float: left!important;
+}
+.time-take{
+	float: left!important;
+}
+.cut-time{
+	font-size: 14px;
+	color: #008040;
+}
+
+.curren-num{
+	font-size: 14px;
+	color: #ff0000;
+}
+.content{
+	font-size: 14px;
+	color: #4c4c4c;
+	float: left!important;
+}
+.online-answer{
+	
+}
+.online-wrapper{
+	list-style-type: none;
+	padding-left: 10px;
+	
+}
+.answer-list{
+	
+}
+.subject{
+	font-size: 16px;
+}

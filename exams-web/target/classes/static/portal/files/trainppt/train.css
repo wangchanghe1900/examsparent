@@ -1,0 +1,24 @@
+﻿/* 底部按钮
+*/
+.bottom-btn {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #efefef;
+  text-align: center;
+  height: 54px;
+  overflow: hidden;
+  z-index: 98;
+  border-top: 1px solid #ddd;
+}
+
+.btn-left{
+	float: left;
+	margin-left:20px;
+	width:80px;
+}
+.btn-right{
+	float: right;
+	margin-right:20px;
+	width:80px;
+}

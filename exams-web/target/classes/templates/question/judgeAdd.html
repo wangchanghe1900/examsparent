@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>判断添加</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="${request.contextPath}/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="${request.contextPath}/css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+<form class="layui-form" style="width:80%;">
+	<input type="hidden" name="id" class="id" />
+	<input type="hidden" name="questionType" class="questionType" value="判断题"/>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label"><span style="color:red">*</span>题目内容:</label>
+		<div class="layui-input-block">
+			<input type="text" name="questionName" class="layui-input questionName" lay-verify="required" placeholder="请输入题目">
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<!--<div class="magb15 layui-col-md6 layui-col-xs12">-->
+		<label class="layui-form-label"><span style="color:red">*</span>所属资源:</label>
+		<div class="layui-inline">
+			<div class="layui-input-inline">
+				<input type="hidden" name="resId" id="resId"/>
+				<input type="text" id="resourceName" name="resourceName" class="layui-input resourceName" required  lay-verify="required" disabled placeholder="请选择学习资源" >
+			</div>
+			<div class="layui-input-inline">
+				<button  type="button" class="layui-btn layui-btn-sm" id="btnres">选择资源</button>
+			</div>
+		</div>
+		<!--</div>-->
+
+	</div>
+	<div class="layui-row add_option">
+
+	</div>
+	<div class="layui-row add_answer">
+<!--		<label class="layui-form-label"><span style="color:red">*</span>正确答案:</label>
+		<div class="layui-input-block anw" style="margin-bottom: 20px">
+			<input type="radio" name="qAnswer" value="A" title="A" >
+			<input type="radio" name="qAnswer" value="B" title="B" >
+			<input type="radio" name="qAnswer" value="C" title="C" >
+			<input type="radio" name="qAnswer" value="D" title="D" >
+		</div>-->
+	</div>
+	<div class="layui-row " style="margin-bottom: 20px">
+		<label class="layui-form-label"><span style="color:red">*</span>题目状态:</label>
+		<div class="layui-input-block">
+			<input type="checkbox" name="questionStatus" id="questionStatus" lay-filter="questionStatus" lay-skin="switch"   lay-text="启用|不启用" checked>
+		</div>
+	</div>
+	<div class="layui-row layui-col-xs12">
+		<div class="layui-input-block">
+			<button class="layui-btn" lay-submit  lay-filter="singleAdd">保存</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			<!--<a class="layui-btn layui-btn-normal addoption_btn">添加选项</a>-->
+		</div>
+	</div>
+</form>
+<script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/judgeAdd.js"></script>
+</body>
+
+</html>

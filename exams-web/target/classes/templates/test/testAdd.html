@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>试卷编辑</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="${request.contextPath}/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="${request.contextPath}/css/public.css" media="all" />
+
+</head>
+<body class="childrenBody">
+<form class="layui-form" style="width:80%;" enctype="multipart/form-data" lay-filter="example">
+	<input type="hidden" name="id" class="id" />
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">试卷名称:</label>
+		<div class="layui-input-block">
+			<input type="text" name="testName" class="layui-input testname" lay-verify="required" placeholder="请输入试卷名">
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<!--<div class="magb15 layui-col-md6 layui-col-xs12">-->
+			<label class="layui-form-label">资料选择:</label>
+			<div class="layui-inline">
+				<div class="layui-input-inline">
+					<input type="hidden" name="resId" id="resId"/>
+					<input type="text" id="resourceName" disabled name="resourceName" class="layui-input resourceName" required  lay-verify="required" placeholder="请选择学习资源" >
+				</div>
+				<div class="layui-input-inline">
+					<button  type="button" class="layui-btn layui-btn-sm" id="btnres">选择资源</button>
+				</div>
+			</div>
+		<!--</div>-->
+
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">上传图片:</label>
+		<div class="layui-upload">
+			<button class="layui-btn layui-btn-sm" id="imgupload" type="button">封面上传</button>
+			<div class="layui-inline layui-word-aux" >
+				上传限制5M,<span style="color:red">一定要选择上传图片</span>
+			</div>
+			<div class="layui-upload-list">
+				<img class="layui-upload-img " name="imgUrl" id="showimg" width="120px" style="margin-left: 100px;width:120px;height:120px" >
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="magb15 layui-col-md6 layui-col-xs12">
+			<label class="layui-form-label">考试部门:</label>
+			<div class="layui-input-block">
+				<input type="text" id="tree2" name="deptId" lay-filter="tree2" class="layui-input" lay-verify="notNull">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="magb15 layui-col-md6 layui-col-xs12">
+			<label class="layui-form-label">试题数量:</label>
+			<div class="layui-input-block">
+				<select name="testCount" class="testCount" lay-verify="required">
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="magb15 layui-col-md4 layui-col-xs12">
+			<label class="layui-form-label">开始日期:</label>
+			<div class="layui-input-block">
+				<input class="layui-input" name="startDate"  id="startDate" type="text" placeholder="yyyy-MM-dd" lay-verify="date">
+			</div>
+		</div>
+		<div class="magb15 layui-col-md4 layui-col-xs12">
+			<label class="layui-form-label">结束日期:</label>
+			<div class="layui-input-block">
+				<input class="layui-input" name="endDate" id="endDate" type="text" placeholder="yyyy-MM-dd" lay-verify="date">
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">试卷状态:</label>
+		<div class="layui-input-block">
+			<input type="checkbox" name="testStatus" id="testStatus" lay-filter="testStatus" lay-skin="switch"   lay-text="发布|未发布" checked>
+		</div>
+	</div>
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">备注:</label>
+		<div class="layui-input-block">
+			<textarea placeholder="备注" name="remark" class="layui-textarea remark" lay-verify="required"></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="layui-input-block">
+			<button class="layui-btn" type="button" lay-submit lay-filter="saveTest">试卷保存</button>
+			<button type="button" class="layui-btn layui-btn-sm layui-btn-primary" id="btns">取消</button>
+		</div>
+	</div>
+</form>
+<script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/testAdd1.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/treeSelect.js"  charset="utf-8"></script>
+</body>
+
+</html>

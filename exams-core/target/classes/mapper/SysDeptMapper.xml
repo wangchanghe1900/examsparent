@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unicom.exams.service.mapper.SysDeptMapper">
+    <resultMap id="BaseResultMap" type="cn.unicom.exams.model.vo.DeptEmpInfo" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="deptName" property="deptName" jdbcType="VARCHAR" />
+        <collection property="empList" ofType="cn.unicom.exams.model.entity.SysEmployee">
+            <result column="employeeCode" property="employeeCode" />
+            <result column="employeeName" property="employeeName" />
+        </collection>
+    </resultMap>
+ <select id="getAllDeptAndEmpInfo" resultMap="BaseResultMap">
+   select a.id,a.deptname,b.employeeCode,b.employeeName from sys_dept a ,sys_employee b
+   where a.id=b.dept_id
+ </select>
+</mapper>
