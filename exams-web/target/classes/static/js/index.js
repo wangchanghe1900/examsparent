@@ -170,7 +170,7 @@ function addTab(_this){
 };
 
 function showUserPwd(){
-	top.layui.layer.open({
+	layer.open({
 		title : "修改密码",
 		type : 2,
 		anim: 5,

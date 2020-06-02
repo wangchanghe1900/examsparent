@@ -49,7 +49,7 @@
         <securityrsa-version>1.0.8.RELEASE</securityrsa-version>
         <kaptcha.version>0.0.9</kaptcha.version>
         <shiro-version>1.4.2</shiro-version>
-        <fastjson-version>1.2.56</fastjson-version>
+        <fastjson-version>1.2.70</fastjson-version>
         <hutool-version>5.2.2</hutool-version>
         <poi-version>4.1.2</poi-version>
         <validator-version>6.1.2.Final</validator-version>
