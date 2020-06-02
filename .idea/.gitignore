@@ -1,6 +1,3 @@
 # Default ignored files
 /workspace.xml
 .idea
-/exams-core/target
-/exams-model/target
-/exams-web/target
