@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="google" content="notranslate"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>学习材料</title>
+	<link href="files/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+	<link rel="stylesheet" href="files/trainmp4/trainmp4.css">
+	<script src="files/comm/jquery-3.4.1.min.js"></script>
+	<script src="files/bootstrap/bootstrap.min.js"></script>
+    <script src="files/comm/crypto-js.js"></script>  
+	<script src="files/comm/encrypt.js"></script>
+    <script src="files/comm/comm.js"></script> 
+    <script src="files/trainmp4/trainmp4.js"></script>
+
+</head>
+<body tabindex="1" class="loadingInProgress" id="mybody">
+	<div class="container-fluid" id="videoContainer" >
+		
+	</div>
+	<div class="container bottom-btn" id="btn-bottom">
+		<div class="d-flex align-items-center  p-3 text-white-50 bg-purple rounded shadow-sm">
+			<div style="width: 50%">        	
+			<button class="btn btn-primary  btn-left" id="exam-btn">考试</button>
+			</div>
+			<div style="width: 50%">
+			<button class="btn btn-primary  btn-right " data-toggle="modal" data-target="#exitModal" id="return-btn">返回</button>
+			</div>
+		</div>
+	</div> 
+	
+	<!-- 退出提示窗 Modal -->
+	<div class="modal fade" id="exitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="top: 40px;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">考试退出提示</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+        			</button>
+				</div>
+				<div class="modal-body">您正在考试，如果退出将不计算本次考试，确定退出吗？
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary " data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-primary " id="exitModalBtn">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

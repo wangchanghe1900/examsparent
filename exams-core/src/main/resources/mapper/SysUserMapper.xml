@@ -26,6 +26,7 @@
         <result column="mobile" property="mobile" jdbcType="VARCHAR" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="lastlogintime" property="lastlogintime" jdbcType="VARCHAR" />
+        <result column="lastmdpasstime" property="lastmdpasstime" jdbcType="VARCHAR" />
         <result column="dept_id" property="deptId" jdbcType="BIGINT" />
         <association property="sysDept" javaType="cn.unicom.exams.model.entity.SysDept" >
             <id  column="dept_id" property="id"/>
@@ -63,7 +64,7 @@
   </select>
 
     <select id="getUserInfoByCondition" resultMap="UserResultMap">
-        select a.id,a.username,a.realname,a.password,a.salt,a.email,a.mobile,a.status,a.lastlogintime,b.id dept_id ,b.deptname ,d.id  role_id,d.`name` role_name,f.id menu_id,f.parent_id, f.name menu_name ,f.url ,f.perms,f.type,f.icon,f.order_num,f.open_mode
+        select a.id,a.username,a.realname,a.password,a.salt,a.email,a.mobile,a.status,a.lastlogintime,a.lastmdpasstime,b.id dept_id ,b.deptname ,d.id  role_id,d.`name` role_name,f.id menu_id,f.parent_id, f.name menu_name ,f.url ,f.perms,f.type,f.icon,f.order_num,f.open_mode
 		from sys_user a inner join sys_dept b on a.dept_id=b.id
         inner join sys_user_role c on a.id=c.user_id
         inner join sys_role d on c.role_id=d.id

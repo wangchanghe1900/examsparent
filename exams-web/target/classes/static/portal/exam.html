@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>考试</title>
+	<link href="files/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+	<link rel="stylesheet" href="files/exam/exam.css">
+	<link rel="stylesheet" href="files/comm/comm-styles.css">
+	<script src="files/comm/jquery-3.4.1.min.js"></script>
+	<script src="files/bootstrap/bootstrap.min.js"></script>
+	<script src="files/comm/crypto-js.js"></script>  
+	<script src="files/comm/encrypt.js"></script>
+	<script src="files/comm/comm.js"></script>
+	<script src="files/exam/exam.js"></script>
+</head>
+<body id="mybody">
+	<div id="content_view" class="content">
+		<!-- 头部 start -->			
+		<header class="bar bar-nav header-nav">				
+			<!--  <a class="icon icon-left float-left" href="javascript:;" id="test_back"><</a>	-->			
+			<h1 class="title" id="examtitle">XXX考试</h1>			
+		</header>			
+		<!-- 头部 end -->
+		<!-- 时间、题量 start -->			
+		<div class="container test-head-tips ">				
+			<div class="time-take">时间：
+				<span class="cut-time" id="examDuration">0</span> 分钟</div>	
+			<div class="float-right">
+				<span id="curren-num" class="curren-num">1</span>
+				/
+				<span id="total-num">5</span>
+			</div>			
+		</div>			
+		<!-- 时间、题量 end -->
+
+		<!-- 主体内容 start -->			
+		<div class="container content my-3">				
+			<ul class="online-wrapper" id="subject-content">		                
+					               	
+			</ul>				
+	       </div>			
+	       <!-- 主体内容 end -->
+
+	</div>
+	<div class="container bottom-btn " id="btn-bottom">
+		<div class="btn-group my-2 " role="group" aria-label="Basic example">
+		
+			<button class="btn btn-primary " id="train-btn">察看材料</button>
+			<button class="btn btn-primary " id="before-btn">上一题</button>
+			<button class="btn btn-primary " id="next-btn">下一题</button>
+			<button class="btn btn-primary " id="submit-btn" data-toggle="modal" data-target="#exitModal" >提交</button>
+			<button class="btn btn-primary " id="return-btn"  data-toggle="modal" data-target="#exitModal" >返回</button>
+		</div>
+	</div> 
+	
+	<!-- 退出提示窗 Modal -->
+	<div class="modal fade" id="exitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="top: 40px;font-size: 14px;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">考试提示</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+        			</button>
+				</div>
+				<div class="modal-body" id="exitTXT">您正在考试，如果退出将不计算本次考试，确定退出吗？
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary " data-dismiss="modal" id="exitModalCancle">取消</button>
+					<button type="button" class="btn btn-primary " id="exitModalBtn" data-toggle="" data-target="">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 成绩提示窗 Modal -->
+	<div class="modal fade" id="scoresModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="scoresModalLabel"  aria-hidden="true" style="top: 40px;font-size: 14px;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="scoresModalLabel" >考试提交提示</h5>
+					<!--  
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+        			</button>-->
+				</div>
+				<div class="modal-body" >您本次考试的分数:
+					<span class="text-danger " style="font-size: 20px;" id="scoresTxT"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary "  id="scoresModalBtn">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

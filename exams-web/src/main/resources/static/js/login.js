@@ -21,6 +21,7 @@ layui.use(['form','layer','jquery'],function(){
                 success:function(res){
                     if(res.code==200){
                         window.sessionStorage.setItem("username",data.field.username);
+                        window.sessionStorage.setItem("modifyPwd",res.data);
                         //console.log(res.data("id"));
                         let redirectUrl=curWwwPath+"index";  //?userName="+data.field.username+"&nowTime="+$.now();
                         window.location.href =redirectUrl;//curWwwPath+"index?userName="+data.field.userName+"&nowTime="+$.now();

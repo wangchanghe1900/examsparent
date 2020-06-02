@@ -162,6 +162,28 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 		window.sessionStorage.removeItem("menu");
 		window.sessionStorage.removeItem("curmenu");
 	}
+
+	function showUserPwd(){
+		layer.open({
+			title : "修改密码",
+			type : 2,
+			anim: 5,
+			area: ['500px', '400px'],
+			skin: 'layui-layer-molv',
+			closeBtn: 0,
+			content : "changePwd",
+			success : function(layero, index){
+				//var body = layui.layer.getChildFrame('body', index);
+			}
+		})
+	}
+	var modifyPwd=JSON.parse(sessionStorage.getItem("modifyPwd"));
+
+    if(modifyPwd == true){
+		showUserPwd();
+		sessionStorage.removeItem("modifyPwd");
+	}
+
 });
 
 //打开新窗口
@@ -169,16 +191,4 @@ function addTab(_this){
 	tab.tabAdd(_this);
 };
 
-function showUserPwd(){
-	layer.open({
-		title : "修改密码",
-		type : 2,
-		anim: 5,
-		area: ['700px', '550px'],
-		content : "changePwd",
-		success : function(layero, index){
-			//var body = layui.layer.getChildFrame('body', index);
-		}
-	})
-}
-showUserPwd();
+

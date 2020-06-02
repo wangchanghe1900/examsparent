@@ -1,0 +1,13 @@
+
+\	java:S112Ñ"FDefine and throw a dedicated exception instead of using a generic one.(âÖ“ø
+8
+java:S1643Å"Use a StringBuilder instead.(Ù÷ªõûÿÿÿÿ
+O
+java:S1128"4Remove this unused import 'java.time.LocalDateTime'.(æÃ§ƒüÿÿÿÿ
+X
+java:S1128"BRemove this unused import 'javax.servlet.http.HttpServletRequest'.(ø©¹…
+K
+java:S1128"6Remove this unused import 'com.alibaba.fastjson.JSON'.(Ö¢å$
+`
+java:S3027Û"JPut single-quotes around '.' to use the faster "lastIndexOf(char)" method.(Ø®¹C
+W	java:S125Õ"<This block of commented-out lines of code should be removed.(øñøÚûÿÿÿÿ

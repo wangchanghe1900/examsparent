@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unicom.exams.service.mapper.SysDeptdurationMapper">
+  <select id="getDeptResourceStatisInfo" resultType="cn.unicom.exams.model.vo.DeptResourceStatisInfo">
+    select c.deptName,b.resourceName, a.totalEmployee deptEmpCount,a.learnCount ,a.AvgCount from sys_deptduration a
+    INNER JOIN sys_resourceinfo b on a.res_id=b.id
+    INNER JOIN sys_dept c on c.id=a.dept_id
+    ${ew.customSqlSegment}
+  </select>
+</mapper>

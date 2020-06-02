@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unicom.exams.service.mapper.SysResourceinfoMapper">
+    <resultMap id="BaseResultMap" type="cn.unicom.exams.model.vo.ResourceInfo" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="resourceName" property="resourceName" jdbcType="VARCHAR" />
+        <result column="resourceType" property="resourceType" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="u_id" property="uId" jdbcType="BIGINT" />
+        <result column="dept_id" property="deptId" jdbcType="BIGINT" />
+        <result column="createTime" property="createTime" />
+        <result column="updateTime" property="updateTime" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <association property="sysDept" javaType="cn.unicom.exams.model.entity.SysDept" >
+            <id  column="deptid" property="id"/>
+            <result column="deptname" property="deptname" />
+        </association>
+        <association property="user" javaType="cn.unicom.exams.model.entity.SysUser" >
+            <id  column="uid" property="id"/>
+            <result column="realname" property="realname" />
+        </association>
+    </resultMap>
+    <select id="getResourceInfoByPage"  resultMap="BaseResultMap">
+        select a.*,b.id deptid,b.deptname,c.id uid,c.realname
+        from sys_resourceinfo a INNER JOIN sys_dept b on a.dept_id=b.id
+        INNER JOIN sys_user c on a.u_id=c.id
+         ${ew.customSqlSegment}
+    </select>
+
+    <select id="getDeptResourceInfoByCondition" resultType="cn.unicom.exams.model.vo.DeptResourceInfo">
+        select * from (select id,parent_id,deptname from sys_dept where del_flag=0 order by order_num desc) a left join (select id rid,case when resourceType=0 then '普通资源' when  resourceType=1 then '视频资源' else '音频资源' end resourceTypes,resourceName,dept_id from  sys_resourceinfo order by dept_id,resourceType,createTime desc,id desc) b
+        on a.id=b.dept_id
+        ${ew.customSqlSegment}
+    </select>
+</mapper>

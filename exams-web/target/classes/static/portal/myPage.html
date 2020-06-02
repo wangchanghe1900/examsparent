@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>培训系统</title>
+	<link href="files/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+	<link href="files/bootstrap/bootstrap-treeview.css" type="text/css" rel="stylesheet">
+	<link href="files/myPage/myPage.css" type="text/css" rel="stylesheet"/>
+	<link rel="stylesheet" href="files/comm/dropload.css">
+	<link rel="stylesheet" href="files/comm/comm-styles.css">
+	
+	<script src="files/comm/jquery-3.4.1.min.js"></script>
+	<script src="files/bootstrap/bootstrap.min.js"></script>
+	<!--  <script src="files/bootstrap/bootstrap-treeview.js"></script>-->
+	<script src="files/comm/crypto-js.js"></script>  
+	<script src="files/comm/encrypt.js"></script>
+	<script src="files/comm/comm.js"></script>
+	<script src="files/comm/dropload.js"></script>
+	<script src="files/myPage/myPage.js"></script>
+</head>
+<body class="bg-light"  id="mybody">
+	<div id="content_view">
+
+	     <!-- 我的 -->
+	     <div class="container" id="my-content" style="display: none;">
+     	<div class="d-flex align-items-center  p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
+			<img class="mr-3" src="images/index/user.png" alt="" width="90" height="80">
+			<div class="">
+				<h6 class="mb-2 text-white lh-100" >班组： <small id="dplable2">技术开发中心</small></h6>
+				<h6 class="mb-2 text-white lh-100" >姓名： <small id="usernamelable2">刘玉雯 </small></h6>
+				<h6 class="mb-2 text-white lh-100" >帐号： <small id="accnamelable">liuyw</small></h6>
+			</div>
+		</div>	
+		
+		<div class="my-1 p-3 bg-white rounded shadow-sm" id="content_my">
+			
+			
+        </div>
+     
+     </div>
+     </div>
+     <!-- 底部导航 -->
+     <footer class="am-menu am-cf" id="footer-menu"  >
+	    <div class="am-menu-column index " id="index">
+	        <span >未学习</span>
+	        
+	    </div>
+	    <div class="am-menu-column explore" id="explore">
+	      <span >已学习</span>
+	      
+	    </div>
+	    <!--  
+	    <div class="am-menu-column life" id="life">
+	      <a href="{:url('aim/lists')}">
+	        <span>发现</span>
+	      </a>
+	    </div>
+	    -->
+	    <div class="am-menu-column my" id="my">
+	        <span >我的</span>
+	    </div>
+	</footer>
+	
+	<!-- 修改密码 -->
+	<div class="modal fade" id="modiPWModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="scoresModalLabel"  aria-hidden="true" style="top: 40px;font-size: 14px;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h6 class="modal-title" id="scoresModalLabel" >修改密码</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+        			</button>
+				</div>
+				<div class="modal-body" >
+					<label for="password">原密码:</label>
+					<input type="password" id="oldPassWord" class="form-control" placeholder="原密码" required>
+					<label for="password">新密码:</label>
+					<input type="password" id="newPassWord" class="form-control" placeholder="新密码" required>
+					<label for="password">再输入新密码:</label>
+					<input type="password" id="newPassWord2" class="form-control" placeholder="再次输入新密码" required>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary " data-dismiss="modal" id="modiPWModalCancle">取消</button>
+					<button type="button" class="btn btn-primary " id="modiPWModalBtn" >确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 提示框 -->
+	<div class="align-items-center alert alert-danger alert-dismissible  fade show pr-1 "  role="alert" id="tipDiv" 
+	   style="position:fixed; top:30%;left:25%; width:50%;display:none; z-index: 1200;">
+		<h5 class="alert-heading">提示</h5>
+		<p id="tipMsg" class="ml-4"></p>
+		<button type="button" class="close" onclick="$('#tipDiv').hide();">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div> 
+	
+</body>
+
+</html>

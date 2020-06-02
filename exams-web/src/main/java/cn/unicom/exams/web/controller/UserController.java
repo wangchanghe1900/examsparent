@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -273,6 +274,7 @@ public class UserController {
             String newpass = MD5Utils.getAuthenticationInfo(newPass, salt);
             SysUser user=new SysUser();
             user.setPassword(newpass);
+            user.setLastmdpasstime(LocalDateTime.now());
             boolean update = userService.update(user, updateWrapper);
             return  new Response(200,"密码更新成功！");
         }catch (Exception e){

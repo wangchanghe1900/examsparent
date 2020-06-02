@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unicom.exams.service.mapper.SysTestresultMapper">
+
+    <select id="getEmpExamTimesByEmpCode" resultType="java.lang.Integer">
+        select count(t_id) from (select * from sys_testpaper where examsStartTime>=date_add(curdate(),INTERVAL -1 year) and testStatus='发布') t
+        inner join sys_testresult r on t.id=r.t_id
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getTestedScoreByPage" resultType="cn.unicom.exams.model.vo.TestScoreInfo">
+        select p.testName examName,p.res_id materialID,count(1) examTimes,min(tr.score) minScore ,max(tr.score) maxScore,cast(AVG(tr.score) as SIGNED) averageScore  from sys_testresult tr
+        INNER JOIN sys_testpaper p on tr.t_id=p.id
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getExamCountByEmpID" resultType="java.lang.Integer">
+        select count(distinct t_id) from sys_testresult
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getEmpTestResultInfoByPage" resultType="cn.unicom.exams.model.vo.EmpTestResultInfo">
+        select d.testName,b.employeeName,c.deptname deptName,a.score,a.testDuration,a.returnCount,a.testTime from (
+        select * from sys_testresult where testTime>=date_add(now(),interval -1 year)) a
+        INNER JOIN sys_employee b on b.employeeCode=a.emp_code
+        INNER JOIN sys_dept c on c.id=b.dept_id
+        INNER JOIN sys_testpaper d on d.id=a.t_id
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getSevenTestResultCount" resultType="java.lang.Integer">
+        select ifnull(sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -7 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -6 day) then 1 else 0 end),0) testCount  from sys_testresult  union all
+        select ifnull(sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -6 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -5 day) then 1 else 0 end),0) 6day from sys_testresult  union all
+        select ifnull(sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -5 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -4 day) then 1 else 0 end),0) 5day from sys_testresult  union all
+        select ifnull(sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -4 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -3 day) then 1 else 0 end),0) 4day from sys_testresult  union all
+        select ifnull(sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -3 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -2 day) then 1 else 0 end),0) 3day from sys_testresult  union all
+        select ifnull(sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -2 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval -1 day) then 1 else 0 end),0) 2day from sys_testresult  union all
+        select ifnull(sum(case when testTime>=date_add(DATE_FORMAT(now(),'%Y-%m-%d'),interval -1 day) and testTime&lt;date_add(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval 0 day)  then 1 else 0 end),0) 1day from sys_testresult
+    </select>
+</mapper>
