@@ -28,7 +28,7 @@
         <lombok.version>1.18.4</lombok.version>
         <springboot-version>2.0.3.RELEASE</springboot-version>
         <zuul-version>2.1.0.RELEASE</zuul-version>
-        <tomcat-version>8.5.34</tomcat-version>
+        <tomcat-version>8.5.57</tomcat-version>
         <gson-verson>2.8.5</gson-verson>
         <springloaded-version>1.2.6.RELEASE</springloaded-version>
         <mysql-version>8.0.16</mysql-version>
@@ -172,7 +172,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${springboot-version}</version>
-            </dependency>
+                <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+                </exclusions>
+           </dependency>
 
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -272,6 +278,16 @@
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${validator-version}</version>
+            </dependency>
+            <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>tomcat-juli</artifactId>
+                <version>${tomcat.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
