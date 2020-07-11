@@ -64,13 +64,13 @@ layui.use(['form','layer','treeSelect','upload','laydate'],function(){
        $(".add_option").append(label1);
         var label2="<label class=\"layui-form-label\"><span style=\"color:red\">*</span>正确答案:</label>";
         $(".add_answer").append(label2);
-        var answer='<div class="layui-input-block inline_asw" style="margin-bottom: 20px;line-height: inherit">';
+        var answer='<div class="layui-input-block inline_asw" style="margin-bottom: 20px;line-height: 30px">';
         if(op_s!=null && asr!=null) {
             var opsinfo = JSON.parse(op_s);
             sessionStorage.removeItem("options");
             sessionStorage.removeItem("qanswer");
             for(;i< opsinfo.length;i++){
-                var op='<div class="layui-input-block" style="margin-bottom: 20px">';
+                var op='<div class="layui-input-block" style="margin-bottom: 20px;line-height: 30px">';
                 op+='<span style="font-weight:bolder;margin-right: 20px">'+options[i]+':</span>';
                 op+='<div class="layui-inline" style="width: 500px">';
                 op+='<input type="text" name="option'+options[i]+'" class="layui-input " value="'+opsinfo[i].optionContent+'" />';
@@ -80,10 +80,10 @@ layui.use(['form','layer','treeSelect','upload','laydate'],function(){
                 var tmp="";
                 for(var t in arr){
                     if(options[i]===arr[t]){
-                        tmp='<input type="checkbox"  name="qAnswer'+options[i]+'" value="'+options[i]+'" title="'+options[i]+'" lay-skin="primary"  checked>';
+                        tmp='<input type="checkbox"  name="qAnswer'+options[i]+'" value="'+options[i]+'" title="'+options[i]+'" lay-skin="primary"   checked>';
                         break;
                     }else{
-                        tmp='<input type="checkbox"  name="qAnswer'+options[i]+'" value="'+options[i]+'" title="'+options[i]+'" lay-skin="primary">';
+                        tmp='<input type="checkbox"  name="qAnswer'+options[i]+'" value="'+options[i]+'" title="'+options[i]+'" lay-skin="primary"  >';
                     }
                 }
                 answer+=tmp;
@@ -91,13 +91,13 @@ layui.use(['form','layer','treeSelect','upload','laydate'],function(){
             }
         }else{
             for(;i<4;i++){
-                var op='<div class="layui-input-block" style="margin-bottom: 20px">';
+                var op='<div class="layui-input-block" style="margin-bottom: 20px;line-height: 30px">';
                 op+='<span style="font-weight:bolder;margin-right: 20px">'+options[i]+':</span>';
                 op+='<div class="layui-inline" style="width: 500px">';
                 op+='<input type="text" name="option'+options[i]+'" class="layui-input "  />';
                 op+="</div></div>";
                 $(".add_option").append(op);
-                answer+='<input type="checkbox"  name="qAnswer'+options[i]+'" value="'+options[i]+'" title="'+options[i]+'" lay-skin="primary">';
+                answer+='<input type="checkbox"  name="qAnswer'+options[i]+'" value="'+options[i]+'" title="'+options[i]+'" lay-skin="primary" >';
                 //<input name="like1[write]" title="写作" type="checkbox" checked="" lay-skin="primary">
             }
         }
@@ -115,7 +115,7 @@ layui.use(['form','layer','treeSelect','upload','laydate'],function(){
         op+='<input type="text" name="option'+options[i]+'" class="layui-input "  />';
         op+="</div></div>";
         $(".add_option").append(op);
-        var answer='<input type="checkbox"  name="qAnswer'+options[i]+'" value="'+options[i]+'" title="'+options[i]+'" lay-skin="primary">';
+        var answer='<input type="checkbox"  name="qAnswer'+options[i]+'" value="'+options[i]+'" title="'+options[i]+'" lay-skin="primary" >';
         //answer+='<div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i><div>'+options[j]+'</div></div>';
         $(".inline_asw").append(answer);
         i++;

@@ -111,119 +111,8 @@ public class QuestionController {
                 return new Response(500, "参数不正确，保存失败");
             }
             QuestionVo questionVo = questionList.get(0);
-            SysQuestions questions = new QuestionInfo();
-
-            questions.setQuestionName(questionVo.getQuestionName());
-            questions.setQuestionType(questionVo.getQuestionType());
-            if("单选题".equals(questionVo.getQuestionType())){
-                questions.setSortId(1);
-            }else if("多选题".equals(questionVo.getQuestionType())){
-                questions.setSortId(2);
-            }else{
-                questions.setSortId(3);
-            }
-            questions.setResId(questionVo.getResId());
-            questions.setUpdateTime(LocalDateTime.now());
-            List<SysOptions> optionsList=new ArrayList<>();
-            if (questionVo.getQuestionStatus() != null) {
-                questions.setQuestionStatus("启用");
-            } else {
-                questions.setQuestionStatus("不启用");
-            }
-            if(questionVo.getQAnswer()!=null){
-                questions.setQAnswer(questionVo.getQAnswer());
-            }
-            String multipleAnswer="";
-            if(questionVo.getQAnswerA()!=null){
-                multipleAnswer+="A,";
-            }
-            if(questionVo.getQAnswerB()!=null){
-                multipleAnswer+="B,";
-            }
-            if(questionVo.getQAnswerC()!=null){
-                multipleAnswer+="C,";
-            }
-            if(questionVo.getQAnswerD()!=null){
-                multipleAnswer+="D,";
-            }
-            if(questionVo.getQAnswerE()!=null){
-                multipleAnswer+="E,";
-            }
-            if(questionVo.getQAnswerF()!=null){
-                multipleAnswer+="F,";
-            }
-            if(questionVo.getQAnswerG()!=null){
-                multipleAnswer+="G,";
-            }
-            if(!"".equals(multipleAnswer)){
-                multipleAnswer=multipleAnswer.substring(0,multipleAnswer.length()-1);
-                questions.setQAnswer(multipleAnswer);
-            }
-            if(questionVo.getId() == null){
-                questions.setCreateTime(LocalDateTime.now());
-                questionsService.save(questions);
-            }else{
-                questions.setId(questionVo.getId());
-                questionsService.updateById(questions);
-                QueryWrapper<SysOptions> queryWrapper=new QueryWrapper<>();
-                queryWrapper.eq("ques_id",questionVo.getId());
-                optionsService.remove(queryWrapper);
-            }
-
-            if(questionVo.getOptionA()!=null){
-                SysOptions options=new SysOptions();
-                options.setQuesId(questions.getId());
-                options.setOptionNO("A");
-                options.setOptionContent(questionVo.getOptionA());
-                optionsList.add(options);
-            }
-            if(questionVo.getOptionB()!=null){
-                SysOptions options=new SysOptions();
-                options.setQuesId(questions.getId());
-                options.setOptionNO("B");
-                options.setOptionContent(questionVo.getOptionB());
-                optionsList.add(options);
-            }
-            if(questionVo.getOptionC()!=null){
-                SysOptions options=new SysOptions();
-                options.setQuesId(questions.getId());
-                options.setOptionNO("C");
-                options.setOptionContent(questionVo.getOptionC());
-                optionsList.add(options);
-            }
-            if(questionVo.getOptionD()!=null){
-                SysOptions options=new SysOptions();
-                options.setQuesId(questions.getId());
-                options.setOptionNO("D");
-                options.setOptionContent(questionVo.getOptionD());
-                optionsList.add(options);
-            }
-            if(questionVo.getOptionE()!=null){
-                SysOptions options=new SysOptions();
-                options.setQuesId(questions.getId());
-                options.setOptionNO("E");
-                options.setOptionContent(questionVo.getOptionE());
-                optionsList.add(options);
-            }
-            if(questionVo.getOptionF()!=null){
-                SysOptions options=new SysOptions();
-                options.setQuesId(questions.getId());
-                options.setOptionNO("F");
-                options.setOptionContent(questionVo.getOptionF());
-                optionsList.add(options);
-            }
-            if(questionVo.getOptionG()!=null){
-                SysOptions options=new SysOptions();
-                options.setQuesId(questions.getId());
-                options.setOptionNO("G");
-                options.setOptionContent(questionVo.getOptionG());
-                optionsList.add(options);
-            }
-           for(SysOptions option:optionsList){
-               optionsService.save(option);
-           }
-
-            return new Response(200, "试题保存成功！");
+            questionsService.saveQuestionInfo(questionVo);
+             return new Response(200, "试题保存成功！");
         }catch (Exception e){
             log.error(e.getMessage());
             return new Response(500, "保存考题失败，系统错误！");
@@ -399,7 +288,7 @@ public class QuestionController {
                 questionsList.add(questions);
             }
             //System.out.println(questionsList);
-            questionsService.saveQuestionInfo(questionsList);
+            questionsService.saveQuestionList(questionsList);
             return new Response(0,"题库导入成功！");
         }catch (Exception e){
             log.error(e.getMessage());

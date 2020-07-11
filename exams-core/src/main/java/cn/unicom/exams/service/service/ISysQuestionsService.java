@@ -28,10 +28,16 @@ public interface ISysQuestionsService extends IService<SysQuestions> {
     public IPage<QuestionInfo> getQuestionInfoByPage(int page, int limit, QuestionVo questionVo) throws Exception;
 
     /**
-     * 保存考题信息（包含选项）
+     * 保存考题信息集合（包含选项）
      * @param questionInfoList
      * @throws Exception
      */
-    public void saveQuestionInfo(List<QuestionInfo> questionInfoList) throws Exception;
+    public void saveQuestionList(List<QuestionInfo> questionInfoList) throws Exception;
+
+    /**
+     * 保存考题信息
+     * @throws Exception
+     */
+    public void saveQuestionInfo(QuestionVo questionVo) throws Exception;
 
 }

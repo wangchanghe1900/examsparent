@@ -40,4 +40,11 @@
         from sys_options o
         where o.ques_id=#{id}
     </select>
+
+    <insert id="insertQuestion"   parameterType="cn.unicom.exams.model.entity.SysQuestions" useGeneratedKeys="true" keyProperty="id" >
+         insert into sys_questions(`questionName`, `questionType`, `res_id`, `questionStatus`, `createTime`, `updateTime`, `sortId`, `qAnswer`)
+          values (#{questions.questionName},#{questions.questionType},#{questions.resId},#{questions.questionStatus},#{questions.createTime},#{questions.updateTime},#{questions.sortId},#{questions.qAnswer});
+    </insert>
+
+
 </mapper>

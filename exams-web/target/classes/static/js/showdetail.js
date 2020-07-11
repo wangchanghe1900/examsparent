@@ -35,9 +35,9 @@ layui.use(['form','layer','treeSelect','upload','laydate','jquery'],function(){
 
             var label2="<label class=\"layui-form-label\"><span style=\"color:red\">*</span>正确答案:</label>";
             $(".add_answer").append(label2);
-            var answer='<div class="layui-input-block inline_asw" style="margin-bottom: 20px">';
+            var answer='<div class="layui-input-block inline_asw" style="margin-bottom: 20px;line-height: 30px">';
             for(var i=0;i< questions.optionsList.length;i++){
-                var op='<div class="layui-input-block" style="margin-bottom: 20px">';
+                var op='<div class="layui-input-block" style="margin-bottom: 20px;line-height: 30px">';
                 op+='<span style="font-weight:bolder;margin-right: 20px">'+options[i]+':</span>';
                 //op+='<div class="layui-inline" style="width: 500px">';
                 op+='<span >'+questions.optionsList[i].optionContent +'</span>';

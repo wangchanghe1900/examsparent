@@ -27,4 +27,14 @@ public interface SysQuestionsMapper extends BaseMapper<SysQuestions> {
      * @throws Exception
      */
     public IPage<QuestionInfo> getQuestionInfoByPage(Page<QuestionVo> page, @Param(Constants.WRAPPER) Wrapper<QuestionVo> wrapper) throws Exception;
+
+    /**
+     *插入一条题目信息
+     * @param questions
+     * @return
+     * @throws Exception
+     */
+    public void insertQuestion(@Param("questions") SysQuestions questions) throws Exception;
+
+
 }
