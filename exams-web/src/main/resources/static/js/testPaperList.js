@@ -11,7 +11,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     var localhostPaht = curWwwPath.substring(0, pos);
     var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
     var webpath=localhostPaht + projectName;
-   // var resourceWeb="http://192.168.1.5:8789";
+    //var resourceWeb="http://192.168.1.5:8789";
     var resourceWeb="http://20.1.198.11:8786";
     //显示页面按钮
     $.get(webpath+"/sysmenu/btnAuthroInfo",{"btn":"test"},
