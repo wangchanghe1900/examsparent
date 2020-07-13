@@ -11,6 +11,8 @@ layui.use(['form','layer','table','laytpl'],function(){
     var localhostPaht = curWwwPath.substring(0, pos);
     var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
     var webpath=localhostPaht + projectName;
+   // var resourceWeb="http://192.168.1.5:8789";
+    var resourceWeb="http://20.1.198.11:8786";
     //显示页面按钮
     $.get(webpath+"/sysmenu/btnAuthroInfo",{"btn":"test"},
         function (data) {
@@ -86,8 +88,9 @@ layui.use(['form','layer','table','laytpl'],function(){
                     body.find(".testname").val(edit.testName);
                     body.find("#resId").val(edit.resId);
                     body.find(".resourceName").val(edit.resourceinfo.resourceName);
-                    body.find("#showimg").attr("src",webpath+"/upload"+edit.imgUrl);
-                    console.log(edit.testStatus=='发布'?true:false);
+                    /*body.find("#showimg").attr("src",webpath+"/upload"+edit.imgUrl);*/
+                    body.find("#showimg").attr("src",resourceWeb+edit.imgUrl);
+                    /*console.log(edit.testStatus=='发布'?true:false);*/
                     body.find("#testStatus").prop("checked",edit.testStatus=='发布'? true:false);
                     body.find(".remark").val(edit.remark);
                     form.render();

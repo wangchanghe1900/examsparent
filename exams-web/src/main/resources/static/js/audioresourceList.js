@@ -11,6 +11,8 @@ layui.use(['form','layer','table','laytpl'],function(){
     var localhostPaht = curWwwPath.substring(0, pos);
     var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
     var webpath=localhostPaht + projectName;
+    //var resourceWeb="http://192.168.1.5:8789";
+    var resourceWeb="http://20.1.198.11:8786";
     //显示页面按钮
     $.get(webpath+"/sysmenu/btnAuthroInfo",{"btn":"audio"},
         function (data) {
@@ -98,7 +100,8 @@ layui.use(['form','layer','table','laytpl'],function(){
                     body.find(".resourcename").val(edit.resourceName);
                     body.find(".filepath").html(edit.url);
                     body.find(".url").val(edit.url);
-                    body.find("#audiotmp").attr("src",webpath+"/upload"+edit.url);
+                    /*body.find("#audiotmp").attr("src",webpath+"/upload"+edit.url);*/
+                    body.find("#audiotmp").attr("src",resourceWeb+edit.url);
                     //body.find(".userSex input[value="+edit.userSex+"]").prop("checked","checked");  //性别
                     body.find(".remark").val(edit.remark);
                     form.render();
@@ -186,7 +189,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             success : function(layero, index){
                 var body = layer.getChildFrame('body', index);
                 if(data){
-                    body.find("#audiotmp").attr("src",webpath+"/upload"+data.url);
+                    body.find("#audiotmp").attr("src",resourceWeb+data.url);
                     form.render();
                 }
             }

@@ -29,9 +29,9 @@ spring:
   datasource:
     name: dataSource1
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.11:8066/examsdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://127.0.0.1:3306/examsdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
     username: root
-    password: Ghzx@7519
+    password: ghzx@7519
     type: com.alibaba.druid.pool.DruidDataSource
     #druid属性
     initialSize: 5
@@ -85,3 +85,4 @@ exams:
   passNum: 60
   key: 1234567890abcdef
   uploadPath: d:/opt/examsweb/
+  resourceWeb: http://192.168.1.5:8789

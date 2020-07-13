@@ -63,6 +63,9 @@ public class SysAPIController {
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
+    @Value("${exams.resourceWeb}")
+    private String resourceWeb;
+
 
     @PostMapping("/test/testpaper")
     public Response testpaper(String code, Long timestamp){
@@ -163,8 +166,10 @@ public class SysAPIController {
             UnLearnResource unLearnResource = employeeService.getUnLearnResourceByPage(paramsVo.getPageNum(), paramsVo.getShowNum(), paramsVo.getEmpID());
             List<Material> materialList = unLearnResource.getMaterialList();
             for(Material material:materialList){
-                material.setMaterialURL(contextPath+"/upload"+material.getMaterialURL());
-                material.setMaterialImg(contextPath+"/upload"+material.getMaterialImg());
+                //material.setMaterialURL(contextPath+"/upload"+material.getMaterialURL());
+                //material.setMaterialImg(contextPath+"/upload"+material.getMaterialImg());
+                material.setMaterialURL(resourceWeb+material.getMaterialURL());
+                material.setMaterialImg(resourceWeb+material.getMaterialImg());
             }
             unLearnResource.setMaterialList(materialList);
             return new Response(200, "提取数据成功",unLearnResource);
@@ -185,8 +190,10 @@ public class SysAPIController {
             LearnedResource learnedResource = employeeService.getLearnedResourceByPage(paramsVo.getPageNum(), paramsVo.getShowNum(), paramsVo.getEmpID());
             List<LearnedMaterial> learnedMaterialList = learnedResource.getLearnedMaterialList();
             for(LearnedMaterial material:learnedMaterialList){
-                material.setMaterialURL(contextPath+"/upload"+material.getMaterialURL());
-                material.setMaterialImg(contextPath+"/upload"+material.getMaterialImg());
+                //material.setMaterialURL(contextPath+"/upload"+material.getMaterialURL());
+                //material.setMaterialImg(contextPath+"/upload"+material.getMaterialImg());
+                material.setMaterialURL(resourceWeb+material.getMaterialURL());
+                material.setMaterialImg(resourceWeb+material.getMaterialImg());
             }
             return new Response(200, "提取数据成功",learnedResource);
         }catch (Exception e){

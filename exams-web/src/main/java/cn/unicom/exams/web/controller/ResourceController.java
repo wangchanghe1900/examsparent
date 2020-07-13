@@ -40,6 +40,9 @@ public class ResourceController {
     @Value("${exams.uploadPath}")
     private String uploadPath;
 
+    @Value("${exams.resourceWeb}")
+    private String resourceWeb;
+
     @Autowired
     private ISysResourceinfoService resourceinfoService;
 
@@ -73,6 +76,8 @@ public class ResourceController {
                 resourcepower = buttonAuthorUtils.getButtonAuthority("audio");
             }
             for (int i = 0; i < resourceInfoByPage.getRecords().size(); i++) {
+/*                String staticUrl=resourceWeb+resourceInfoByPage.getRecords().get(i).getUrl();
+                resourceInfoByPage.getRecords().get(i).setUrl(staticUrl);*/
                 resourceInfoByPage.getRecords().get(i).setIsDel(resourcepower.getIsDel());
                 resourceInfoByPage.getRecords().get(i).setIsDetail(resourcepower.getIsDetail());
                 resourceInfoByPage.getRecords().get(i).setIsEdit(resourcepower.getIsEdit());

@@ -44,6 +44,9 @@ public class NoticeController {
     @Value("${server.servlet.context-path}")
     private String webPath;
 
+    @Value("${exams.resourceWeb}")
+    private String resourceWeb;
+
     @Autowired
     private ISysNoticeService noticeService;
 
@@ -197,7 +200,8 @@ public class NoticeController {
             }
             String path="";
             for(String p: pathArr){
-               path +=webPath+ p +",";
+               //path +=webPath+ p +",";
+                path+=p+",";
             }
             path=path.substring(0,path.length()-1);
             Map<String,String> map=new HashMap<>();
@@ -222,7 +226,8 @@ public class NoticeController {
         filename = UUID.randomUUID().toString()+ filename.substring(filename.lastIndexOf("."));
         File f= new File(realPath, filename);
         fileinfo.transferTo(f);
-        return "/upload"+path+"/"+filename;
+        //return "/upload"+path+"/"+filename;
+        return resourceWeb+path+"/"+filename;
     }
 
     @GetMapping("/getNoticeById")
