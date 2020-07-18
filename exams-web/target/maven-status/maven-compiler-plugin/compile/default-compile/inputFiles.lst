@@ -1,5 +1,6 @@
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\SysAPIController.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\TestPaperController.java
+D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\config\XssConfig.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\DepatmentController.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\config\MyShiroRealm.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\main\ExamsWebApp.java
@@ -16,16 +17,19 @@ D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\utils\ButtonAutho
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\LoginController.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\NoticeController.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\StatisticsController.java
+D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\filter\XssFilter.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\config\WebMvcConfig.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\SysMessageController.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\OptionController.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\utils\SecurityCode.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\utils\EncryptUtils.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\utils\Constants.java
+D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\filter\JsoupUtils.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\config\KaptchaConfig.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\config\ShiroConfig.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\QuestionController.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\SysmenuController.java
+D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\filter\XssHttpServletRequestWrapper.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\utils\ShiroUtils.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\ResourceController.java
 D:\workspace\exams\exams-web\src\main\java\cn\unicom\exams\web\controller\SystemLogController.java

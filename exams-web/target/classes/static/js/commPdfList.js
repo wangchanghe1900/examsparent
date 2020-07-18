@@ -11,9 +11,9 @@ layui.use(['form','layer','upload'],function(){
     var webpath=localhostPaht + projectName;
     var url=window.sessionStorage.getItem("pdfUrl");
     //var resourceWeb="http://192.168.1.5:8789";
-    var resourceWeb="http://20.1.198.11:8786";
-    /*PDFObject.embed(webpath+"/upload"+url, "#dpflist",{height: "450px"});*/
-    PDFObject.embed(resourceWeb+url, "#dpflist",{height: "450px"});
+    //var resourceWeb="http://20.1.198.11:8786";
+    PDFObject.embed(webpath+"/upload"+url, "#dpflist",{height: "450px"});
+    //PDFObject.embed(resourceWeb+url, "#dpflist",{height: "450px"});
 
 
 

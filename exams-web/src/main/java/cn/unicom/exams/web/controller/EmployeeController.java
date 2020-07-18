@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -137,11 +138,14 @@ public class EmployeeController {
                 employeeInfo="["+employeeInfo+"]";
                 List<EmployeeVo> employeeVos = JSON.parseArray(employeeInfo, EmployeeVo.class);
                 EmployeeVo employeeVo = employeeVos.get(0);
+                if(StringUtils.isBlank(employeeVo.getEmployeeCode()) || StringUtils.isEmpty(employeeVo.getEmployeeCode())){
+                    return  new Response(500,"员工工号不能为空！");
+                }
                 if(employeeVo.getId()!=null){
                     employeeVo.setUpdateTime(LocalDateTime.now());
                     employeeService.updateById(employeeVo);
                 }else{
-                    employeeVo.setEmployeeCode(employeeVo.getMobile().toString());
+                    //employeeVo.setEmployeeCode(employeeVo.getMobile().toString());
                     employeeVo.setCreateTime(LocalDateTime.now());
                     employeeVo.setUpdateTime(LocalDateTime.now());
                     employeeVo.setLoginFailureTimes(0);

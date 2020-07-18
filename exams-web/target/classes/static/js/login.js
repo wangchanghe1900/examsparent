@@ -1,9 +1,14 @@
-layui.use(['form','layer','jquery'],function(){
+layui.config({
+    base : "js/"
+}).extend({
+    encrypt: 'encrypt'
+})
+layui.use(['form','layer','jquery','encrypt'],function(){
     var form = layui.form,
-        layer = parent.layer === undefined ? layui.layer : top.layer
-        $ = layui.jquery;
-
-
+        layer = parent.layer === undefined ? layui.layer : top.layer,
+        $ = layui.jquery,
+        encrypt=layui.encrypt;
+    var abc = "\x31\x32\x33\x34\x35\x36\x37\x38\x39\x30\x61\x62\x63\x64\x65\x66";
     //登录按钮
     form.on("submit()",function(data){
         let btn=$(this);
@@ -12,12 +17,16 @@ layui.use(['form','layer','jquery'],function(){
         //let userpageurl="http://127.0.0.1:9001/v1/getUserByName"
         curWwwPath=curWwwPath.substring(0,curWwwPath.lastIndexOf("/")+1);
         let userInfo = data.field;
+        userInfo=JSON.stringify(userInfo);
+        //console.log(userInfo);
+        var encode=encrypt.aesEncryptJava(userInfo,abc,abc);
+
         let url = curWwwPath+"login";
         setTimeout(function(){
             $.ajax({
                 url:url,
                 type:'post',
-                data:userInfo,
+                data:{encode},
                 success:function(res){
                     if(res.code==200){
                         window.sessionStorage.setItem("username",data.field.username);

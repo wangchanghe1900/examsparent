@@ -98,7 +98,7 @@ public class SysAPIController {
                 queryWrapper.eq("employeeCode",empInfo.getUserName());
                 SysEmployee employee = employeeService.getOne(queryWrapper);
                 if(employee == null ){
-                    return new Response(400,"用户不存在");
+                    return new Response(400,"用户名或密码错误");
                 }
                 if(!"正常".equals(employee.getEmployeeStatus())){
                     return new Response(410,"用户已禁用，请联系系统管理员");

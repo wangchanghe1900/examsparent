@@ -57,7 +57,7 @@ layui.use(['form','layer','table','laytpl','jquery'],function(){
                     return d.resourceinfo.resourceName;
                 }},
             {field: 'questionStatus', title: '题目状态', minWidth:100, align:"center",templet:'#questionStatus'},
-            {field: 'createTime', title: '创建日期', align:'center',minWidth:80},
+            {field: 'createTime', title: '创建日期', align:'center',minWidth:120},
             {field: 'updateTime', title: '修改日期', align:'center',minWidth:120},
             {title: '操作', minWidth:200, templet:'#questionListBar',fixed:"right",align:"center"}
         ]]

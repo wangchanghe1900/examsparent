@@ -56,6 +56,7 @@ layui.use(['form','layer','treeSelect', 'util','laydate'],function(){
                 ,"mealCard":empinfo.mealCard
                 ,"employeeStatus":empinfo.employeeStatus
                 ,"mainwork":empinfo.mainwork
+                ,"employeeCode":empinfo.employeeCode
             });
         }
     }

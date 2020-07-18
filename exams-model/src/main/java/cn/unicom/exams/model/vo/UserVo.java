@@ -29,6 +29,12 @@ public class UserVo extends SysUser implements Serializable {
     @TableField(exist = false)
     private String  roles;
 
+    /**
+     * 验证码
+     */
+    @TableField(exist = false)
+    private String  code;
+
 
 
 

@@ -17,7 +17,7 @@ layui.use(['form','layer','treeSelect','upload','laydate'],function(){
     var localhostPaht = curWwwPath.substring(0, pos);
     var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
     var webpath=localhostPaht + projectName;
-    var resourceWeb="http://20.1.198.11:8786";
+    //var resourceWeb="http://20.1.198.11:8786";
    // var resourceWeb="http://192.168.1.5:8789";
     var deptId;
     treeSelect.render({
@@ -198,7 +198,9 @@ layui.use(['form','layer','treeSelect','upload','laydate'],function(){
                 layer.msg("上传图片成功");
                 var url=res.data.src;
                 window.sessionStorage.setItem("imgUrl",url);
-                $('#showimg').attr('src', resourceWeb+url);
+                /*$('#showimg').attr('src', resourceWeb+url);*/
+                $('#showimg').attr('src', webpath+"/upload"+url);
+
             }
         }
         ,error: function(index, upload){
