@@ -86,3 +86,4 @@ exams:
   key: 1234567890abcdef
   uploadPath: d:/opt/examsweb/
   resourceWeb: http://192.168.1.5:8789
+  ALLOWED_SERVERNAMES: 127.0.0.1,20.1.198.11,20.1.198.12

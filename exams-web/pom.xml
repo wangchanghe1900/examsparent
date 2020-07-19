@@ -143,6 +143,7 @@
                 <filtering>false</filtering>
                 <includes>
                     <include>static/layui/**/*</include>
+                    <include>static/css/**/*</include>
                 </includes>
             </resource>
         </resources>
