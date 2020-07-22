@@ -54,10 +54,10 @@ layui.use(['form','layer','jquery','encrypt'],function(){
     $(".loginBody .input-item").click(function(e){
         e.stopPropagation();
         $(this).addClass("layui-input-focus").find(".layui-input").focus();
-    })
+    });
     $(".loginBody .layui-form-item .layui-input").focus(function(){
         $(this).parent().addClass("layui-input-focus");
-    })
+    });
     $(".loginBody .layui-form-item .layui-input").blur(function(){
         $(this).parent().removeClass("layui-input-focus");
         if($(this).val() != ''){
@@ -65,5 +65,9 @@ layui.use(['form','layer','jquery','encrypt'],function(){
         }else{
             $(this).parent().removeClass("layui-input-active");
         }
-    })
+    });
+    $(".freshen").on("click",function () {
+        $("#capt").attr("src","captcha.jpg?t=" + $.now());
+    });
+
 })

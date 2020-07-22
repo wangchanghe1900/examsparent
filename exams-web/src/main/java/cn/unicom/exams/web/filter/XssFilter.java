@@ -30,7 +30,8 @@ public class XssFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-        resp.setHeader("x-frame-options", "SAMEORIGIN");
+        //resp.setHeader("x-frame-options", "SAMEORIGIN");
+        resp.addHeader("x-frame-options","SAMEORIGIN");
         if (handleExcludeURL(req, resp)) {
             filterChain.doFilter(request, response);
             return;

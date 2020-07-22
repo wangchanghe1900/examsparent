@@ -33,7 +33,7 @@
 
 		</div>
 		<div class="layui-form-item input-item" >
-			<a href="javascript:;" onclick="refreshCode()">
+			<a href="javascript:;"  class="freshen">
 				<img src="captcha.jpg" height="40px" id="capt">点击刷新</a>
 		</div>
 		<div class="layui-form-item">
@@ -45,10 +45,5 @@
 	<script type="text/javascript" src="js/login.js"></script>
 	<!--<script type="text/javascript" src="js/cache.js"></script>-->
 </body>
-<script >
-	function refreshCode(){
-		$("#capt").attr("src","captcha.jpg?t=" + $.now())
-	}
 
-</script>
 </html>
