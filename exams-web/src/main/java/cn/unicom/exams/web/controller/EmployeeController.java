@@ -99,7 +99,10 @@ public class EmployeeController {
     @ResponseBody
     public Response delEmployeeById(Long id){
         try{
-            employeeService.removeById(id);
+            //employeeService.removeById(id);
+            List<Long> ids=new ArrayList<>();
+            ids.add(id);
+            employeeService.deleteEmpInfo(ids);
             return  new Response(200,"删除信息成功！");
         }catch (Exception e){
             log.error(e.getMessage());
@@ -117,7 +120,8 @@ public class EmployeeController {
             for(String id : idArr){
                 idList.add(Long.parseLong(id));
             }
-            employeeService.removeByIds(idList);
+            //employeeService.removeByIds(idList);
+            employeeService.deleteEmpInfo(idList);
             return  new Response(200,"删除信息成功！");
         }catch (Exception e){
             log.error(e.getMessage());
@@ -143,7 +147,8 @@ public class EmployeeController {
                 }
                 if(employeeVo.getId()!=null){
                     employeeVo.setUpdateTime(LocalDateTime.now());
-                    employeeService.updateById(employeeVo);
+                    //employeeService.updateById(employeeVo);
+                    employeeService.saveEmpInfo(employeeVo);
                 }else{
                     //employeeVo.setEmployeeCode(employeeVo.getMobile().toString());
                     employeeVo.setCreateTime(LocalDateTime.now());
@@ -153,7 +158,8 @@ public class EmployeeController {
                     String pwd = MD5Utils.getAuthenticationInfo("Abcd#123!", salt);//初始密码：Abcd#123!
                     employeeVo.setSalt(salt);
                     employeeVo.setPassword(pwd);
-                    employeeService.save(employeeVo);
+                    //employeeService.save(employeeVo);
+                    employeeService.saveEmpInfo(employeeVo);
                 }
 
                 return  new Response(200,"保存员工信息成功！");

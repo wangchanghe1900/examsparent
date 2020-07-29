@@ -5,6 +5,7 @@ import cn.unicom.exams.model.vo.*;
 import cn.unicom.exams.service.mapper.*;
 import cn.unicom.exams.service.service.ISysEmployeeService;
 import cn.unicom.exams.service.utils.MD5Utils;
+import cn.unicom.exams.service.utils.QuestionUtils;
 import cn.unicom.exams.service.utils.SecurityCode;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -52,6 +54,12 @@ public class SysEmployeeServiceImpl extends ServiceImpl<SysEmployeeMapper, SysEm
 
     @Resource
     private SysTeststatisticsMapper teststatisticsMapper;
+
+    @Resource
+    private SysTestpaperMapper testpaperMapper;
+
+    @Resource
+    private SysQuestionsMapper questionsMapper;
 
     @Override
     public IPage<EmployeeInfo> getEmployeeInfoByPage(int page, int limit, EmployeeVo employeeVo) throws Exception {
@@ -377,7 +385,97 @@ public class SysEmployeeServiceImpl extends ServiceImpl<SysEmployeeMapper, SysEm
         }
         for(SysEmployee emp:empList){
             employeeMapper.insert(emp);
+            updateEmpTest(emp.getEmployeeCode(),emp.getDeptId());
         }
         return empList.size();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteEmpInfo(List<Long> ids) throws Exception {
+        for(Long id : ids){
+            SysEmployee employee = employeeMapper.selectById(id);
+            QueryWrapper<SysUnlearnduration> qw=new QueryWrapper<>();
+            qw.eq("emp_code",employee.getEmployeeCode());
+            unlearndurationMapper.delete(qw);
+            QueryWrapper<SysTestquestions> tqQW=new QueryWrapper<>();
+            tqQW.eq("emp_code",employee.getEmployeeCode());
+            testquestionsMapper.delete(tqQW);
+            QueryWrapper<SysLearnduration> learndurationQueryWrapper=new QueryWrapper<>();
+            learndurationQueryWrapper.eq("emp_code",employee.getEmployeeCode());
+            learndurationMapper.delete(learndurationQueryWrapper);
+            QueryWrapper<SysTestresult> testresultQueryWrapper=new QueryWrapper<>();
+            testresultQueryWrapper.eq("emp_code",employee.getEmployeeCode());
+            testresultMapper.delete(testresultQueryWrapper);
+            employeeMapper.deleteById(id);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saveEmpInfo(SysEmployee employee) throws Exception {
+        if(employee.getId()!=null){
+            employeeMapper.updateById(employee);
+        }else{
+            employeeMapper.insert(employee);
+        }
+        updateEmpTest(employee.getEmployeeCode(),employee.getDeptId());
+    }
+
+    private void updateEmpTest(String empCode,Long deptId) throws Exception{
+        QueryWrapper<SysUnlearnduration> qw=new QueryWrapper<>();
+        qw.eq("emp_code",empCode);
+        unlearndurationMapper.delete(qw);
+        QueryWrapper<SysTestquestions> tqQW=new QueryWrapper<>();
+        tqQW.eq("emp_code",empCode);
+        testquestionsMapper.delete(tqQW);
+        LocalDate nowTime=LocalDate.now();
+        LocalDate beforDate = nowTime.plusDays(-180);
+        System.out.println(beforDate);
+        QueryWrapper<SysTestpaper> testQW=new QueryWrapper<>();
+        testQW.eq("testStatus","发布").gt("createTime",beforDate.toString());
+        List<SysTestpaper> testpaperList = testpaperMapper.selectList(testQW);
+        for(SysTestpaper testpaper : testpaperList){
+            Long testdeptId = testpaper.getDeptId();
+            if(testdeptId.intValue()==deptId.intValue()){
+                SysUnlearnduration unlearnduration=new SysUnlearnduration();
+                unlearnduration.setTId(testpaper.getId());
+                unlearnduration.setEmpCode(Long.parseLong(empCode));
+                unlearnduration.setResId(testpaper.getResId());
+                unlearndurationMapper.insert(unlearnduration);
+                insertEmpTestQuestion(testpaper,empCode);
+            }else{
+                QueryWrapper<SysDept> deptQW=new QueryWrapper<>();
+                deptQW.eq("parent_id",testdeptId);
+                List<SysDept> sysDepts = deptMapper.selectList(deptQW);
+                for(SysDept dept: sysDepts){
+                   if(dept.getId().intValue()==deptId.intValue()){
+                       SysUnlearnduration unlearnduration=new SysUnlearnduration();
+                       unlearnduration.setTId(testpaper.getId());
+                       unlearnduration.setEmpCode(Long.parseLong(empCode));
+                       unlearnduration.setResId(testpaper.getResId());
+                       unlearndurationMapper.insert(unlearnduration);
+                       insertEmpTestQuestion(testpaper,empCode);
+                   }
+                }
+            }
+        }
+
+    }
+
+    private void insertEmpTestQuestion(SysTestpaper testpaper,String empCode) throws Exception{
+        QueryWrapper<SysQuestions> questionsQueryWrapper=new QueryWrapper<>();
+        questionsQueryWrapper.eq("res_id",testpaper.getResId()).eq("questionStatus","启用");
+        List<SysQuestions> questions = questionsMapper.selectList(questionsQueryWrapper);
+        List<Long> idsList = questions.stream().map(SysQuestions::getId).collect(Collectors.toList());
+        Set<Long> idsSet = QuestionUtils.randomQuestions(idsList, testpaper.getTestCount());
+        for(Long questionId:idsSet){
+            SysTestquestions testquestions=new SysTestquestions();
+            testquestions.setTId(testpaper.getId());
+            testquestions.setEmpCode(Long.parseLong(empCode));
+            testquestions.setQId(questionId);
+            testquestions.setStatus("未答");
+            testquestionsMapper.insert(testquestions);
+        }
     }
 }

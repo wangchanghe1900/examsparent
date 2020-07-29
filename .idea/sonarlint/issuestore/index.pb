@@ -169,8 +169,6 @@ t
 Dexams-web/src/main/java/cn/unicom/exams/web/config/WebMvcConfig.java,c\6\c6677a77133bf1f503177acc02fe3d8e6dd2eb27
 t
 Dexams-web/src/main/java/cn/unicom/exams/web/config/TomcatConfig.java,a\6\a6bbf440a56f0062ba2a54623470fee9c1688dc6
-v
-Fexams-web/src/main/java/cn/unicom/exams/web/config/HttpHostConfig.java,a\5\a55685a61a48a4a5ec03e3a1aab3fd272b8502ed
 q
 Aexams-web/src/main/java/cn/unicom/exams/web/main/ExamsWebApp.java,4\6\465a05a91e629725d22d399f3021c15f5d3f66e2
 r

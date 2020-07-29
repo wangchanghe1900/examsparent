@@ -62,4 +62,18 @@ public interface ISysEmployeeService extends IService<SysEmployee> {
      * @throws Exception
      */
     public Integer importEmpInfo(List<Map<String, Object>> maps) throws Exception;
+
+    /**
+     * 根据ID删除员工信息
+     * @param ids
+     * @throws Exception
+     */
+    public void deleteEmpInfo(List<Long> ids) throws Exception;
+
+    /**
+     * 保存员工信息
+     * @throws Exception
+     */
+    public void saveEmpInfo(SysEmployee employee) throws Exception;
+
 }
