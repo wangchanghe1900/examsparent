@@ -62,7 +62,9 @@ public class HostFilter implements Filter {
   private boolean checkBlankList(String serverName) {
     String[] allowdServerName = ALLOWED_SERVERNAMES.split(",");
     List<String> serverNameList = Arrays.asList(allowdServerName);
+    //log.warn("访问地址："+serverName);
     for(String str : serverNameList){
+      //String whiteAdd=serverName.substring(0,serverName.lastIndexOf("."));
       if(!isEmpty(str) && str.equals(serverName)){
         return true;
       }
