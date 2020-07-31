@@ -85,5 +85,6 @@ exams:
   passNum: 60
   key: 1234567890abcdef
   uploadPath: d:/opt/examsweb/
-  resourceWeb: http://192.168.1.5:8789
-  ALLOWED_SERVERNAMES: 127.0.0.1,20.1.198.11,20.1.198.12,192.168.1.5
+  resourceWeb: http://127.0.0.1:10086/examsweb/upload
+  ALLOWED_SERVERNAMES: 127.0.0.1,20.1.198.11,20.1.198.12,10.13.13.221
+  ACCESS_MANAGER_SERVERNAMES: 127.0.0.1,20.1.198.0,202.106.86.0

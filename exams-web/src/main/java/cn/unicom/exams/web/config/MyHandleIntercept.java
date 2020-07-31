@@ -8,12 +8,14 @@ import com.alibaba.druid.sql.visitor.ExportParameterizedOutputVisitor;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,13 +24,34 @@ import java.util.Map;
  */
 @Component
 public class MyHandleIntercept implements HandlerInterceptor {
+    @Value("${exams.ACCESS_MANAGER_SERVERNAMES}")
+    private String accessManagerServerNames;
+
     @Autowired
     private ISysSystemlogService sysSystemlogService;
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String[] accessList=accessManagerServerNames.split(",");
+        Boolean flag=false;
+        String requestURL = request.getRequestURI();
+        String ipAddress=request.getRemoteAddr();
+        if(requestURL.contains("/portal/") || requestURL.contains("/api/") || requestURL.contains("/upload/")){
+            flag=true;
+        }else{
+            for(String accessAdd : accessList){
+                String ip=accessAdd.substring(0,accessAdd.lastIndexOf("."));
+                if(ipAddress.contains(ip)){
+                    flag=true;
+                }
+            }
+        }
+        return flag;
+    }
+
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
         String requestURL = request.getRequestURI();
-        //System.out.println("requestURL = " + requestURL);
         if(requestURL.contains("save") || requestURL.contains("edit") || requestURL.contains("del") || requestURL.contains("resetPwd")){
             Subject subject = ShiroUtils.getSubject();
             UserInfo user = (UserInfo) subject.getPrincipal();
