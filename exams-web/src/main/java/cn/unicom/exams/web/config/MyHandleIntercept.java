@@ -10,6 +10,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,13 +36,14 @@ public class MyHandleIntercept implements HandlerInterceptor {
         String[] accessList=accessManagerServerNames.split(",");
         Boolean flag=false;
         String requestURL = request.getRequestURI();
-        String ipAddress=request.getRemoteAddr();
+        String remoteIP =getRealAddress(request);
+        //String ipAddress=request.getRemoteAddr();
         if(requestURL.contains("/portal/") || requestURL.contains("/api/") || requestURL.contains("/upload/")){
             flag=true;
         }else{
             for(String accessAdd : accessList){
                 String ip=accessAdd.substring(0,accessAdd.lastIndexOf("."));
-                if(ipAddress.contains(ip)){
+                if(remoteIP.contains(ip)){
                     flag=true;
                 }
             }
@@ -75,7 +77,30 @@ public class MyHandleIntercept implements HandlerInterceptor {
             sysSystemlog.setOperatorDateTime(LocalDateTime.now());
             sysSystemlogService.save(sysSystemlog);
         }
+    }
 
-
+    private String getRealAddress(HttpServletRequest request){
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        if(!StringUtils.isEmpty(ip) && ip.length() > 15) {
+            if(ip.indexOf(",") > 0) {
+                ip = ip.substring(0, ip.indexOf(","));
+            }
+        }
+        return ip;
     }
 }

@@ -12,7 +12,7 @@ server:
       rename-on-rotate: false
       prefix: access-log-
       buffered: true
-      pattern: "%h %l %T %t %r %s %b %{Referer}i %{User-Agent}i (%D ms)"
+      pattern: "%{X-Forwarded-For}i %h %l %T %t %r %s %b  %{User-Agent}i (%D ms)"
       suffix: .log
       directory: /usr/local/examsweb/logs/accesslogs/
 spring:
