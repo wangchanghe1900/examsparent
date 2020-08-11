@@ -94,8 +94,15 @@ public class MyHandleIntercept implements HandlerInterceptor {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_REAL_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_CONNECTING_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
+
         if(!StringUtils.isEmpty(ip) && ip.length() > 15) {
             if(ip.indexOf(",") > 0) {
                 ip = ip.substring(0, ip.indexOf(","));
