@@ -177,3 +177,32 @@ h2.method{ font-size:18px; line-height:45px; padding-left:5px;}
     margin: 10px auto;
     color:#f0f0f0;
 }
+
+.footer {
+    background-color: #273744;
+    color: #fff;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    line-height: 50px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.footer .w1280 {
+    color: #fff;
+    margin: auto;
+}
+.footer-main {
+    background-color: #273744;
+    color: #fff;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    line-height: 50px;
+    position: absolute;
+    bottom: -260px;
+    left: 0;
+}
