@@ -40,6 +40,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         id : "testListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
+            {field: 'id', title: '试卷ID', minWidth:80, align:"center"},
             {field: 'testName', title: '试卷名称', minWidth:200, align:"center"},
             {field: 'resourceName', title: '资源名称', minWidth:200, align:"center",templet:function(d){
                     return d.resourceinfo.resourceName;

@@ -45,24 +45,10 @@ spring:
     testOnBorrow: false
     testOnReturn: false
     poolPreparedStatements: true
-  redis:
-    host: 127.0.0.1
-    #password: ghzx7519
-    database: 0
-    lettuce:
-      pool:
-        max-active: 8
-        max-idle: 8
-        min-idle: 0
-        max-wait: 1000ms
-  cache:
-    redis:
-      key-prefix: true
-      time-to-live: 3m
 logging:
   level:
     root: info
-    #cn.unicom.exams.service.mapper：debug
+    #cn.unicom.exams.service: debug
 management:
   endpoints:
     web:
@@ -86,5 +72,5 @@ exams:
   key: 1234567890abcdef
   uploadPath: d:/opt/examsweb/
   resourceWeb: http://127.0.0.1:8786
-  ALLOWED_SERVERNAMES: 127.0.0.1,20.1.198.11,20.1.198.12,10.13.13.221
+  ALLOWED_SERVERNAMES: 127.0.0.1,20.1.198.11,20.1.198.12
   ACCESS_MANAGER_SERVERNAMES: 127.0.0.1,20.1.198.0,202.106.86.0

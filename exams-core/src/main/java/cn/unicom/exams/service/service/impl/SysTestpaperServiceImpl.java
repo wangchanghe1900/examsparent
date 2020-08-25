@@ -50,6 +50,12 @@ public class SysTestpaperServiceImpl extends ServiceImpl<SysTestpaperMapper, Sys
     @Resource
     private SysDeptMapper deptMapper;
 
+    @Resource
+    private SysOptionsMapper optionsMapper;
+
+    @Resource
+    private SysResourceinfoMapper resourceinfoMapper;
+
     @Override
     public IPage<TestPaperInfo> getTestPaperInfoByPage(int page, int limit, TestPaperVo testPaperVo) throws Exception{
         Page<TestPaperVo> iPage=new Page<>(page,limit);
@@ -167,26 +173,35 @@ public class SysTestpaperServiceImpl extends ServiceImpl<SysTestpaperMapper, Sys
         }
         //4、如果有数据查询testquestions表及questions表查询出关联试题及资源名称
         List<Long> questionIds = sysTestquestions.stream().map(SysTestquestions::getQId).collect(Collectors.toList());
-        Page<QuestionVo> page=new Page<>(pageNum,showNum);
-        QueryWrapper<QuestionVo> questionqw=new QueryWrapper<>();
-        questionqw.in("q.id",questionIds).orderByAsc("q.sortId");
-        IPage<QuestionInfo> questionInfoByPage = questionsMapper.getQuestionInfoByPage(page, questionqw);
+        //Page<QuestionVo> page=new Page<>(pageNum,showNum);
+/*        QueryWrapper<QuestionVo> questionqw=new QueryWrapper<>();
+        questionqw.in("q.id",questionIds).orderByAsc("q.sortId");*/
+        //IPage<QuestionInfo> questionInfoByPage = questionsMapper.getQuestionInfoByPage(page,questionqw);
+        Page<SysQuestions> page=new Page<>(pageNum,showNum);
+        QueryWrapper<SysQuestions> questionqw=new QueryWrapper<>();
+        questionqw.in("id",questionIds).orderByAsc("sortId");
+        IPage<SysQuestions> questionInfoByPage = questionsMapper.selectPage(page, questionqw);
         examInfo.setEmpID(empID);
         examInfo.setExamID(examID);
         examInfo.setPageNum(pageNum);
         Long totalNum=questionInfoByPage.getTotal();
         examInfo.setTotalNum(totalNum.intValue());
-        List<QuestionInfo> questionInfos = questionInfoByPage.getRecords();
+        //List<QuestionInfo> questionInfos = questionInfoByPage.getRecords();
+        List<SysQuestions> questionInfos = questionInfoByPage.getRecords();
         List<TestQuestionInfo> testQuestionInfos = new ArrayList<>();
         int orderNum=(pageNum-1) * showNum;
         //System.out.println("orderNum = " + orderNum);
-        for(QuestionInfo questionInfo: questionInfos){
+        for(SysQuestions questionInfo: questionInfos){
             TestQuestionInfo testQuestionInfo=new TestQuestionInfo();
             testQuestionInfo.setOrderNum(++orderNum);
             testQuestionInfo.setQuestionID(questionInfo.getId());
             testQuestionInfo.setQuestionType(questionInfo.getQuestionType());
             testQuestionInfo.setQuestion(questionInfo.getQuestionName());
-            List<SysOptions> optionsList = questionInfo.getOptionsList();
+            //List<SysOptions> optionsList = questionInfo.getOptionsList();
+            QueryWrapper<SysOptions> optionsQueryWrapper=new QueryWrapper<>();
+            optionsQueryWrapper.eq("ques_id",questionInfo.getId())
+            .orderByAsc("id");
+            List<SysOptions> optionsList = optionsMapper.selectList(optionsQueryWrapper);
             List<OptionsInfo> optionsInfos=new ArrayList<>();
             for(SysOptions op :optionsList){
                 OptionsInfo info=new OptionsInfo();
@@ -195,10 +210,13 @@ public class SysTestpaperServiceImpl extends ServiceImpl<SysTestpaperMapper, Sys
                 optionsInfos.add(info);
             }
             testQuestionInfo.setOption(optionsInfos);
-            examInfo.setMaterialID(questionInfo.getResourceinfo().getId());
-            examInfo.setMaterialType(Integer.valueOf(questionInfo.getResourceinfo().getResourceType()));
-            examInfo.setMaterialURL(questionInfo.getResourceinfo().getUrl());
             testQuestionInfos.add(testQuestionInfo);
+        }
+        SysResourceinfo sysResourceinfo = resourceinfoMapper.selectById(questionInfos.get(0).getResId());
+        if(sysResourceinfo!=null){
+            examInfo.setMaterialID(sysResourceinfo.getId());
+            examInfo.setMaterialType(Integer.valueOf(sysResourceinfo.getResourceType()));
+            examInfo.setMaterialURL(sysResourceinfo.getUrl());
         }
         examInfo.setQuestionsList(testQuestionInfos);
         return examInfo;

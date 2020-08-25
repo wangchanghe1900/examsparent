@@ -75,6 +75,7 @@ public class SysAPIController {
             log.warn("----testpaper----"+decryptCode);
             ParamsVo paramsVo = JSON.parseObject(decryptCode, ParamsVo.class);
             ExamInfo examInfo = testpaperService.getExamInfoByEmpCode(paramsVo.getEmpID(), paramsVo.getExamID(), paramsVo.getShowNum(), paramsVo.getPageNum());
+            /*log.warn("考题："+examInfo);*/
             return new Response(200,"考题提取成功",examInfo);
         } catch (Exception e) {
             log.error("考题提取错误："+e.getMessage());

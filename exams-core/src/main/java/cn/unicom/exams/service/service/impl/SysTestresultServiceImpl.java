@@ -43,6 +43,9 @@ public class SysTestresultServiceImpl extends ServiceImpl<SysTestresultMapper, S
     @Resource
     private SysDeptMapper deptMapper;
 
+    @Resource
+    private SysLearndurationMapper learndurationMapper;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ExamScore judgementExaminfo(TestResultInfo testResultInfo) throws Exception{
@@ -113,10 +116,16 @@ public class SysTestresultServiceImpl extends ServiceImpl<SysTestresultMapper, S
             testquestionsMapper.updateById(q);
         }
         //删除未学习记录表
-        QueryWrapper<SysUnlearnduration> unlearnqw=new QueryWrapper<>();
-        unlearnqw.eq("t_id",testResultInfo.getExamID())
+        QueryWrapper<SysLearnduration> learndurationQueryWrapper=new QueryWrapper<>();
+        learndurationQueryWrapper.eq("t_id",testResultInfo.getExamID())
                 .eq("emp_code",testResultInfo.getEmpID());
-        unlearndurationMapper.delete(unlearnqw);
+        List<SysLearnduration> learndurationList = learndurationMapper.selectList(learndurationQueryWrapper);
+        if(learndurationList!=null && learndurationList.size()>0){
+            QueryWrapper<SysUnlearnduration> unlearnqw=new QueryWrapper<>();
+            unlearnqw.eq("t_id",testResultInfo.getExamID())
+                    .eq("emp_code",testResultInfo.getEmpID());
+            unlearndurationMapper.delete(unlearnqw);
+        }
         return examScore;
     }
 
