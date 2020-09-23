@@ -4,7 +4,7 @@ layui.config({
     treeSelect: 'treeSelect'
 })
 layui.use(['form','layer','treeSelect'],function(){
-    var form = layui.form
+    var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery;
     var formSelects = layui.formSelects;
