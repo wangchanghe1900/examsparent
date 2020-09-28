@@ -13,6 +13,7 @@ import cn.unicom.exams.web.utils.ButtonAuthorUtils;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/role")
+@Slf4j
 public class RoleController {
     @Autowired
     private ISysRoleService sysRoleService;
@@ -162,9 +164,15 @@ public class RoleController {
     @RequiresPermissions("role:delete")
     @ResponseBody
     public Boolean delRoleById(Long id){
-        if(id!=null){
-            boolean b = sysRoleService.removeById(id);
-            return b;
+        try{
+            if(id!=null){
+                boolean b = sysRoleService.deleteRoleById(id);
+                return b;
+            }
+
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return false;
         }
         return false;
     }

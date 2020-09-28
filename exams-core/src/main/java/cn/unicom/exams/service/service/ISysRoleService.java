@@ -22,4 +22,12 @@ public interface ISysRoleService extends IService<SysRole> {
      */
     public List<SysRole> getRoleInfoByUId(Long uId) throws Exception;
 
+    /**
+     * 根据id删除角色信息
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public Boolean deleteRoleById(Long id) throws Exception;
+
 }

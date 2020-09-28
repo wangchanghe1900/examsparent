@@ -188,9 +188,15 @@ layui.use(['form','layer','table','laytpl'],function(){
                  $.get("delRoleById",{
                      id : data.id  //将需要删除的newsId作为参数传入
                  },function(data){
-                    tableIns.reload();
-                     layer.msg("删除成功！");
-                    layer.close(index);
+                     if(data===true){
+                         tableIns.reload();
+                         layer.msg("删除成功！");
+                         layer.close(index);
+                     }else{
+                         layer.msg("删除失败！");
+                         layer.close(index);
+                     }
+
                 })
             });
         }
